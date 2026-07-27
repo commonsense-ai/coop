@@ -41,6 +41,12 @@ def download_checkpoint(model_repo: str, revision: str = "main") -> tuple[dict, 
     return load_file(ckpt), json.loads(Path(meta).read_text())
 
 
+def get_step(model_repo: str, revision: str = "main") -> int:
+    """Current outer step without pulling the 59MB checkpoint — meta.json only."""
+    path = hf_hub_download(model_repo, META_FILE, revision=revision, token=token())
+    return json.loads(Path(path).read_text())["step"]
+
+
 def download_file(
     repo_id: str, filename: str, repo_type: str = "model", revision: str = "main"
 ) -> str:

@@ -89,6 +89,21 @@ def run_worker(
     return delta_path, meta_path
 
 
+def wait_for_new_step(model_repo: str, last_step: int, poll: int = 60) -> int:
+    """Block until the aggregator advances past last_step. One submission per
+    contributor per outer step is enforced server-side; retraining from the same
+    checkpoint before then is wasted work."""
+    log.info("waiting for the aggregator to advance past step %d ...", last_step)
+    while True:
+        try:
+            step = hubio.get_step(model_repo)
+            if step > last_step:
+                return step
+        except Exception as e:
+            log.warning("step check failed (%s); retrying", e)
+        time.sleep(poll)
+
+
 def main():
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     ap = argparse.ArgumentParser(description="run one DiLoCo worker round")
@@ -106,7 +121,7 @@ def main():
     rnd = 0
     while True:
         try:
-            run_worker(
+            _, meta_path = run_worker(
                 cfg,
                 a.data,
                 out_dir=a.out,
@@ -115,6 +130,9 @@ def main():
                 do_submit=not a.no_submit,
                 dry_run=a.dry_run,
             )
+            if a.loop and not (a.no_submit or a.dry_run):
+                start = json.loads(meta_path.read_text())["start_step"]
+                wait_for_new_step(cfg["repos"]["model"], start, poll=a.pause)
         except KeyboardInterrupt:
             raise
         except Exception as e:
@@ -122,10 +140,10 @@ def main():
             if not a.loop:
                 raise
             log.warning("round failed (%s); retrying after pause", e)
+            time.sleep(a.pause)
         rnd += 1
         if not a.loop:
             break
-        time.sleep(a.pause)
 
 
 if __name__ == "__main__":

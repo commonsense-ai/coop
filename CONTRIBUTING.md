@@ -23,6 +23,8 @@ uv run python -m coop.trainer --data data/shard_<N>_20000.bin --loop
 Each worker round downloads the latest checkpoint, trains `inner.h_steps` local steps,
 and opens a PR on the inbox dataset repo. The aggregator picks it up on the next tick
 (~15 min), credits your HF username in the ledger, and closes the PR with a comment.
+One submission per contributor per outer step counts; extras are closed as duplicates
+without penalty, and the client waits for the next checkpoint automatically in loop mode.
 A rejected submission (stale, malformed, or an outlier) costs reputation, so keep your
 client unmodified and re-download the checkpoint before every round.
 

@@ -7,6 +7,7 @@ shard, then train-and-submit rounds until interrupted.
 
 import argparse
 import hashlib
+import json
 import logging
 import os
 import time
@@ -62,7 +63,7 @@ def main():
     # imported after the token is in the env so hubio picks it up
     from coop import hubio
     from coop.data import fetch_tinystories, load_tokenizer, tokenize_file
-    from coop.trainer import run_worker
+    from coop.trainer import run_worker, wait_for_new_step
 
     user = hubio.whoami()
     if user == "anonymous":
@@ -84,16 +85,21 @@ def main():
     rnd = 0
     while True:
         try:
-            run_worker(cfg, str(shard), out_dir=str(work / "out"), device=device, seed=rnd)
+            _, meta_path = run_worker(
+                cfg, str(shard), out_dir=str(work / "out"), device=device, seed=rnd
+            )
+            if not a.once:
+                start = json.loads(meta_path.read_text())["start_step"]
+                wait_for_new_step(cfg["repos"]["model"], start, poll=a.pause)
         except KeyboardInterrupt:
             raise
         except Exception as e:
             # unattended volunteers: transient network/HF errors retry, never crash
             log.warning("round failed (%s); retrying after pause", e)
+            time.sleep(a.pause)
         rnd += 1
         if a.once:
             break
-        time.sleep(a.pause)
 
 
 if __name__ == "__main__":
