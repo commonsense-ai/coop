@@ -14,7 +14,10 @@ jobs:
   touch:
     runs-on: ubuntu-latest
     steps:
+      # deploy key = ruleset bypass; see aggregate.yml
       - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
       - run: |
           git config user.name "coop-aggregator"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

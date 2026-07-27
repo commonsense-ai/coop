@@ -19,7 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20 # well under the 6h kill; a tick should stay < 10 min
     steps:
+      # main requires PR approvals; the deploy key is the ruleset's bypass actor,
+      # letting the tick commit the ledger directly.
       - uses: actions/checkout@v4
+        with:
+          ssh-key: ${{ secrets.DEPLOY_KEY }}
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --no-dev
       - run: uv run --no-dev python -m coop.aggregate
