@@ -1,0 +1,12 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+dist/
+
+# local artifacts: shards, checkpoints, pseudo-gradients — never in git
+data/
+out/
+*.bin
+*.safetensors

@@ -1,0 +1,39 @@
+# The single coordinator config. Workers and the aggregator both read this file.
+
+repos:
+  model: commonsense-ai/tinystories-15m          # HF model repo: weights + optimizer state
+  dataset: commonsense-ai/tinystories-15m-inbox  # HF dataset repo: pseudo-gradient PR inbox
+  github: commonsense-ai/decentralised-ai-training-poc  # code, ledger, leaderboard
+
+model:
+  n_layer: 6
+  n_head: 6
+  n_embd: 396        # ~14.8M params with tied embeddings
+  block_size: 512
+  vocab_size: 8192
+  dropout: 0.0
+  bias: true
+
+data:
+  hf_dataset: roneneldan/TinyStories
+  tokenizer: tokenizer/tinystories-8k.json
+
+inner:               # worker: DiLoCo inner loop
+  h_steps: 50
+  batch_size: 8
+  lr: 3.0e-4
+  betas: [0.9, 0.95]
+  weight_decay: 0.1
+  grad_clip: 1.0
+  quantize: int8     # int8 | none
+
+outer:               # aggregator: Nesterov outer step
+  lr: 0.7
+  momentum: 0.9
+  method: trimmed_mean   # trimmed_mean | geometric_median
+  trim_frac: 0.2
+  min_cos: 0.0           # reject submissions anti-correlated with the clipped mean
+  max_norm: 10.0         # per-submission L2 clip on the flattened delta
+
+staleness:
+  tau_max: 8         # linear ramp to zero; submissions older than 8 outer steps are dropped

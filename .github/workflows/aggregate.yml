@@ -1,0 +1,33 @@
+# One stateless outer step per tick. Cron delay/skips are fine: state lives in the
+# HF repos, so a missed or crashed tick just means the next one does the work.
+name: aggregate
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: aggregate
+  cancel-in-progress: false
+
+jobs:
+  tick:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20 # well under the 6h kill; a tick should stay < 10 min
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv sync --no-dev
+      - run: uv run --no-dev python -m coop.aggregate
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      - name: Commit ledger + leaderboard
+        run: |
+          git config user.name "coop-aggregator"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ledger/ LEADERBOARD.md
+          git diff --cached --quiet || { git commit -m "tick: update ledger + leaderboard"; git push; }

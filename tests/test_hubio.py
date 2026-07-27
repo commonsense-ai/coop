@@ -1,0 +1,105 @@
+import json
+from types import SimpleNamespace
+from unittest.mock import MagicMock
+
+import torch
+from huggingface_hub.utils import EntryNotFoundError
+from safetensors.torch import save_file
+
+from coop import hubio
+
+
+def fake_api(monkeypatch):
+    mock = MagicMock()
+    monkeypatch.setattr(hubio, "HfApi", lambda token=None: mock)
+    return mock
+
+
+def test_upload_checkpoint_is_one_commit(monkeypatch):
+    mock = fake_api(monkeypatch)
+    hubio.upload_checkpoint(
+        "x/model", {"w": torch.ones(2)}, {"step": 3}, opt_state={"w": torch.zeros(2)}
+    )
+    assert mock.create_commit.call_count == 1  # batched: one write API call per tick
+    kwargs = mock.create_commit.call_args.kwargs
+    assert kwargs["repo_id"] == "x/model"
+    assert kwargs["commit_message"] == "step 3"
+    assert [op.path_in_repo for op in kwargs["operations"]] == [
+        hubio.CKPT_FILE,
+        hubio.OPT_FILE,
+        hubio.META_FILE,
+    ]
+
+
+def test_download_checkpoint(monkeypatch, tmp_path):
+    ckpt = tmp_path / hubio.CKPT_FILE
+    save_file({"w": torch.ones(2)}, str(ckpt))
+    meta = tmp_path / hubio.META_FILE
+    meta.write_text(json.dumps({"step": 5}))
+    monkeypatch.setattr(
+        hubio,
+        "hf_hub_download",
+        lambda repo, fn, **kw: str(ckpt) if fn == hubio.CKPT_FILE else str(meta),
+    )
+    state, m = hubio.download_checkpoint("x/model")
+    assert torch.equal(state["w"], torch.ones(2))
+    assert m == {"step": 5}
+
+
+def test_download_optimizer_missing(monkeypatch):
+    def raise_(*a, **kw):
+        raise EntryNotFoundError("missing")
+
+    monkeypatch.setattr(hubio, "hf_hub_download", raise_)
+    assert hubio.download_optimizer("x/model") is None
+
+
+def test_list_open_prs_filters(monkeypatch):
+    mock = fake_api(monkeypatch)
+    mock.get_repo_discussions.return_value = iter(
+        [
+            SimpleNamespace(num=1, is_pull_request=True, status="open"),
+            SimpleNamespace(num=2, is_pull_request=False, status="open"),
+            SimpleNamespace(num=3, is_pull_request=True, status="closed"),
+        ]
+    )
+    assert [p.num for p in hubio.list_open_prs("x/inbox")] == [1]
+
+
+def test_download_pr_files_only_new_submissions(monkeypatch):
+    mock = fake_api(monkeypatch)
+    mock.list_repo_files.return_value = [
+        "README.md",
+        "submissions/step_1/old.safetensors",
+        "submissions/step_2/alice_ab.safetensors",
+        "submissions/step_2/alice_ab.json",
+    ]
+    monkeypatch.setattr(hubio, "hf_hub_download", lambda repo, fn, **kw: f"/local/{fn}")
+    files = hubio.download_pr_files("x/inbox", 7, base_files={"submissions/step_1/old.safetensors"})
+    assert set(files) == {
+        "submissions/step_2/alice_ab.safetensors",
+        "submissions/step_2/alice_ab.json",
+    }
+    assert mock.list_repo_files.call_args.kwargs["revision"] == "refs/pr/7"
+
+
+def test_close_pr(monkeypatch):
+    mock = fake_api(monkeypatch)
+    hubio.merge_or_close_pr("x/inbox", 7, merge=False, comment="done")
+    mock.comment_discussion.assert_called_once()
+    mock.change_discussion_status.assert_called_once()
+    assert mock.change_discussion_status.call_args.kwargs["new_status"] == "closed"
+    mock.merge_pull_request.assert_not_called()
+
+
+def test_merge_pr(monkeypatch):
+    mock = fake_api(monkeypatch)
+    hubio.merge_or_close_pr("x/inbox", 7, merge=True)
+    mock.merge_pull_request.assert_called_once()
+    mock.comment_discussion.assert_not_called()
+
+
+def test_open_pr_creates_pr(monkeypatch):
+    mock = fake_api(monkeypatch)
+    hubio.open_pr("x/inbox", [], "msg")
+    assert mock.create_commit.call_args.kwargs["create_pr"] is True

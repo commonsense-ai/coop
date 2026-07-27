@@ -1,0 +1,24 @@
+# GitHub disables scheduled workflows after 60 days without repo activity.
+# A weekly marker commit resets that clock.
+name: keepalive
+
+on:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  touch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          git config user.name "coop-aggregator"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          date -u +%Y-%m-%dT%H:%M:%SZ > .github/.keepalive
+          git add .github/.keepalive
+          git commit -m "keepalive"
+          git push

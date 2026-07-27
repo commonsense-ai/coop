@@ -1,0 +1,155 @@
+import json
+from types import SimpleNamespace
+
+import torch
+from safetensors.torch import save_file
+
+from coop.aggregate import _flatten, run_tick
+from coop.model import GPT, GPTConfig, canonical_state
+from coop.robust import clip_norm
+from coop.submit import dequantize_delta, quantize_delta
+
+CFG = {
+    "repos": {"model": "x/model", "dataset": "x/inbox"},
+    "model": {
+        "n_layer": 1,
+        "n_head": 2,
+        "n_embd": 16,
+        "block_size": 16,
+        "vocab_size": 64,
+        "dropout": 0.0,
+        "bias": True,
+    },
+    "outer": {
+        "lr": 0.7,
+        "momentum": 0.9,
+        "method": "trimmed_mean",
+        "trim_frac": 0.2,
+        "min_cos": 0.0,
+        "max_norm": 1.0,
+    },
+    "staleness": {"tau_max": 4},
+}
+
+
+class FakeHub:
+    def __init__(self, state, meta, pr_files):
+        self.state, self.meta, self.pr_files = state, meta, pr_files
+        self.uploaded = None
+        self.closed = {}
+
+    def download_checkpoint(self, repo, revision="main"):
+        return {k: v.clone() for k, v in self.state.items()}, dict(self.meta)
+
+    def download_optimizer(self, repo, revision="main"):
+        return None
+
+    def list_open_prs(self, repo):
+        return [SimpleNamespace(num=n) for n in sorted(self.pr_files)]
+
+    def list_repo_files(self, repo, **kw):
+        return []
+
+    def download_pr_files(self, repo, num, base_files=None):
+        return self.pr_files[num]
+
+    def upload_checkpoint(self, repo, state, meta, opt_state=None):
+        self.uploaded = (state, meta, opt_state)
+
+    def merge_or_close_pr(self, repo, num, merge=False, comment=None):
+        self.closed[num] = comment
+
+
+def write_submission(tmp_path, name, delta, meta):
+    st, js = tmp_path / f"{name}.safetensors", tmp_path / f"{name}.json"
+    save_file(delta, str(st))
+    js.write_text(json.dumps(meta))
+    prefix = f"submissions/step_{meta['start_step']}/{name}"
+    return {f"{prefix}.safetensors": str(st), f"{prefix}.json": str(js)}
+
+
+def sub_meta(user, start_step, tier="gpu", quant="none"):
+    return {
+        "username": user,
+        "start_step": start_step,
+        "tokens": 1000,
+        "tier": tier,
+        "quant": quant,
+    }
+
+
+def test_tick_end_to_end(tmp_path):
+    torch.manual_seed(0)
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    keys = list(state.keys())
+
+    # honest norm ~0.75 each: their weighted sum must dominate the outlier once it is
+    # clipped to max_norm=1.0, otherwise the gate reference is meaningless
+    direction = {k: 0.01 * torch.randn_like(v) for k, v in state.items()}
+    honest = [{k: v + 0.0005 * torch.randn_like(v) for k, v in direction.items()} for _ in range(3)]
+    outlier = {k: -50.0 * v for k, v in direction.items()}  # huge and anti-correlated
+
+    pr_files = {
+        1: write_submission(tmp_path, "alice_a", honest[0], sub_meta("alice", 5)),
+        2: write_submission(
+            tmp_path, "bob_b", quantize_delta(honest[1]), sub_meta("bob", 5, "cpu", "int8")
+        ),
+        3: write_submission(tmp_path, "carol_c", honest[2], sub_meta("carol", 4)),  # tau=1
+        4: write_submission(tmp_path, "mallory_m", outlier, sub_meta("mallory", 5)),
+        5: write_submission(tmp_path, "sleepy_s", direction, sub_meta("sleepy", 0)),  # tau=5>4
+    }
+    hub = FakeHub(state, {"step": 5}, pr_files)
+
+    summary = run_tick(CFG, hub=hub, repo_root=str(tmp_path))
+
+    assert summary == {
+        "step": 6,
+        "accepted": 3,
+        "rejected": 2,
+        "wall_secs": summary["wall_secs"],
+    }
+
+    # outer Nesterov step: m = d_agg (zero momentum), theta -= lr * (mu*m + d_agg)
+    clip = CFG["outer"]["max_norm"]
+    vecs = [
+        clip_norm(_flatten(honest[0], keys), clip),
+        clip_norm(_flatten(dequantize_delta(quantize_delta(honest[1])), keys), clip),
+        0.75 * clip_norm(_flatten(honest[2], keys), clip),  # carol's staleness weight: 1 - 1/4
+    ]
+    d_agg = torch.stack(vecs).mean(0)
+    new_state, new_meta, new_m = hub.uploaded
+    expected = _flatten(state, keys) - 0.7 * 1.9 * d_agg
+    assert torch.allclose(_flatten(new_state, keys), expected, atol=1e-5)
+    assert torch.allclose(_flatten(new_m, keys), d_agg, atol=1e-6)
+    assert new_meta["step"] == 6
+    assert new_meta["contributors"] == ["alice", "bob", "carol"]
+
+    led = json.loads((tmp_path / "ledger" / "ledger.json").read_text())
+    assert set(led["contributors"]) == {"alice", "bob", "carol", "mallory", "sleepy"}
+    assert led["contributors"]["alice"]["tokens"] == 1000
+    assert led["contributors"]["mallory"]["reputation"] < 1.0
+    assert led["contributors"]["mallory"]["tokens"] == 0
+    assert (tmp_path / "LEADERBOARD.md").read_text().startswith("# Leaderboard")
+
+    assert set(hub.closed) == {1, 2, 3, 4, 5}  # inbox fully pruned
+    assert "Accepted" in hub.closed[1]
+    assert "cosine" in hub.closed[4]
+    assert "stale" in hub.closed[5]
+
+
+def test_tick_no_prs_is_noop(tmp_path):
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    hub = FakeHub(state, {"step": 5}, {})
+    assert run_tick(CFG, hub=hub, repo_root=str(tmp_path)) is None
+    assert hub.uploaded is None
+
+
+def test_malformed_pr_rejected_without_outer_step(tmp_path):
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    js = tmp_path / "bad.json"
+    js.write_text(json.dumps({"username": "eve"}))  # no delta file, missing fields
+    hub = FakeHub(state, {"step": 5}, {1: {"submissions/step_5/bad.json": str(js)}})
+    summary = run_tick(CFG, hub=hub, repo_root=str(tmp_path))
+    assert summary["step"] == 5 and summary["accepted"] == 0 and summary["rejected"] == 1
+    assert hub.uploaded is None
+    assert "malformed" in hub.closed[1]
