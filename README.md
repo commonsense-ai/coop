@@ -1,5 +1,7 @@
 # coop
 
+[![ci](https://github.com/commonsense-ai/decentralised-ai-training-poc/actions/workflows/ci.yml/badge.svg)](https://github.com/commonsense-ai/decentralised-ai-training-poc/actions/workflows/ci.yml)
+
 A small language model pretrained by volunteers. No server, no funding, no daemon —
 the whole training loop runs on donated consumer hardware plus the free tiers of
 Hugging Face and GitHub Actions.
