@@ -67,6 +67,16 @@ def render_leaderboard(ledger: dict) -> str:
         "",
         f"Outer step **{ledger['step']}** — updated {ledger['updated']}.",
         "",
+    ]
+    if ledger.get("eval"):
+        ev = ledger["eval"]
+        lines += [
+            f"Val loss at step {ev['step']}: **{ev['val_loss']}** — sample:",
+            "",
+            "> " + " ".join(str(ev.get("sample", "")).split()),
+            "",
+        ]
+    lines += [
         "Score = tokens contributed × reputation. Reputation is an EMA of acceptance",
         f"(alpha={REP_ALPHA}): rejected submissions lower it, accepted ones restore it.",
         "CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board.",

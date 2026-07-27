@@ -41,6 +41,12 @@ def download_checkpoint(model_repo: str, revision: str = "main") -> tuple[dict, 
     return load_file(ckpt), json.loads(Path(meta).read_text())
 
 
+def download_file(
+    repo_id: str, filename: str, repo_type: str = "model", revision: str = "main"
+) -> str:
+    return hf_hub_download(repo_id, filename, repo_type=repo_type, revision=revision, token=token())
+
+
 def download_optimizer(model_repo: str, revision: str = "main") -> dict | None:
     try:
         path = hf_hub_download(model_repo, OPT_FILE, revision=revision, token=token())

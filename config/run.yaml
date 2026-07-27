@@ -37,3 +37,10 @@ outer:               # aggregator: Nesterov outer step
 
 staleness:
   tau_max: 8         # linear ramp to zero; submissions older than 8 outer steps are dropped
+
+eval:                # aggregator: evaluate each new checkpoint during the tick
+  val_file: val.bin  # TinyStories validation tokens, stored in the HF model repo
+  batches: 8
+  batch_size: 4
+  sample_prompt: "Once upon a time"
+  sample_tokens: 120
