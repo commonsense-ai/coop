@@ -10,3 +10,6 @@ data/
 out/
 *.bin
 *.safetensors
+
+# personal working notes
+*.local.md
