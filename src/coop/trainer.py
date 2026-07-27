@@ -99,16 +99,33 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--no-submit", action="store_true")
     ap.add_argument("--dry-run", action="store_true", help="package but only log the submission")
+    ap.add_argument("--loop", action="store_true", help="run rounds until interrupted")
+    ap.add_argument("--pause", type=int, default=60, help="seconds between rounds with --loop")
     a = ap.parse_args()
-    run_worker(
-        load_config(a.config),
-        a.data,
-        out_dir=a.out,
-        device=a.device,
-        seed=a.seed,
-        do_submit=not a.no_submit,
-        dry_run=a.dry_run,
-    )
+    cfg = load_config(a.config)
+    rnd = 0
+    while True:
+        try:
+            run_worker(
+                cfg,
+                a.data,
+                out_dir=a.out,
+                device=a.device,
+                seed=a.seed + rnd,  # fresh batch order every round
+                do_submit=not a.no_submit,
+                dry_run=a.dry_run,
+            )
+        except KeyboardInterrupt:
+            raise
+        except Exception as e:
+            # transient network/HF hiccups must not kill an unattended loop
+            if not a.loop:
+                raise
+            log.warning("round failed (%s); retrying after pause", e)
+        rnd += 1
+        if not a.loop:
+            break
+        time.sleep(a.pause)
 
 
 if __name__ == "__main__":
