@@ -8,7 +8,9 @@ name: aggregate
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    # offset from :00/:15/:30/:45 — on-the-quarter-hour crons get the worst
+    # queueing delay on GitHub's shared scheduler
+    - cron: "4,19,34,49 * * * *"
   workflow_dispatch:
 
 permissions:
