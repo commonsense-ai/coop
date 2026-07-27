@@ -1,0 +1,12 @@
+# Leaderboard
+
+**→ [View the live leaderboard](https://github.com/commonsense-ai/decentralised-ai-training-poc/blob/ledger/LEADERBOARD.md)**
+
+The aggregator regenerates the leaderboard on every tick and commits it to the
+[`ledger` branch](https://github.com/commonsense-ai/decentralised-ai-training-poc/tree/ledger)
+— `main` only changes through reviewed pull requests, so this page is a pointer
+rather than the live table.
+
+Score = tokens contributed × reputation (an EMA of acceptance). GPU training and
+CPU-tier data work (tokenize / dedup / filter / eval) rank on the same board. See
+[CONTRIBUTING.md](CONTRIBUTING.md) to get on it.

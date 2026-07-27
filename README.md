@@ -1,6 +1,7 @@
 # coop
 
 [![ci](https://github.com/commonsense-ai/decentralised-ai-training-poc/actions/workflows/ci.yml/badge.svg)](https://github.com/commonsense-ai/decentralised-ai-training-poc/actions/workflows/ci.yml)
+[![leaderboard](https://img.shields.io/badge/%F0%9F%8F%86_leaderboard-live-brightgreen)](https://github.com/commonsense-ai/decentralised-ai-training-poc/blob/ledger/LEADERBOARD.md)
 
 A small language model pretrained by volunteers. No server, no funding, no daemon —
 the whole training loop runs on donated consumer hardware plus the free tiers of
