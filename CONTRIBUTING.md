@@ -8,10 +8,16 @@ There are three ways to contribute. All of them earn credit on the same
 You need a free Hugging Face account and a **write** token (Settings → Access Tokens).
 
 ```sh
+uvx --from git+https://github.com/commonsense-ai/decentralised-ai-training-poc coop-join --hf-token hf_...
+```
+
+That's it — it trains and submits rounds until you stop it. Working from a clone instead:
+
+```sh
 uv sync
 export HF_TOKEN=hf_...
 uv run python -m coop.data --skip <N> --docs 20000   # pick an N others aren't using
-uv run python -m coop.trainer --data data/shard_<N>_20000.bin
+uv run python -m coop.trainer --data data/shard_<N>_20000.bin --loop
 ```
 
 Each worker round downloads the latest checkpoint, trains `inner.h_steps` local steps,
