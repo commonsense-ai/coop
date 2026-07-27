@@ -118,16 +118,23 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
         vec = robust.clip_norm(_flatten(delta, keys), out_cfg["max_norm"])
         accepted.append((pr, vec, w, sub_meta))
 
-    # One submission per contributor per outer step (earliest wins): repeat rounds
-    # against the same checkpoint are near-duplicate signal and would farm tokens.
-    seen: set[tuple[str, int]] = set()
-    duplicates = []
-    unique = []
+    # Same user, same start step: token-weighted merge into one entry. All the
+    # signal is used, but one contributor is one vote in the robust layer (no
+    # electorate stuffing) and credit counts only the largest single round (no
+    # token farming). Clipped vectors stay within max_norm under a convex mix.
+    groups: dict[tuple[str, int], list] = {}
     for entry in accepted:
-        key = (entry[3]["username"], entry[3]["start_step"])
-        (duplicates if key in seen else unique).append(entry)
-        seen.add(key)
-    accepted = unique
+        groups.setdefault((entry[3]["username"], entry[3]["start_step"]), []).append(entry)
+    accepted, absorbed = [], []
+    for group in groups.values():
+        if len(group) == 1:
+            accepted.append(group[0])
+            continue
+        toks = [max(float(e[3].get("tokens", 0)), 1.0) for e in group]
+        vec = sum(t * e[1] for t, e in zip(toks, group)) / sum(toks)
+        best = max(group, key=lambda e: e[3].get("tokens", 0))
+        accepted.append((best[0], vec, best[2], best[3]))
+        absorbed += [(e[0], e[3]) for e in group if e[0] is not best[0]]
 
     if accepted:
         vecs = [v for _, v, _, _ in accepted]
@@ -195,30 +202,30 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
         )
     for pr, _, reason in rejected:
         hub.merge_or_close_pr(dataset_repo, pr.num, merge=False, comment=f"Rejected ({reason}).")
-    for pr, _, _, m in duplicates:
+    for pr, m in absorbed:
         hub.merge_or_close_pr(
             dataset_repo,
             pr.num,
             merge=False,
-            comment=f"Duplicate: step {m['start_step']} already has a submission from "
-            f"{m['username']}; one per contributor per outer step. No penalty.",
+            comment=f"Merged: averaged into {m['username']}'s step {m['start_step']} submission "
+            "(one vote per contributor per step); credit counts the largest single round.",
         )
 
     wall = time.time() - t0
     log.info(
-        "tick done in %.1fs: step %d -> %d, %d accepted, %d rejected, %d duplicates",
+        "tick done in %.1fs: step %d -> %d, %d accepted, %d rejected, %d merged",
         wall,
         step,
         step + 1 if advanced else step,
         len(accepted),
         len(rejected),
-        len(duplicates),
+        len(absorbed),
     )
     return {
         "step": step + 1 if advanced else step,
         "accepted": len(accepted),
         "rejected": len(rejected),
-        "duplicates": len(duplicates),
+        "merged": len(absorbed),
         "wall_secs": round(wall, 1),
     }
 
