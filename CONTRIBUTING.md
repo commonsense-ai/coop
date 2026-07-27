@@ -1,7 +1,7 @@
 # Contributing
 
 There are three ways to contribute. All of them earn credit on the same
-[leaderboard](LEADERBOARD.md).
+[leaderboard](https://github.com/commonsense-ai/decentralised-ai-training-poc/blob/ledger/LEADERBOARD.md).
 
 ## 1. Donate compute (GPU or CPU)
 

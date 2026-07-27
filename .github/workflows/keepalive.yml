@@ -1,5 +1,6 @@
 # GitHub disables scheduled workflows after 60 days without repo activity.
-# A weekly marker commit resets that clock.
+# A weekly marker commit resets that clock. It lands on the unprotected
+# `ledger` branch since main only changes via approved PRs.
 name: keepalive
 
 on:
@@ -14,14 +15,13 @@ jobs:
   touch:
     runs-on: ubuntu-latest
     steps:
-      # deploy key = ruleset bypass; see aggregate.yml
       - uses: actions/checkout@v4
         with:
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          ref: ledger
       - run: |
           git config user.name "coop-aggregator"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          date -u +%Y-%m-%dT%H:%M:%SZ > .github/.keepalive
-          git add .github/.keepalive
+          date -u +%Y-%m-%dT%H:%M:%SZ > .keepalive
+          git add .keepalive
           git commit -m "keepalive"
           git push

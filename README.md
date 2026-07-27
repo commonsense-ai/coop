@@ -20,8 +20,12 @@ DiLoCo-style low-communication data parallelism:
    stateless: it reads the checkpoint and the open inbox PRs, drops over-stale
    submissions, clips and cosine-gates the rest, robust-aggregates them
    (trimmed mean / geometric median), takes one Nesterov outer step, uploads the
-   new checkpoint, credits contributors in the [ledger](ledger/), regenerates
-   [LEADERBOARD.md](LEADERBOARD.md), and closes the processed PRs.
+   new checkpoint, credits contributors in the
+   [ledger](https://github.com/commonsense-ai/decentralised-ai-training-poc/tree/ledger/ledger),
+   regenerates the
+   [leaderboard](https://github.com/commonsense-ai/decentralised-ai-training-poc/blob/ledger/LEADERBOARD.md),
+   and closes the processed PRs. Ledger state lives on the `ledger` branch;
+   `main` only changes through approved pull requests.
 
 Weights and optimizer state live **only** on Hugging Face (safetensors). Git holds
 code, config, and the contributor ledger.

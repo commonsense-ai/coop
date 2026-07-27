@@ -26,6 +26,8 @@ job aggregates them into outer steps on a public HF model repo.
   GITHUB_TOKEN is capped at 1,000 REST requests/hour/repo.
 - Keep an aggregator tick under 10 minutes; Actions kills jobs at 6 hours.
 - Close processed inbox PRs every tick (HF repos cap at 100k files).
+- The ledger + leaderboard live on the unprotected `ledger` branch; `main` requires an
+  approved PR (repo ruleset), so workflows must never push to `main`.
 - GitHub blocks files > 100 MB; large binaries go to HF only.
 - `config/run.yaml` is the single source of run configuration.
 

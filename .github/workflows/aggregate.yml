@@ -1,5 +1,9 @@
 # One stateless outer step per tick. Cron delay/skips are fine: state lives in the
 # HF repos, so a missed or crashed tick just means the next one does the work.
+#
+# Ledger state lives on the unprotected `ledger` branch: main only changes via
+# approved PRs, and this org disables deploy keys, so the bot cannot bypass main's
+# ruleset — it pushes ledger commits to `ledger` instead.
 name: aggregate
 
 on:
@@ -19,17 +23,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20 # well under the 6h kill; a tick should stay < 10 min
     steps:
-      # main requires PR approvals; the deploy key is the ruleset's bypass actor,
-      # letting the tick commit the ledger directly.
+      - uses: actions/checkout@v4
       - uses: actions/checkout@v4
         with:
-          ssh-key: ${{ secrets.DEPLOY_KEY }}
+          ref: ledger
+          path: ledgerdata
       - uses: astral-sh/setup-uv@v5
       - run: uv sync --no-dev
-      - run: uv run --no-dev python -m coop.aggregate
+      - run: uv run --no-dev python -m coop.aggregate --repo-root ledgerdata
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
       - name: Commit ledger + leaderboard
+        working-directory: ledgerdata
         run: |
           git config user.name "coop-aggregator"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
