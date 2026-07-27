@@ -24,6 +24,7 @@ def run_worker(
     seed: int = 0,
     do_submit: bool = True,
     dry_run: bool = False,
+    h_override: int | None = None,
 ) -> tuple[Path, Path]:
     inner = cfg["inner"]
     state, ckpt_meta = hubio.download_checkpoint(cfg["repos"]["model"])
@@ -42,7 +43,7 @@ def run_worker(
         weight_decay=inner["weight_decay"],
     )
     batches = iter_batches(data_bin, inner["batch_size"], cfg["model"]["block_size"], seed=seed)
-    h = inner["h_steps"]
+    h = h_override or inner["h_steps"]
     t0 = time.time()
     model.train()
     for i in range(h):
@@ -89,6 +90,15 @@ def run_worker(
     return delta_path, meta_path
 
 
+def adaptive_h(meta: dict, period_secs: float, inner: dict) -> int:
+    """Size the next round to ~80% of the observed outer period (Dynamic Local Updates):
+    near-full utilization without duplicate submissions. Capped at 500, DiLoCo's
+    validated inner-horizon ceiling; deeper local runs drift from the cohort."""
+    steps_per_sec = meta["h_steps"] / max(meta["wall_secs"], 1e-6)
+    h = int(0.8 * period_secs * steps_per_sec)
+    return max(inner.get("h_min", 50), min(inner.get("h_max", 500), h))
+
+
 def wait_for_new_step(model_repo: str, last_step: int, poll: int = 60) -> int:
     """Block until the aggregator advances past last_step. One submission per
     contributor per outer step is enforced server-side; retraining from the same
@@ -118,9 +128,10 @@ def main():
     ap.add_argument("--pause", type=int, default=60, help="seconds between rounds with --loop")
     a = ap.parse_args()
     cfg = load_config(a.config)
-    rnd = 0
+    rnd, h_next = 0, None
     while True:
         try:
+            t0 = time.time()
             _, meta_path = run_worker(
                 cfg,
                 a.data,
@@ -129,10 +140,13 @@ def main():
                 seed=a.seed + rnd,  # fresh batch order every round
                 do_submit=not a.no_submit,
                 dry_run=a.dry_run,
+                h_override=h_next,
             )
             if a.loop and not (a.no_submit or a.dry_run):
-                start = json.loads(meta_path.read_text())["start_step"]
-                wait_for_new_step(cfg["repos"]["model"], start, poll=a.pause)
+                meta = json.loads(meta_path.read_text())
+                wait_for_new_step(cfg["repos"]["model"], meta["start_step"], poll=a.pause)
+                h_next = adaptive_h(meta, time.time() - t0, cfg["inner"])
+                log.info("next round: %d inner steps", h_next)
         except KeyboardInterrupt:
             raise
         except Exception as e:
