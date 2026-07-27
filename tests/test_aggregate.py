@@ -44,6 +44,9 @@ class FakeHub:
     def download_file(self, repo, filename, **kw):
         return self.files[filename]
 
+    def resolve_revision(self, repo, revision="main", **kw):
+        return "main"
+
     def download_checkpoint(self, repo, revision="main"):
         return {k: v.clone() for k, v in self.state.items()}, dict(self.meta)
 
