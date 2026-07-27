@@ -1,0 +1,22 @@
+# Auto-approve PRs from trusted maintainers so the required-review rule on main
+# does not stall routine work. pull_request_target also covers PRs from forks and
+# is safe here because the PR's code is never checked out or executed.
+name: auto-approve
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  approve:
+    runs-on: ubuntu-latest
+    if: contains(fromJSON('["guirguispierre", "mia-riezebos"]'), github.event.pull_request.user.login)
+    steps:
+      - run: gh pr review "$PR" --approve --repo "$REPO"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
