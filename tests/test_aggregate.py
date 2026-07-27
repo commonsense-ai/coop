@@ -115,7 +115,7 @@ def test_tick_end_to_end(tmp_path):
         "step": 6,
         "accepted": 3,
         "rejected": 2,
-        "duplicates": 0,
+        "merged": 0,
         "wall_secs": summary["wall_secs"],
     }
 
@@ -183,26 +183,36 @@ def test_tick_runs_eval_when_configured(tmp_path):
     assert f"Val loss at step 6: **{meta['eval']['val_loss']}**" in board
 
 
-def test_duplicate_submissions_same_user_same_step(tmp_path):
+def test_same_user_same_step_submissions_merge(tmp_path):
     torch.manual_seed(0)
     state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    keys = list(state.keys())
     d1 = {k: 0.005 * torch.randn_like(v) for k, v in state.items()}
     d2 = {k: v + 0.0005 * torch.randn_like(v) for k, v in d1.items()}
 
+    m1 = {**sub_meta("alice", 5), "tokens": 1000}
+    m2 = {**sub_meta("alice", 5), "tokens": 3000}  # deeper re-run before the tick
     pr_files = {
-        1: write_submission(tmp_path, "alice_a", d1, sub_meta("alice", 5)),
-        2: write_submission(tmp_path, "alice_b", d2, sub_meta("alice", 5)),  # loop re-run
+        1: write_submission(tmp_path, "alice_a", d1, m1),
+        2: write_submission(tmp_path, "alice_b", d2, m2),
     }
     hub = FakeHub(state, {"step": 5}, pr_files)
     summary = run_tick(CFG, hub=hub, repo_root=str(tmp_path))
 
-    assert summary["accepted"] == 1 and summary["duplicates"] == 1
-    assert summary["step"] == 6
-    # earliest PR wins; the duplicate is closed without reputation penalty
-    assert "Duplicate" in hub.closed[2] and "Accepted" in hub.closed[1]
+    assert summary["accepted"] == 1 and summary["merged"] == 1 and summary["step"] == 6
+
+    # signal: token-weighted average of both rounds; one vote in the robust layer
+    v1, v2 = _flatten(d1, keys), _flatten(d2, keys)
+    merged = (1000 * v1 + 3000 * v2) / 4000
+    new_state, new_meta, _ = hub.uploaded
+    expected = _flatten(state, keys) - 0.7 * 1.9 * merged
+    assert torch.allclose(_flatten(new_state, keys), expected, atol=1e-5)
+
+    # credit: the largest single round only, no farming
+    assert "Accepted" in hub.closed[2] and "Merged" in hub.closed[1]
     led = json.loads((tmp_path / "ledger" / "ledger.json").read_text())
     assert led["contributors"]["alice"]["submissions"] == 1
-    assert led["contributors"]["alice"]["tokens"] == 1000
+    assert led["contributors"]["alice"]["tokens"] == 3000
     assert led["contributors"]["alice"]["reputation"] == 1.0
 
 
