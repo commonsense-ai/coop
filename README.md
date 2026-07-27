@@ -40,15 +40,24 @@ code, config, and the contributor ledger.
 
 ## Donate compute
 
+One command — you need a free Hugging Face account and a
+[write token](https://huggingface.co/settings/tokens):
+
+```sh
+uvx --from git+https://github.com/commonsense-ai/decentralised-ai-training-poc coop-join --hf-token hf_...
+```
+
+It fetches the live config, builds you a personal data shard (a slice derived from
+your username so volunteers don't overlap), and then trains and submits rounds until
+you hit ctrl-c. `--once` for a single round; `--device cuda|mps|cpu` to override.
+
+From a clone, the equivalent is:
+
 ```sh
 uv sync
-export HF_TOKEN=hf_...            # free account, write token
-
-# build a local data shard (pick your own --skip to get a distinct slice)
+export HF_TOKEN=hf_...
 uv run python -m coop.data --skip 0 --docs 20000
-
-# one worker round: download checkpoint, train locally, open a PR
-uv run python -m coop.trainer --data data/shard_0_20000.bin
+uv run python -m coop.trainer --data data/shard_0_20000.bin --loop
 ```
 
 Run it as often as you like. Accepted submissions earn tokens on the leaderboard;
