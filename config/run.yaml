@@ -19,7 +19,9 @@ data:
   tokenizer: tokenizer/tinystories-8k.json
 
 inner:               # worker: DiLoCo inner loop
-  h_steps: 200       # DiLoCo runs 100-500+ inner steps; more tokens per upload
+  h_steps: 200       # first round; loop mode then adapts H to the observed tick cadence
+  h_min: 50
+  h_max: 500         # DiLoCo's validated inner-horizon ceiling
   batch_size: 8
   lr: 3.0e-4
   betas: [0.9, 0.95]

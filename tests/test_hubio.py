@@ -31,19 +31,25 @@ def test_upload_checkpoint_is_one_commit(monkeypatch):
     ]
 
 
-def test_download_checkpoint(monkeypatch, tmp_path):
+def test_download_checkpoint_pins_revision(monkeypatch, tmp_path):
+    mock = fake_api(monkeypatch)
+    mock.repo_info.return_value = SimpleNamespace(sha="abc123")
     ckpt = tmp_path / hubio.CKPT_FILE
     save_file({"w": torch.ones(2)}, str(ckpt))
     meta = tmp_path / hubio.META_FILE
     meta.write_text(json.dumps({"step": 5}))
-    monkeypatch.setattr(
-        hubio,
-        "hf_hub_download",
-        lambda repo, fn, **kw: str(ckpt) if fn == hubio.CKPT_FILE else str(meta),
-    )
+    revisions = []
+
+    def fake_download(repo, fn, revision=None, **kw):
+        revisions.append(revision)
+        return str(ckpt) if fn == hubio.CKPT_FILE else str(meta)
+
+    monkeypatch.setattr(hubio, "hf_hub_download", fake_download)
     state, m = hubio.download_checkpoint("x/model")
     assert torch.equal(state["w"], torch.ones(2))
     assert m == {"step": 5}
+    # both files read at the same pinned sha: no mixed-step state if a tick lands mid-read
+    assert revisions == ["abc123", "abc123"]
 
 
 def test_download_optimizer_missing(monkeypatch):

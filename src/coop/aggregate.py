@@ -82,10 +82,11 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
     model_repo, dataset_repo = cfg["repos"]["model"], cfg["repos"]["dataset"]
     out_cfg = cfg["outer"]
 
-    state, meta = hub.download_checkpoint(model_repo)
+    rev = hub.resolve_revision(model_repo)  # one sha for all reads: no mixed-step state
+    state, meta = hub.download_checkpoint(model_repo, revision=rev)
     step = meta["step"]
     keys = list(state.keys())
-    momentum = hub.download_optimizer(model_repo)
+    momentum = hub.download_optimizer(model_repo, revision=rev)
     if momentum is None:
         momentum = {k: torch.zeros_like(v) for k, v in state.items()}
 

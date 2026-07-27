@@ -63,7 +63,7 @@ def main():
     # imported after the token is in the env so hubio picks it up
     from coop import hubio
     from coop.data import fetch_tinystories, load_tokenizer, tokenize_file
-    from coop.trainer import run_worker, wait_for_new_step
+    from coop.trainer import adaptive_h, run_worker, wait_for_new_step
 
     user = hubio.whoami()
     if user == "anonymous":
@@ -82,15 +82,23 @@ def main():
 
     device = a.device or pick_device()
     log.info("joined as %s on %s; ctrl-c to stop", user, device)
-    rnd = 0
+    rnd, h_next = 0, None
     while True:
         try:
+            t0 = time.time()
             _, meta_path = run_worker(
-                cfg, str(shard), out_dir=str(work / "out"), device=device, seed=rnd
+                cfg,
+                str(shard),
+                out_dir=str(work / "out"),
+                device=device,
+                seed=rnd,
+                h_override=h_next,
             )
             if not a.once:
-                start = json.loads(meta_path.read_text())["start_step"]
-                wait_for_new_step(cfg["repos"]["model"], start, poll=a.pause)
+                meta = json.loads(meta_path.read_text())
+                wait_for_new_step(cfg["repos"]["model"], meta["start_step"], poll=a.pause)
+                h_next = adaptive_h(meta, time.time() - t0, cfg["inner"])
+                log.info("next round: %d inner steps", h_next)
         except KeyboardInterrupt:
             raise
         except Exception as e:

@@ -35,7 +35,15 @@ def ensure_repos(model_repo: str, dataset_repo: str) -> None:
     a.create_repo(dataset_repo, repo_type="dataset", exist_ok=True)
 
 
+def resolve_revision(repo_id: str, revision: str = "main", repo_type: str = "model") -> str:
+    """Pin a branch name to a commit sha so multi-file reads are atomic: a tick
+    landing between two downloads would otherwise hand back mixed-step state."""
+    return api().repo_info(repo_id, revision=revision, repo_type=repo_type).sha
+
+
 def download_checkpoint(model_repo: str, revision: str = "main") -> tuple[dict, dict]:
+    if revision == "main":
+        revision = resolve_revision(model_repo)
     ckpt = hf_hub_download(model_repo, CKPT_FILE, revision=revision, token=token())
     meta = hf_hub_download(model_repo, META_FILE, revision=revision, token=token())
     return load_file(ckpt), json.loads(Path(meta).read_text())
