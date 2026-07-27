@@ -3,11 +3,11 @@
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 4,
+      "submissions": 5,
       "tier": "cpu",
-      "tokens": 819200
+      "tokens": 1024000
     }
   },
-  "step": 3,
-  "updated": "2026-07-27T05:14:14+00:00"
+  "step": 4,
+  "updated": "2026-07-27T05:17:34+00:00"
 }
