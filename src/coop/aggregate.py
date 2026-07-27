@@ -11,7 +11,9 @@ import torch
 from safetensors.torch import load_file
 
 from coop import hubio, ledger, load_config, robust
-from coop.model import GPT, GPTConfig, canonical_state
+from coop.data import load_tokenizer
+from coop.eval import eval_val_loss, sample
+from coop.model import GPT, GPTConfig, canonical_state, load_canonical_state
 from coop.staleness import staleness_weight
 from coop.submit import dequantize_delta
 
@@ -48,6 +50,31 @@ def _load_submission(files: dict[str, str]) -> tuple[dict, dict]:
     if meta.get("quant") == "int8":
         delta = dequantize_delta(delta)
     return delta, meta
+
+
+def _eval_checkpoint(cfg: dict, state: dict, hub) -> dict | None:
+    """Val loss + a sample for the new checkpoint. Never allowed to kill the tick."""
+    ecfg = cfg.get("eval")
+    if not ecfg:
+        return None
+    try:
+        val_path = hub.download_file(cfg["repos"]["model"], ecfg["val_file"])
+        model = GPT.from_config(GPTConfig(**cfg["model"]))
+        load_canonical_state(model, state)
+        loss = eval_val_loss(
+            model, val_path, batch=ecfg.get("batch_size", 4), iters=ecfg.get("batches", 8)
+        )
+        tok = load_tokenizer(cfg["data"]["tokenizer"])
+        text = sample(
+            model,
+            tok,
+            ecfg.get("sample_prompt", "Once upon a time"),
+            ecfg.get("sample_tokens", 120),
+        )
+        return {"val_loss": round(loss, 4), "sample": text}
+    except Exception as e:
+        log.warning("eval skipped: %s", e)
+        return None
 
 
 def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
@@ -102,6 +129,7 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
         rejected += [(pr, m, "cosine gate: anti-correlated with cohort") for pr, _, _, m in gated]
 
     advanced = bool(accepted)
+    evals = None
     if advanced:
         # Staleness weight scales each survivor: stale work still helps, just less.
         scaled = [v * w for _, v, w, _ in accepted]
@@ -118,16 +146,24 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
             # moves the outer weights toward where the workers went.
             state[k] = state[k] - lr * (mu * momentum[k] + d_agg[k])
 
+        evals = _eval_checkpoint(cfg, state, hub)
         new_meta = {
             **meta,
             "step": step + 1,
             "updated": _now(),
             "contributors": sorted({m["username"] for _, _, _, m in accepted}),
         }
+        if evals:
+            new_meta["eval"] = evals
+            log.info("eval @ step %d: val loss %.4f", step + 1, evals["val_loss"])
+        else:
+            new_meta.pop("eval", None)
         hub.upload_checkpoint(model_repo, state, new_meta, opt_state=momentum)
 
     led_path = Path(repo_root) / "ledger" / "ledger.json"
     led = ledger.load_ledger(led_path)
+    if evals:
+        led["eval"] = {"step": step + 1, **evals}
     ledger.update_ledger(
         led,
         [m for _, _, _, m in accepted],

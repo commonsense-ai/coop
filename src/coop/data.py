@@ -42,11 +42,11 @@ def tokenize_file(tok: Tokenizer, text_path: str, out_bin: str) -> int:
     return len(ids)
 
 
-def fetch_tinystories(out_txt: str, n_docs: int, skip: int = 0) -> str:
+def fetch_tinystories(out_txt: str, n_docs: int, skip: int = 0, split: str = "train") -> str:
     """Stream a worker-sized shard; `skip` lets workers pick disjoint slices."""
     from datasets import load_dataset
 
-    ds = load_dataset("roneneldan/TinyStories", split="train", streaming=True)
+    ds = load_dataset("roneneldan/TinyStories", split=split, streaming=True)
     with open(out_txt, "w") as f:
         for ex in ds.skip(skip).take(n_docs):
             f.write(ex["text"].strip() + f"\n{EOT}\n")
@@ -71,6 +71,7 @@ def main():
     ap.add_argument("--out-dir", default="data")
     ap.add_argument("--docs", type=int, default=20000)
     ap.add_argument("--skip", type=int, default=0)
+    ap.add_argument("--split", default="train")
     ap.add_argument("--vocab", type=int, default=8192)
     ap.add_argument("--tokenizer", default="tokenizer/tinystories-8k.json")
     ap.add_argument(
@@ -80,12 +81,13 @@ def main():
 
     out = Path(a.out_dir)
     out.mkdir(parents=True, exist_ok=True)
-    txt = fetch_tinystories(str(out / f"shard_{a.skip}_{a.docs}.txt"), a.docs, a.skip)
+    tag = f"{a.skip}_{a.docs}" if a.split == "train" else f"{a.split}_{a.skip}_{a.docs}"
+    txt = fetch_tinystories(str(out / f"shard_{tag}.txt"), a.docs, a.skip, a.split)
     if a.train_tokenizer:
         tok = train_tokenizer([txt], a.vocab, a.tokenizer)
     else:
         tok = load_tokenizer(a.tokenizer)
-    bin_path = str(out / f"shard_{a.skip}_{a.docs}.bin")
+    bin_path = str(out / f"shard_{tag}.bin")
     n = tokenize_file(tok, txt, bin_path)
     print(f"{n} tokens -> {bin_path}")
 

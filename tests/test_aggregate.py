@@ -1,10 +1,12 @@
 import json
 from types import SimpleNamespace
 
+import numpy as np
 import torch
 from safetensors.torch import save_file
 
 from coop.aggregate import _flatten, run_tick
+from coop.data import train_tokenizer
 from coop.model import GPT, GPTConfig, canonical_state
 from coop.robust import clip_norm
 from coop.submit import dequantize_delta, quantize_delta
@@ -37,6 +39,10 @@ class FakeHub:
         self.state, self.meta, self.pr_files = state, meta, pr_files
         self.uploaded = None
         self.closed = {}
+        self.files = {}
+
+    def download_file(self, repo, filename, **kw):
+        return self.files[filename]
 
     def download_checkpoint(self, repo, revision="main"):
         return {k: v.clone() for k, v in self.state.items()}, dict(self.meta)
@@ -135,6 +141,42 @@ def test_tick_end_to_end(tmp_path):
     assert "Accepted" in hub.closed[1]
     assert "cosine" in hub.closed[4]
     assert "stale" in hub.closed[5]
+
+
+def test_tick_runs_eval_when_configured(tmp_path):
+    torch.manual_seed(0)
+    cfg = {
+        **CFG,
+        "model": {**CFG["model"], "vocab_size": 512},  # covers all tokenizer ids
+        "data": {"tokenizer": str(tmp_path / "tok.json")},
+        "eval": {
+            "val_file": "val.bin",
+            "batches": 2,
+            "batch_size": 2,
+            "sample_prompt": "once upon",
+            "sample_tokens": 4,
+        },
+    }
+    corpus = tmp_path / "c.txt"
+    corpus.write_text("once upon a time there was a robot. " * 50)
+    train_tokenizer([str(corpus)], 512, str(tmp_path / "tok.json"))
+    val = tmp_path / "val.bin"
+    np.random.default_rng(0).integers(0, 512, size=500).astype(np.uint16).tofile(val)
+
+    state = canonical_state(GPT.from_config(GPTConfig(**cfg["model"])))
+    delta = {k: 0.005 * torch.randn_like(v) for k, v in state.items()}
+    pr_files = {1: write_submission(tmp_path, "alice_a", delta, sub_meta("alice", 5))}
+    hub = FakeHub(state, {"step": 5}, pr_files)
+    hub.files["val.bin"] = str(val)
+
+    run_tick(cfg, hub=hub, repo_root=str(tmp_path))
+
+    _, meta, _ = hub.uploaded
+    assert meta["step"] == 6
+    assert meta["eval"]["val_loss"] > 0
+    assert isinstance(meta["eval"]["sample"], str) and meta["eval"]["sample"]
+    board = (tmp_path / "LEADERBOARD.md").read_text()
+    assert f"Val loss at step 6: **{meta['eval']['val_loss']}**" in board
 
 
 def test_tick_no_prs_is_noop(tmp_path):
