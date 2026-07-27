@@ -112,6 +112,7 @@ def test_tick_end_to_end(tmp_path):
         "step": 6,
         "accepted": 3,
         "rejected": 2,
+        "duplicates": 0,
         "wall_secs": summary["wall_secs"],
     }
 
@@ -177,6 +178,29 @@ def test_tick_runs_eval_when_configured(tmp_path):
     assert isinstance(meta["eval"]["sample"], str) and meta["eval"]["sample"]
     board = (tmp_path / "LEADERBOARD.md").read_text()
     assert f"Val loss at step 6: **{meta['eval']['val_loss']}**" in board
+
+
+def test_duplicate_submissions_same_user_same_step(tmp_path):
+    torch.manual_seed(0)
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    d1 = {k: 0.005 * torch.randn_like(v) for k, v in state.items()}
+    d2 = {k: v + 0.0005 * torch.randn_like(v) for k, v in d1.items()}
+
+    pr_files = {
+        1: write_submission(tmp_path, "alice_a", d1, sub_meta("alice", 5)),
+        2: write_submission(tmp_path, "alice_b", d2, sub_meta("alice", 5)),  # loop re-run
+    }
+    hub = FakeHub(state, {"step": 5}, pr_files)
+    summary = run_tick(CFG, hub=hub, repo_root=str(tmp_path))
+
+    assert summary["accepted"] == 1 and summary["duplicates"] == 1
+    assert summary["step"] == 6
+    # earliest PR wins; the duplicate is closed without reputation penalty
+    assert "Duplicate" in hub.closed[2] and "Accepted" in hub.closed[1]
+    led = json.loads((tmp_path / "ledger" / "ledger.json").read_text())
+    assert led["contributors"]["alice"]["submissions"] == 1
+    assert led["contributors"]["alice"]["tokens"] == 1000
+    assert led["contributors"]["alice"]["reputation"] == 1.0
 
 
 def test_tick_no_prs_is_noop(tmp_path):

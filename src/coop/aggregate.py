@@ -89,7 +89,7 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
     if momentum is None:
         momentum = {k: torch.zeros_like(v) for k, v in state.items()}
 
-    prs = hub.list_open_prs(dataset_repo)
+    prs = sorted(hub.list_open_prs(dataset_repo), key=lambda p: p.num)
     log.info("step %d: %d open PRs", step, len(prs))
     if not prs:
         log.info("nothing to do (%.1fs)", time.time() - t0)
@@ -116,6 +116,17 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
             continue
         vec = robust.clip_norm(_flatten(delta, keys), out_cfg["max_norm"])
         accepted.append((pr, vec, w, sub_meta))
+
+    # One submission per contributor per outer step (earliest wins): repeat rounds
+    # against the same checkpoint are near-duplicate signal and would farm tokens.
+    seen: set[tuple[str, int]] = set()
+    duplicates = []
+    unique = []
+    for entry in accepted:
+        key = (entry[3]["username"], entry[3]["start_step"])
+        (duplicates if key in seen else unique).append(entry)
+        seen.add(key)
+    accepted = unique
 
     if accepted:
         vecs = [v for _, v, _, _ in accepted]
@@ -183,20 +194,30 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
         )
     for pr, _, reason in rejected:
         hub.merge_or_close_pr(dataset_repo, pr.num, merge=False, comment=f"Rejected ({reason}).")
+    for pr, _, _, m in duplicates:
+        hub.merge_or_close_pr(
+            dataset_repo,
+            pr.num,
+            merge=False,
+            comment=f"Duplicate: step {m['start_step']} already has a submission from "
+            f"{m['username']}; one per contributor per outer step. No penalty.",
+        )
 
     wall = time.time() - t0
     log.info(
-        "tick done in %.1fs: step %d -> %d, %d accepted, %d rejected",
+        "tick done in %.1fs: step %d -> %d, %d accepted, %d rejected, %d duplicates",
         wall,
         step,
         step + 1 if advanced else step,
         len(accepted),
         len(rejected),
+        len(duplicates),
     )
     return {
         "step": step + 1 if advanced else step,
         "accepted": len(accepted),
         "rejected": len(rejected),
+        "duplicates": len(duplicates),
         "wall_secs": round(wall, 1),
     }
 
