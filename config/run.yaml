@@ -19,7 +19,7 @@ data:
   tokenizer: tokenizer/tinystories-8k.json
 
 inner:               # worker: DiLoCo inner loop
-  h_steps: 50
+  h_steps: 200       # DiLoCo runs 100-500+ inner steps; more tokens per upload
   batch_size: 8
   lr: 3.0e-4
   betas: [0.9, 0.95]
