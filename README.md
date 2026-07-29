@@ -1,7 +1,7 @@
 # coop
 
-[![ci](https://github.com/commonsense-ai/decentralised-ai-training-poc/actions/workflows/ci.yml/badge.svg)](https://github.com/commonsense-ai/decentralised-ai-training-poc/actions/workflows/ci.yml)
-[![leaderboard](https://img.shields.io/badge/%F0%9F%8F%86_leaderboard-live-brightgreen)](https://github.com/commonsense-ai/decentralised-ai-training-poc/blob/ledger/LEADERBOARD.md)
+[![ci](https://github.com/commonsense-ai/coop/actions/workflows/ci.yml/badge.svg)](https://github.com/commonsense-ai/coop/actions/workflows/ci.yml)
+[![leaderboard](https://img.shields.io/badge/%F0%9F%8F%86_leaderboard-live-brightgreen)](https://github.com/commonsense-ai/coop/blob/ledger/LEADERBOARD.md)
 
 A small language model pretrained by volunteers. No server, no funding, no daemon —
 the whole training loop runs on donated consumer hardware plus the free tiers of
@@ -24,9 +24,9 @@ DiLoCo-style low-communication data parallelism:
    submissions, clips and cosine-gates the rest, robust-aggregates them
    (trimmed mean / geometric median), takes one Nesterov outer step, uploads the
    new checkpoint, credits contributors in the
-   [ledger](https://github.com/commonsense-ai/decentralised-ai-training-poc/tree/ledger/ledger),
+   [ledger](https://github.com/commonsense-ai/coop/tree/ledger/ledger),
    regenerates the
-   [leaderboard](https://github.com/commonsense-ai/decentralised-ai-training-poc/blob/ledger/LEADERBOARD.md),
+   [leaderboard](https://github.com/commonsense-ai/coop/blob/ledger/LEADERBOARD.md),
    and closes the processed PRs. Ledger state lives on the `ledger` branch;
    `main` only changes through approved pull requests.
 
@@ -44,7 +44,7 @@ One command — you need a free Hugging Face account and a
 [write token](https://huggingface.co/settings/tokens):
 
 ```sh
-uvx --from git+https://github.com/commonsense-ai/decentralised-ai-training-poc coop-join --hf-token hf_...
+uvx --from git+https://github.com/commonsense-ai/coop coop-join --hf-token hf_...
 ```
 
 It fetches the live config, builds you a personal data shard (a slice derived from

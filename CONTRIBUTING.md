@@ -1,14 +1,14 @@
 # Contributing
 
 There are three ways to contribute. All of them earn credit on the same
-[leaderboard](https://github.com/commonsense-ai/decentralised-ai-training-poc/blob/ledger/LEADERBOARD.md).
+[leaderboard](https://github.com/commonsense-ai/coop/blob/ledger/LEADERBOARD.md).
 
 ## 1. Donate compute (GPU or CPU)
 
 You need a free Hugging Face account and a **write** token (Settings → Access Tokens).
 
 ```sh
-uvx --from git+https://github.com/commonsense-ai/decentralised-ai-training-poc coop-join --hf-token hf_...
+uvx --from git+https://github.com/commonsense-ai/coop coop-join --hf-token hf_...
 ```
 
 That's it — it trains and submits rounds until you stop it. Working from a clone instead:

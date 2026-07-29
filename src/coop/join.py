@@ -1,7 +1,7 @@
 """One-command onboarding: fetch the live coordinator config, build a personal data
 shard, then train-and-submit rounds until interrupted.
 
-    uvx --from git+https://github.com/commonsense-ai/decentralised-ai-training-poc \
+    uvx --from git+https://github.com/commonsense-ai/coop \
         coop-join --hf-token hf_xxx
 """
 
@@ -19,7 +19,7 @@ import yaml
 
 log = logging.getLogger(__name__)
 
-DEFAULT_REPO = "commonsense-ai/decentralised-ai-training-poc"
+DEFAULT_REPO = "commonsense-ai/coop"
 RAW = "https://raw.githubusercontent.com/{repo}/main/{path}"
 
 

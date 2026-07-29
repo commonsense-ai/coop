@@ -3,7 +3,7 @@
 repos:
   model: commonsense-ai/tinystories-15m          # HF model repo: weights + optimizer state
   dataset: commonsense-ai/tinystories-15m-inbox  # HF dataset repo: pseudo-gradient PR inbox
-  github: commonsense-ai/decentralised-ai-training-poc  # code, ledger, leaderboard
+  github: commonsense-ai/coop  # code, ledger, leaderboard
 
 model:
   n_layer: 6
