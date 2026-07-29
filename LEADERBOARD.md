@@ -1,9 +1,9 @@
 # Leaderboard
 
-**→ [View the live leaderboard](https://github.com/commonsense-ai/decentralised-ai-training-poc/blob/ledger/LEADERBOARD.md)**
+**→ [View the live leaderboard](https://github.com/commonsense-ai/coop/blob/ledger/LEADERBOARD.md)**
 
 The aggregator regenerates the leaderboard on every tick and commits it to the
-[`ledger` branch](https://github.com/commonsense-ai/decentralised-ai-training-poc/tree/ledger)
+[`ledger` branch](https://github.com/commonsense-ai/coop/tree/ledger)
 — `main` only changes through reviewed pull requests, so this page is a pointer
 rather than the live table.
 
