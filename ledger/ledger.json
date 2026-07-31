@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 25,
+      "submissions": 26,
       "tier": "gpu",
-      "tokens": 44548096
+      "tokens": 46596096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time there was a little girl named Lily. She loved to play in the dirt and make snow shapes. One day, she found a big box and showed it to her mom. She wanted to open it, so she opened the box. \n\nInside, she found a special toy box. It was big, red and had a bright yellow cape. Lily was so happy and ran to play with the toy and playing with it. She played the toys all day long, pretending to be a princess from her best friend.Once upon a time, there was a little girl named Lily. She loved",
-    "step": 38,
-    "val_loss": 2.2829
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys, even her ear. One day, Lily's friend came over to play.\n\n\"Hi, I'm Lily. What are you doing?\" asked the lady.\n\n\"I'm playing with your ear,\" said Lily.\n\n\"Hi, Lily. Can I play with you?\" said the lady.\n\n\"Of course, you can,\" said Lily.\n\n\"Thank you, Lily. I love playing with you,\" said the lady.\n\n\"You're welcome, Lily. Come",
+    "step": 39,
+    "val_loss": 2.2728
   },
-  "step": 38,
-  "updated": "2026-07-31T19:21:25+00:00"
+  "step": 39,
+  "updated": "2026-07-31T19:36:25+00:00"
 }
