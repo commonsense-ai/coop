@@ -10,6 +10,8 @@ import hashlib
 import json
 import logging
 import os
+import signal
+import threading
 import time
 import urllib.request
 from pathlib import Path
@@ -101,8 +103,13 @@ def main():
     device = a.device or pick_device()
     log.info("joined as %s on %s; ctrl-c to stop", user, device)
     status.update(device=device)
+
+    # coop stop sends SIGTERM: finish packaging + submitting the current round, then exit
+    stop = threading.Event()
+    signal.signal(signal.SIGTERM, lambda *_: stop.set())
+
     rnd, h_next, tokens_session = 0, None, 0
-    while True:
+    while not stop.is_set():
         try:
             _, meta_path = run_worker(
                 cfg,
@@ -112,13 +119,15 @@ def main():
                 seed=rnd,
                 h_override=h_next,
                 status=status,
+                stop=stop,
             )
+            if meta_path is None:  # stopped before the round trained anything
+                break
             rnd += 1
             meta = json.loads(meta_path.read_text())
             tokens_session += meta["tokens"]
             status.update(rounds_done=rnd, tokens_session=tokens_session)
             if a.rounds and rnd >= a.rounds:
-                status.update(phase="done")
                 break
             # back-to-back rounds; see trainer.main for why waiting is the only waste
             h_next = cfg["inner"].get("h_max", 500)
@@ -130,6 +139,8 @@ def main():
             # unattended volunteers: transient network/HF errors retry, never crash
             log.warning("round failed (%s); retrying after pause", e)
             time.sleep(a.pause)
+    status.update(phase="stopped")
+    log.info("worker stopped")
 
 
 if __name__ == "__main__":
