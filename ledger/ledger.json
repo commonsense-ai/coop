@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 33,
+      "submissions": 34,
       "tier": "gpu",
-      "tokens": 60932096
+      "tokens": 62980096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to go on adventures in her backyard. One day, she saw a big, hairy bear. She was scared of the bear and wanted to say hello. \n\nA little girl named Lily came along and said, \"Hi, bear! What are you doing?\" \n\nThe bear replied, \"I want to play with you. I can play hide and seek and I can't find me.\" \n\nLily thought for a moment and said, \"I can help you search for my friend. Can you help me search for my friends?\"",
-    "step": 46,
-    "val_loss": 2.2036
+    "sample": "Once upon a time, there was a playful rabbit. He lived in a big house with his mom and dad. One day, the rabbit wanted to make something special. He hopped over to his friends and they all agreed to make something special.\n\nThe rabbit jumped over to the house and asked his dad, \u00e2\u20ac\u0153Where is the place?\u00e2\u20ac His dad replied, \u00e2\u20ac\u0153That\u00e2\u20ac\u2122s a very special place.\u00e2\u20ac The rabbit looked around in the room and found a special seat. \n\nHe was so happy that he quickly hopped back inside the house. He was very proud of himself for finding",
+    "step": 47,
+    "val_loss": 2.2056
   },
-  "step": 46,
-  "updated": "2026-07-31T21:21:41+00:00"
+  "step": 47,
+  "updated": "2026-07-31T21:31:39+00:00"
 }
