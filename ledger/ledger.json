@@ -10,23 +10,23 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 32,
+      "submissions": 33,
       "tier": "gpu",
-      "tokens": 58884096
+      "tokens": 60932096
     },
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 25,
+      "submissions": 27,
       "tier": "gpu",
-      "tokens": 23052288
+      "tokens": 25919488
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to ride his bike everywhere. One day, he was playing in the park when he saw a big, red ball. Timmy had never seen it before. He asked his mom if he could ride over it, but she said no.\n\nTimmy was miserable because he hadn't seen a big dog and he was scared. He didn't know what to do, so he kept riding his bike until finally it happened. Timmy was relieved and happy that he had met another dog.Once upon a time, there was a little girl named Lily",
-    "step": 45,
-    "val_loss": 2.2383
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to go on adventures in her backyard. One day, she saw a big, hairy bear. She was scared of the bear and wanted to say hello. \n\nA little girl named Lily came along and said, \"Hi, bear! What are you doing?\" \n\nThe bear replied, \"I want to play with you. I can play hide and seek and I can't find me.\" \n\nLily thought for a moment and said, \"I can help you search for my friend. Can you help me search for my friends?\"",
+    "step": 46,
+    "val_loss": 2.2036
   },
-  "step": 45,
-  "updated": "2026-07-31T21:06:43+00:00"
+  "step": 46,
+  "updated": "2026-07-31T21:21:41+00:00"
 }

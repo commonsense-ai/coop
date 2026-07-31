@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **45** — updated 2026-07-31T21:06:43+00:00.
+Outer step **46** — updated 2026-07-31T21:21:41+00:00.
 
-Val loss at step 45: **2.2383** — sample:
+Val loss at step 46: **2.2036** — sample:
 
-> Once upon a time, there was a little boy named Timmy. Timmy loved to ride his bike everywhere. One day, he was playing in the park when he saw a big, red ball. Timmy had never seen it before. He asked his mom if he could ride over it, but she said no. Timmy was miserable because he hadn't seen a big dog and he was scared. He didn't know what to do, so he kept riding his bike until finally it happened. Timmy was relieved and happy that he had met another dog.Once upon a time, there was a little girl named Lily
+> Once upon a time, there was a little girl named Lily. She loved to go on adventures in her backyard. One day, she saw a big, hairy bear. She was scared of the bear and wanted to say hello. A little girl named Lily came along and said, "Hi, bear! What are you doing?" The bear replied, "I want to play with you. I can play hide and seek and I can't find me." Lily thought for a moment and said, "I can help you search for my friend. Can you help me search for my friends?"
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,6 +12,6 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 32 | 58,884,096 | 1.000 | 58,884,096 |
-| 2 | naloxene | gpu | 25 | 23,052,288 | 1.000 | 23,052,288 |
+| 1 | miacx | gpu | 33 | 60,932,096 | 1.000 | 60,932,096 |
+| 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
 | 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
