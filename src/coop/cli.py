@@ -17,7 +17,7 @@ from pathlib import Path
 import yaml
 
 from coop import hubio
-from coop.join import DEFAULT_REPO, fetch_raw
+from coop.join import DEFAULT_REPO, fetch_raw, pick_device
 from coop.status import FILENAME as STATUS_FILENAME
 from coop.status import read_status
 
@@ -25,6 +25,34 @@ HOME = Path(os.environ.get("COOP_HOME", "~/.coop")).expanduser()
 PIDFILE = HOME / "worker.pid"
 LOGFILE = HOME / "worker.log"
 BOARD = "https://github.com/{repo}/blob/ledger/LEADERBOARD.md"
+
+WELCOME = """\
+coop — help train a small language model with your computer
+
+  coop start     begin contributing (runs in the background)
+  coop status    live progress, your rank, who else is training
+  coop logs -f   watch the worker do its thing
+  coop stop      stop contributing — your credit stays
+
+first time? just run `coop start` — it walks you through the one-time setup."""
+
+ONBOARDING = """\
+welcome! here's what happens when you contribute:
+
+  * your computer downloads the current model (~60 MB) and trains it on a
+    slice of short stories, a few minutes at a time
+  * every finished round is submitted under your Hugging Face name and
+    merged into the shared model — you earn credit on the public leaderboard
+  * stop whenever you like with `coop stop`; earned credit is never lost
+
+one-time setup — coop needs a free Hugging Face account:
+
+  1. create an account   https://huggingface.co/join
+  2. create a token      https://huggingface.co/settings/tokens  (type: Write)
+  3. paste the token below (input stays hidden)
+"""
+
+DEVICE_NAMES = {"mps": "Apple GPU", "cuda": "NVIDIA GPU", "cpu": "CPU"}
 
 
 def load_run_config(repo: str) -> dict:
@@ -128,18 +156,28 @@ def ensure_token(explicit: str | None) -> str:
     if explicit:
         login(token=explicit)
     user = hubio.whoami()
-    if user == "anonymous" and sys.stdin.isatty():
-        import getpass
+    if user != "anonymous":
+        return user
+    if not sys.stdin.isatty():
+        raise SystemExit("no HF token found — run `coop start --hf-token hf_...`")
 
-        print("coop needs a free Hugging Face account to credit your work.")
-        print("create a token with WRITE access at https://huggingface.co/settings/tokens")
-        tok = getpass.getpass("paste your token (input stays hidden): ").strip()
-        if tok:
+    import getpass
+
+    print(ONBOARDING)
+    for _ in range(3):
+        tok = getpass.getpass("  token: ").strip()
+        if not tok:
+            continue
+        try:
             login(token=tok)  # persists in the HF cache: next time is zero-setup
-            user = hubio.whoami()
-    if user == "anonymous":
-        raise SystemExit("no valid token — try again with `coop start --hf-token hf_...`")
-    return user
+        except Exception:
+            print("  Hugging Face rejected that token — check it's a Write token and try again")
+            continue
+        user = hubio.whoami()
+        if user != "anonymous":
+            print(f"  you're in, {user}!\n")
+            return user
+    raise SystemExit("couldn't validate a token — try `coop start --hf-token hf_...`")
 
 
 def cmd_start(a: argparse.Namespace) -> None:
@@ -175,7 +213,9 @@ def cmd_start(a: argparse.Namespace) -> None:
     if not alive(p.pid):
         print(tail(LOGFILE, 15))
         raise SystemExit(f"the worker exited immediately — log above, full log: {LOGFILE}")
-    print(f"training {model_repo} as {user} (pid {p.pid})")
+    device = a.device or pick_device()
+    hw = DEVICE_NAMES.get(device, device)
+    print(f"training {model_repo} as {user} on your {hw} (pid {p.pid})")
     if a.rounds:
         print(f"will stop by itself after {a.rounds} round{'s' if a.rounds > 1 else ''}")
     print("the first round downloads the model and builds your data shard (a few minutes)")
@@ -318,7 +358,7 @@ def main() -> None:
     elif a.cmd == "logs":
         cmd_logs(a)
     else:
-        ap.print_help()
+        print(WELCOME)
 
 
 if __name__ == "__main__":
