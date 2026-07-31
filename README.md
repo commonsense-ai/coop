@@ -40,16 +40,28 @@ code, config, and the contributor ledger.
 
 ## Donate compute
 
-One command — you need a free Hugging Face account and a
-[write token](https://huggingface.co/settings/tokens):
+Install once (needs [uv](https://docs.astral.sh/uv/)), then start:
 
 ```sh
-uvx --from git+https://github.com/commonsense-ai/coop coop-join --hf-token hf_...
+uv tool install git+https://github.com/commonsense-ai/coop
+coop start
 ```
 
-It fetches the live config, builds you a personal data shard (a slice derived from
-your username so volunteers don't overlap), and then trains and submits rounds until
-you hit ctrl-c. `--once` for a single round; `--device cuda|mps|cpu` to override.
+The first run asks you to paste a Hugging Face
+[write token](https://huggingface.co/settings/tokens) (free account) — after that
+it's zero-setup. The worker runs in the background: it builds you a personal data
+shard (a slice derived from your username so volunteers don't overlap), then trains
+and submits rounds until you say otherwise.
+
+```sh
+coop status    # is it running? what step is the model at?
+coop logs -f   # watch it work
+coop stop      # stop contributing; `coop start` resumes any time
+```
+
+Prefer a foreground one-off? `uvx --from git+https://github.com/commonsense-ai/coop
+coop-join --hf-token hf_...` runs rounds until ctrl-c (`--once` for a single round,
+`--device cuda|mps|cpu` to override).
 
 From a clone, the equivalent is:
 
