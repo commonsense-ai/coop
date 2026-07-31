@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 34,
+      "submissions": 35,
       "tier": "gpu",
-      "tokens": 62980096
+      "tokens": 65028096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a playful rabbit. He lived in a big house with his mom and dad. One day, the rabbit wanted to make something special. He hopped over to his friends and they all agreed to make something special.\n\nThe rabbit jumped over to the house and asked his dad, \u00e2\u20ac\u0153Where is the place?\u00e2\u20ac His dad replied, \u00e2\u20ac\u0153That\u00e2\u20ac\u2122s a very special place.\u00e2\u20ac The rabbit looked around in the room and found a special seat. \n\nHe was so happy that he quickly hopped back inside the house. He was very proud of himself for finding",
-    "step": 47,
+    "sample": "Once upon a time, there was a boy named Timmy. Timmy loved to play outside in his backyard. He would run around and pretend he was a hero.\n\nOne day, Timmy's mother told him that they were going on a trip to a faraway place. Timmy was excited to go on the trip, but he was also a bit nervous that he won.\n\nLater that day, Timmy went to the store to buy some snacks. He saw a big truck and asked his mom to buy it. She said yes and Timmy went to the store to buy it. While they were home, Timmy's mom",
+    "step": 48,
     "val_loss": 2.2056
   },
-  "step": 47,
-  "updated": "2026-07-31T21:31:39+00:00"
+  "step": 48,
+  "updated": "2026-07-31T21:36:46+00:00"
 }
