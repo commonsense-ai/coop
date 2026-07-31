@@ -30,5 +30,13 @@ jobs:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
       - run: npm install -g npm@latest # trusted publishing needs a recent npm
-      - run: npm publish --access public
+      # idempotent: the first release was published manually, and re-tagging
+      # must not turn the run red over an already-live version
+      - run: |
+          v=$(node -p "require('./package.json').version")
+          if npm view "coop-ai@$v" version >/dev/null 2>&1; then
+            echo "coop-ai@$v already on npm — skipping"
+          else
+            npm publish --access public
+          fi
         working-directory: npm
