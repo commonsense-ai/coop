@@ -10,23 +10,23 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 5,
+      "submissions": 6,
       "tier": "gpu",
-      "tokens": 3588096
+      "tokens": 5636096
     },
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 23,
+      "submissions": 25,
       "tier": "gpu",
-      "tokens": 18956288
+      "tokens": 23052288
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She had a long time, but she was not always very much. One day, Lily's mom asked her to help her what she wanted to do. Her mom said, \"I want to play a trip to take it up and they are safe.\" \n\nLily was very happy and started to run around it. She had a new friend, a little cat named Lily and a little sister named Fluffy. Lily's friend Billy, and they played together all day. \n\nAs they were having so much fun, Lily's friend, Timmy came over",
-    "step": 18,
-    "val_loss": 2.9159
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to sit on pretty dress and play outside. One day, she found a big, soft blanket on the table. It was very colorful and liked to play with it.\n\nLily's mom said, \"Wow, it looks pretty and scary. It's a good job.\"\n\nLily hugged her doll and said, \"I want to play with you, Lily. You have a new dress.\" Lily felt cozy and tidy. She felt happy. She was happy to make her smile.Once upon a time, there was a little",
+    "step": 19,
+    "val_loss": 2.8812
   },
-  "step": 18,
-  "updated": "2026-07-31T05:25:41+00:00"
+  "step": 19,
+  "updated": "2026-07-31T05:40:47+00:00"
 }
