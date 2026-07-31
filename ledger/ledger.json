@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 6,
+      "submissions": 7,
       "tier": "gpu",
-      "tokens": 5636096
+      "tokens": 7684096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to sit on pretty dress and play outside. One day, she found a big, soft blanket on the table. It was very colorful and liked to play with it.\n\nLily's mom said, \"Wow, it looks pretty and scary. It's a good job.\"\n\nLily hugged her doll and said, \"I want to play with you, Lily. You have a new dress.\" Lily felt cozy and tidy. She felt happy. She was happy to make her smile.Once upon a time, there was a little",
-    "step": 19,
-    "val_loss": 2.8812
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to help her family. She would always make a big mess and soft and soft. One day,Lily's mom told her that they were going to make her feel better. Lily didn't know what to do.\n\nLily's mom smiled and said, \"You should remember that being careful with us.\" They're not to help others and help others.\" They all sat together and had a great time. Lily felt cozy and happy. She had a fun day and her friends knew that they would always be happy again.Once upon a",
+    "step": 20,
+    "val_loss": 2.8237
   },
-  "step": 19,
-  "updated": "2026-07-31T05:40:47+00:00"
+  "step": 20,
+  "updated": "2026-07-31T06:45:47+00:00"
 }
