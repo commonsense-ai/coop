@@ -47,9 +47,14 @@ def fetch_tinystories(out_txt: str, n_docs: int, skip: int = 0, split: str = "tr
     from datasets import load_dataset
 
     ds = load_dataset("roneneldan/TinyStories", split=split, streaming=True)
+    n = 0
     with open(out_txt, "w") as f:
         for ex in ds.skip(skip).take(n_docs):
             f.write(ex["text"].strip() + f"\n{EOT}\n")
+            n += 1
+    if n == 0:
+        # fail here with a clear cause, not later as "cannot mmap an empty file"
+        raise ValueError(f"no {split} docs at skip={skip}: past the end of the dataset")
     return out_txt
 
 
