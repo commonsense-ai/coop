@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 7,
+      "submissions": 8,
       "tier": "gpu",
-      "tokens": 7684096
+      "tokens": 9732096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to help her family. She would always make a big mess and soft and soft. One day,Lily's mom told her that they were going to make her feel better. Lily didn't know what to do.\n\nLily's mom smiled and said, \"You should remember that being careful with us.\" They're not to help others and help others.\" They all sat together and had a great time. Lily felt cozy and happy. She had a fun day and her friends knew that they would always be happy again.Once upon a",
-    "step": 20,
-    "val_loss": 2.8237
+    "sample": "Once upon a time, there was a little girl named Lily. One day, she went for a walk in the woods and saw something new. It was a very attractive cloud. She was so happy that she hugged it for herself.\n\nSo, she went to get her favorite place and put on her pocket. But she couldn't believe that the light grow! She was so comfortable! She was so happy! She couldn't help, but smile felt very lucky to be safe.Once upon a time, there was a little girl named Lily. She loved to drink and dance around. One day, she",
+    "step": 21,
+    "val_loss": 2.7448
   },
-  "step": 20,
-  "updated": "2026-07-31T06:45:47+00:00"
+  "step": 21,
+  "updated": "2026-07-31T07:41:21+00:00"
 }
