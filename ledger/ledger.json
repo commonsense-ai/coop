@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 20,
+      "submissions": 21,
       "tier": "gpu",
-      "tokens": 34308096
+      "tokens": 36356096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her dolls and dolls. One day, she went to the park to play. As she was playing, she saw a beautiful butterfly. \n\nLily said, \"Hi there, a butterfly!\"\n\nThe butterfly replied, \" its name is Lily. Do you want to shoot her toys?\" \n\nLily nodded and said, \"Sure! Let's be friends.\" \n\nThey started to argue and Lily's friend got a flower. They started talking about the flowers and the butterflies. Suddenly, a butterfly flew away and Lily",
-    "step": 33,
-    "val_loss": 2.3194
+    "sample": "Once upon a time, there was a little dog named Max. Max loved to play outside in the park. One day, Max met a little girl named Lily.\n\nMax's owner told her that she was a toy and that he would not break things. Lily thought about it and said thatMax felt bad. Max told Lily that sometimes it's important to be honest and use what you're doing.\n\nFrom that day on, Max and Lily became good friends and loved to play in the park. Every day went to the park would watch Max make him play and Lily was a good girl. The end",
+    "step": 34,
+    "val_loss": 2.3118
   },
-  "step": 33,
-  "updated": "2026-07-31T18:21:02+00:00"
+  "step": 34,
+  "updated": "2026-07-31T18:26:52+00:00"
 }
