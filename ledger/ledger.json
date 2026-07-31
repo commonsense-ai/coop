@@ -3,23 +3,23 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 2,
+      "submissions": 3,
       "tier": "cpu",
-      "tokens": 1552384
+      "tokens": 2191360
     },
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 19,
+      "submissions": 20,
       "tier": "gpu",
-      "tokens": 13721600
+      "tokens": 14540800
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl who was very tired. She decided to take some ice ice ice ice ice ice ice in the ice ice cream. She loved to her ice ice cream- ice ice ice ice ice ice medicine. One day, Lily noticed her ice ice cream under her ice-- ice! Lily went into ice ice ice- ice ice ice ice ice ice ice ice ice ice- ice ice cream. Lily accidentally broke. Lily was doing in a broke on the butterfly. Lily was a ice ice ice butterfly ice ice-and-- ice- ice ice ice- ice- ice ice",
-    "step": 15,
-    "val_loss": 3.538
+    "sample": "Once upon a time there was a beautiful bird. The bird loved all the bird would fly around. One day, the bird met a cat a happy cat named Mia. Tom liked to play with her ball and had a pretty doll.\n\nOne day, Lily and her friend, Jack, a. They took some yummy candy. The doll was very happy and Lily was sad. Lily wanted to her, but she didn't want to touch the dress. They tried to, but it was too hard. Lily tried to the dress and tried to grab it.\n\nJust on, Lily saw her doll. Lily",
+    "step": 16,
+    "val_loss": 3.2037
   },
-  "step": 15,
-  "updated": "2026-07-31T04:48:51+00:00"
+  "step": 16,
+  "updated": "2026-07-31T04:55:29+00:00"
 }
