@@ -25,8 +25,11 @@ def run_worker(
     do_submit: bool = True,
     dry_run: bool = False,
     h_override: int | None = None,
+    status=None,
 ) -> tuple[Path, Path]:
     inner = cfg["inner"]
+    if status:
+        status.update(phase="downloading checkpoint")
     state, ckpt_meta = hubio.download_checkpoint(cfg["repos"]["model"])
     start_step = ckpt_meta["step"]
     log.info("starting from outer step %d", start_step)
@@ -55,6 +58,15 @@ def run_worker(
         opt.step()
         if i % 10 == 0 or i == h - 1:
             log.info("inner step %d/%d loss %.4f", i + 1, h, loss.item())
+            if status:
+                status.update(
+                    phase="training",
+                    start_step=start_step,
+                    inner_step=i + 1,
+                    h_steps=h,
+                    loss=round(loss.item(), 4),
+                    steps_per_sec=round((i + 1) / max(time.time() - t0, 1e-6), 2),
+                )
     wall = time.time() - t0
 
     delta = {k: (theta_outer[k] - v.detach().cpu()).float() for k, v in model.named_parameters()}
@@ -86,6 +98,8 @@ def run_worker(
     )
 
     if do_submit:
+        if status:
+            status.update(phase="submitting")
         submit.submit(cfg, str(delta_path), meta, dry_run=dry_run)
     return delta_path, meta_path
 

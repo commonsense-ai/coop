@@ -18,6 +18,8 @@ import yaml
 
 from coop import hubio
 from coop.join import DEFAULT_REPO, fetch_raw
+from coop.status import FILENAME as STATUS_FILENAME
+from coop.status import read_status
 
 HOME = Path(os.environ.get("COOP_HOME", "~/.coop")).expanduser()
 PIDFILE = HOME / "worker.pid"
@@ -74,6 +76,41 @@ def tail(path: Path, n: int) -> str:
 
 
 TS = re.compile(r"^\d\d-\d\d \d\d:\d\d:\d\d ")
+# leaderboard row: | rank | user | tier | accepted | tokens | reputation | score |
+BOARD_ROW = re.compile(r"^\| (\d+) \| (\S+) \| \S+ \| \d+ \| ([\d,]+) \| ")
+TOKEN_TARGET = 300_000_000  # Chinchilla-optimal for a ~15M-param model
+
+
+def fmt_eta(secs: float) -> str:
+    s = max(0, int(secs))
+    if s < 90:
+        return f"{s}s"
+    if s < 5400:
+        return f"{s // 60}m {s % 60:02d}s"
+    return f"{s // 3600}h {s % 3600 // 60:02d}m"
+
+
+def parse_board(md: str) -> list[dict]:
+    rows = []
+    for ln in md.splitlines():
+        m = BOARD_ROW.match(ln)
+        if m:
+            rows.append({"rank": int(m[1]), "user": m[2], "tokens": int(m[3].replace(",", ""))})
+    return rows
+
+
+def now_line(st: dict) -> str:
+    phase = st.get("phase", "")
+    if phase == "training" and st.get("h_steps"):
+        i, h = st.get("inner_step", 0), st["h_steps"]
+        rate = st.get("steps_per_sec") or 0
+        eta = f" · ~{fmt_eta((h - i) / rate)} left" if rate else ""
+        return f"training — inner step {i}/{h} · loss {st.get('loss', '?')}{eta}"
+    if phase == "waiting":
+        step = st.get("waiting_past_step")
+        which = f"outer step {step + 1}" if isinstance(step, int) else "the next outer step"
+        return f"submitted — waiting for {which} (your work merges at the next aggregator tick)"
+    return phase
 
 
 def last_activity(path: Path) -> str:
@@ -122,6 +159,8 @@ def cmd_start(a: argparse.Namespace) -> None:
     cmd = [sys.executable, "-m", "coop.join", "--workdir", str(HOME), "--repo", a.repo]
     if a.device:
         cmd += ["--device", a.device]
+    if a.rounds:
+        cmd += ["--rounds", str(a.rounds)]
     with LOGFILE.open("ab") as log:
         p = subprocess.Popen(
             cmd,
@@ -137,6 +176,8 @@ def cmd_start(a: argparse.Namespace) -> None:
         print(tail(LOGFILE, 15))
         raise SystemExit(f"the worker exited immediately — log above, full log: {LOGFILE}")
     print(f"training {model_repo} as {user} (pid {p.pid})")
+    if a.rounds:
+        print(f"will stop by itself after {a.rounds} round{'s' if a.rounds > 1 else ''}")
     print("the first round downloads the model and builds your data shard (a few minutes)")
     print("  coop status    how it's going")
     print("  coop logs -f   watch it work")
@@ -167,11 +208,27 @@ def cmd_status(a: argparse.Namespace) -> None:
     cfg = load_run_config(a.repo)
     model_repo = cfg["repos"]["model"]
     pid = read_pid()
-    if pid and alive(pid):
+    running = bool(pid and alive(pid))
+    st = read_status(HOME / STATUS_FILENAME)
+
+    if running:
         mins = int((time.time() - PIDFILE.stat().st_mtime) / 60)
-        print(f"worker   running (pid {pid}, up {mins // 60}h{mins % 60:02d}m)")
+        rnd = st.get("rounds_done", 0) + 1
+        target = st.get("rounds_target")
+        mode = f"round {rnd} of {target}" if target else f"endless · round {rnd}"
+        print(f"worker   running (pid {pid}, up {mins // 60}h{mins % 60:02d}m) — {mode}")
+        line = now_line(st)
+        if line:
+            age = time.time() - st.get("updated_at", time.time())
+            stale = f" (no update for {fmt_eta(age)} — check `coop logs`)" if age > 300 else ""
+            print(f"now      {line}{stale}")
     else:
         print("worker   not running — `coop start` to contribute")
+    if st.get("rounds_done"):
+        when = "this session" if running else "last session"
+        toks = st.get("tokens_session", 0)
+        print(f"session  {st['rounds_done']} rounds · {toks:,} tokens trained {when}")
+
     try:
         meta = json.loads(Path(hubio.download_file(model_repo, "meta.json")).read_text())
         val = meta.get("eval", {}).get("val_loss")
@@ -179,9 +236,34 @@ def cmd_status(a: argparse.Namespace) -> None:
         print(f"model    {model_repo} @ outer step {meta['step']}{suffix}")
     except Exception:
         print(f"model    {model_repo} (couldn't reach huggingface.co)")
-    last = last_activity(LOGFILE)
-    if last:
-        print(f"last     {last}")
+
+    user = st.get("user") or hubio.whoami()
+    try:
+        md = fetch_raw(a.repo, "LEADERBOARD.md", HOME / "board.md", ref="ledger").read_text()
+        rows = parse_board(md)
+        mine = next((r for r in rows if r["user"] == user), None)
+        if mine:
+            you = f"{user} — {mine['tokens']:,} tokens credited"
+            print(f"you      {you} · rank {mine['rank']} of {len(rows)}")
+        total = sum(r["tokens"] for r in rows)
+        pct = 100 * total / TOKEN_TARGET
+        print(f"goal     {total:,} of ~{TOKEN_TARGET:,} community tokens ({pct:.1f}%)")
+    except OSError:
+        pass
+    try:
+        by: dict[str, int] = {}
+        for p in hubio.list_open_prs(cfg["repos"]["dataset"]):
+            by[p.author] = by.get(p.author, 0) + 1
+        if by:
+            names = " · ".join(
+                f"{u} ×{n}" + (" (you)" if u == user else "")
+                for u, n in sorted(by.items(), key=lambda kv: -kv[1])
+            )
+            print(f"inbox    {sum(by.values())} submission(s) awaiting the next tick: {names}")
+        else:
+            print("inbox    empty — all submitted work has been aggregated")
+    except Exception:
+        pass
     print(f"board    {BOARD.format(repo=a.repo)}")
     print(f"log      {LOGFILE}")
 
@@ -215,6 +297,9 @@ def main() -> None:
     st.add_argument("words", nargs="*", metavar="[training] [model]")
     st.add_argument("--hf-token", default=None, help="Hugging Face write token (first run only)")
     st.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
+    st.add_argument(
+        "--rounds", type=int, default=0, help="stop after N rounds (default: run until coop stop)"
+    )
 
     sub.add_parser("stop", help="stop contributing")
     sub.add_parser("status", help="worker and model state")
