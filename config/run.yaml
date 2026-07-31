@@ -20,7 +20,7 @@ data:
   train_docs: 2119719  # train-split rows; bounds per-user shard offsets in coop-join
 
 inner:               # worker: DiLoCo inner loop
-  h_steps: 200       # first round; loop mode then adapts H to the observed tick cadence
+  h_steps: 200       # first round (fast first submission); loop then runs h_max rounds
   h_min: 50
   h_max: 500         # DiLoCo's validated inner-horizon ceiling
   batch_size: 8
