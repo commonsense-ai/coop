@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **24** — updated 2026-07-31T12:30:51+00:00.
+Outer step **25** — updated 2026-07-31T13:10:19+00:00.
 
-Val loss at step 24: **2.558** — sample:
+Val loss at step 25: **2.5256** — sample:
 
-> Once upon a time, there was a little girl named Lily. She loved to wear her favorite teddy bear and always wanted to have fun with her friends. One day, Lily and her friends decided to visit her. As they walked along, Lily saw her friend's hiding on the fur and asked him. Her friend didn't know what to do, but Lily said she was embarrassed because she was too careless one. She said to her friends and promised to never go back to the forest again. From that day on, Lily always tried to watch the next day with her friends and they were safe.
+> Once upon a time, there was a little girl named Lily. She loved to eat gum, especially jam on her jam. One day, she went to the beach with her mom and daddy. Her mommy was so happy when they saw the beach. Lily asked her mommy what she saw. Her mommy said, "That's a big shell. It's dirty and dirty." "Can we go play with it now?" Lily asked. Her mommy said, "Yes, it's. Let's go play a game for a ride with." Lily and her mommy picked up the shark
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -13,5 +13,5 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
 | 1 | naloxene | gpu | 25 | 23,052,288 | 1.000 | 23,052,288 |
-| 2 | miacx | gpu | 11 | 15,876,096 | 1.000 | 15,876,096 |
+| 2 | miacx | gpu | 12 | 17,924,096 | 1.000 | 17,924,096 |
 | 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
