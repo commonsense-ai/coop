@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 24,
+      "submissions": 25,
       "tier": "gpu",
-      "tokens": 42500096
+      "tokens": 44548096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys all day long. One day, Lily's mom took her to the park to play. Lily was so happy and had a lot of fun.\n\nAt the park, Lily saw a bird with a broken wing on its wing. Lily thought it was the bird's wing. She asked her mom if she could help the bird feel better. Her mom said yes and they both enjoyed the picnic together. The end.Once upon a time, there was a little girl named Lily. She loved to play with her",
-    "step": 37,
-    "val_loss": 2.2891
+    "sample": "Once upon a time there was a little girl named Lily. She loved to play in the dirt and make snow shapes. One day, she found a big box and showed it to her mom. She wanted to open it, so she opened the box. \n\nInside, she found a special toy box. It was big, red and had a bright yellow cape. Lily was so happy and ran to play with the toy and playing with it. She played the toys all day long, pretending to be a princess from her best friend.Once upon a time, there was a little girl named Lily. She loved",
+    "step": 38,
+    "val_loss": 2.2829
   },
-  "step": 37,
-  "updated": "2026-07-31T19:06:08+00:00"
+  "step": 38,
+  "updated": "2026-07-31T19:21:25+00:00"
 }
