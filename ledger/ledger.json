@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 17,
+      "submissions": 18,
       "tier": "gpu",
-      "tokens": 28164096
+      "tokens": 30212096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys in her room. One day, she found a shiny stone in her room. She loved it so much and wanted to wear it to keep her pretty.\n\nLily picked up the stone and said, \"Look, Lily! Can I have this stone?\" \n\nHer friend looked at her and said, \"Sure, you can have it, but you don't want it to. It's just a nice stone.\" Lily said, \"Okay, but try it's very pretty.\" \n\nTogether, Lily picked",
-    "step": 30,
-    "val_loss": 2.3775
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play in the snow and explore. One day, she saw a big hill with lots of shade. Lily wanted to climb it, but she tried and tried. She tried and tried hard but couldn't climb it.\n\nSuddenly, her legs could not move. She tried and tried, but it kept on trying. Suddenly, she saw a bird who was trying to climb. She tried to reach the bird but she couldn't do it. She tried but it was hard!\n\nLily tried her hand to push the bird's leg",
+    "step": 31,
+    "val_loss": 2.3534
   },
-  "step": 30,
-  "updated": "2026-07-31T17:35:59+00:00"
+  "step": 31,
+  "updated": "2026-07-31T17:50:53+00:00"
 }
