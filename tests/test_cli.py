@@ -122,3 +122,52 @@ def test_now_line_waiting_names_the_next_step():
 
 def test_now_line_passes_other_phases_through():
     assert cli.now_line({"phase": "downloading checkpoint"}) == "downloading checkpoint"
+
+
+def test_bare_coop_prints_welcome(monkeypatch, capsys):
+    monkeypatch.setattr(cli.sys, "argv", ["coop"])
+    cli.main()
+    out = capsys.readouterr().out
+    assert "coop start" in out and "one-time setup" in out
+
+
+class FakeTTY:
+    def isatty(self):
+        return True
+
+
+def test_ensure_token_non_tty_exits(monkeypatch):
+    monkeypatch.setattr(cli.hubio, "whoami", lambda: "anonymous")
+    monkeypatch.setattr(cli.sys, "stdin", type("NoTTY", (), {"isatty": lambda self: False})())
+    with pytest.raises(SystemExit, match="hf_"):
+        cli.ensure_token(None)
+
+
+def test_ensure_token_wizard_retries_then_succeeds(monkeypatch, capsys):
+    import getpass
+
+    import huggingface_hub
+
+    state = {"user": "anonymous"}
+    tokens = iter(["", "hf_bad", "hf_good"])
+
+    def fake_login(token):
+        if token == "hf_bad":
+            raise ValueError("bad token")
+        state["user"] = "alice"
+
+    monkeypatch.setattr(cli.hubio, "whoami", lambda: state["user"])
+    monkeypatch.setattr(cli.sys, "stdin", FakeTTY())
+    monkeypatch.setattr(getpass, "getpass", lambda prompt: next(tokens))
+    monkeypatch.setattr(huggingface_hub, "login", fake_login)
+    assert cli.ensure_token(None) == "alice"
+    out = capsys.readouterr().out
+    assert "one-time setup" in out
+    assert "rejected that token" in out
+    assert "you're in, alice!" in out
+
+
+def test_ensure_token_skips_wizard_when_logged_in(monkeypatch, capsys):
+    monkeypatch.setattr(cli.hubio, "whoami", lambda: "naloxene")
+    assert cli.ensure_token(None) == "naloxene"
+    assert "one-time setup" not in capsys.readouterr().out
