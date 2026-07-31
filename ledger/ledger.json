@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 14,
+      "submissions": 15,
       "tier": "gpu",
-      "tokens": 22020096
+      "tokens": 24068096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her dolls in her backyard. One day, she found a shiny stone in her yard. She picked it up and showed it to her friend, Lily.\n\n\"Look, Lily! It's a stone!\" Lily said, holding the stone.\n\n\"Wow, look at this stone!\" Lily said, eager. She picked it up and showed it to Lily.\n\n\"Wow, that's a caterpillar! Can we taste it?\" Lily asked.\n\n\"Sure, sweetie. Let's take it home,\"",
-    "step": 27,
-    "val_loss": 2.4566
+    "sample": "Once upon a time, there was a little girl called Lily. She loved to play with her blocks and ask her mommy, but one day she wanted to play too. Her mommy said yes and they went to the store to buy some paper. They bought a new one for the store. Lily was so happy and her family was happy again.Once upon a time, there was a boy named Timmy. Timmy loved to play with his toys and go on adventures with his toys. One day, Timmy's mom asked him to help his toys. Timmy was so excited! He helped his mom make the cookies from his",
+    "step": 28,
+    "val_loss": 2.4287
   },
-  "step": 27,
-  "updated": "2026-07-31T16:54:11+00:00"
+  "step": 28,
+  "updated": "2026-07-31T17:05:47+00:00"
 }
