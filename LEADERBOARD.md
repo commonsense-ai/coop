@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **51** — updated 2026-07-31T22:21:53+00:00.
+Outer step **52** — updated 2026-07-31T22:36:56+00:00.
 
-Val loss at step 51: **2.2333** — sample:
+Val loss at step 52: **2.2438** — sample:
 
-> Once upon a time, there was a bird named Pete. Pete loved to fly high in the sky. One day, Pete saw a distant tree with a big hole in it. Pete decided to try and found a cozy nest with a cozy nest on it. He hung a tiny nest on the tree and spread his wings to the nest. Pete was so happy and grateful. He knew that he had helped his friends. Now, Pete was the best of all he needed in the tree! He stayed up in the nest all day long and never had to wake up again.Once upon a time, there
+> Once upon a time, there was a little boy named Timmy. Timmy had a red truck that he loved to play with. One day, he went to the park to play with his toy truck. When he got it up, he saw a big dog running towards him. The dog barked and came running towards him. Timmy was scared and started to run, but he didn't hear the dog bark. Suddenly, the dog stopped and disappeared. Timmy was sad and cried, because he never saw his truck again.Once upon a time, there was a little girl named Lily. One day, her mommy
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,6 +12,6 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 38 | 71,172,096 | 1.000 | 71,172,096 |
+| 1 | miacx | gpu | 39 | 73,220,096 | 1.000 | 73,220,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
 | 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
