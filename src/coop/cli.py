@@ -7,6 +7,7 @@ start-and-forget. Worker state (pid, log, shard, config) lives under ~/.coop.
 import argparse
 import json
 import os
+import re
 import signal
 import subprocess
 import sys
@@ -70,6 +71,18 @@ def tail(path: Path, n: int) -> str:
         return "\n".join(path.read_text(errors="replace").splitlines()[-n:])
     except FileNotFoundError:
         return ""
+
+
+TS = re.compile(r"^\d\d-\d\d \d\d:\d\d:\d\d ")
+
+
+def last_activity(path: Path) -> str:
+    """Newest coop log line — stderr noise (tracebacks, warnings) shares the file."""
+    try:
+        lines = path.read_text(errors="replace").splitlines()
+    except FileNotFoundError:
+        return ""
+    return next((ln for ln in reversed(lines) if TS.match(ln)), "")
 
 
 def ensure_token(explicit: str | None) -> str:
@@ -166,7 +179,7 @@ def cmd_status(a: argparse.Namespace) -> None:
         print(f"model    {model_repo} @ outer step {meta['step']}{suffix}")
     except Exception:
         print(f"model    {model_repo} (couldn't reach huggingface.co)")
-    last = tail(LOGFILE, 1).strip()
+    last = last_activity(LOGFILE)
     if last:
         print(f"last     {last}")
     print(f"board    {BOARD.format(repo=a.repo)}")

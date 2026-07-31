@@ -74,3 +74,10 @@ def test_tail(tmp_path):
     assert cli.tail(p, 5) == ""
     p.write_text("a\nb\nc\n")
     assert cli.tail(p, 2) == "b\nc"
+
+
+def test_last_activity_skips_stderr_noise(tmp_path):
+    p = tmp_path / "log"
+    assert cli.last_activity(p) == ""
+    p.write_text("07-30 21:05:28 inner step 21/200 loss 3.44\n  warnings.warn(\nTraceback:\n")
+    assert cli.last_activity(p) == "07-30 21:05:28 inner step 21/200 loss 3.44"
