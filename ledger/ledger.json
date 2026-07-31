@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 31,
+      "submissions": 32,
       "tier": "gpu",
-      "tokens": 56836096
+      "tokens": 58884096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved cookies very much. One day, Timmy's mom gave him a new cookie to eat. Timmy thought that was funny and asked his mom to brush her milk. \n\nTimmy's mom took the cookie, but Timmy ate it all up. He was sad because he loved playing with his toys all day long. But then, his mom came in and said, \"Timmy, you need to wear your special cookie. It's very popular.\" Timmy didn't want to keep it, so he kept it a good way to get it. \n\n",
-    "step": 44,
-    "val_loss": 2.2397
+    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to ride his bike everywhere. One day, he was playing in the park when he saw a big, red ball. Timmy had never seen it before. He asked his mom if he could ride over it, but she said no.\n\nTimmy was miserable because he hadn't seen a big dog and he was scared. He didn't know what to do, so he kept riding his bike until finally it happened. Timmy was relieved and happy that he had met another dog.Once upon a time, there was a little girl named Lily",
+    "step": 45,
+    "val_loss": 2.2383
   },
-  "step": 44,
-  "updated": "2026-07-31T20:51:45+00:00"
+  "step": 45,
+  "updated": "2026-07-31T21:06:43+00:00"
 }
