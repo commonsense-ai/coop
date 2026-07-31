@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 23,
+      "submissions": 24,
       "tier": "gpu",
-      "tokens": 40452096
+      "tokens": 42500096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Amy. Amy was very smart. She liked to read and make new friends. One day, Amy saw a big, pretty flower in the garden. She wanted to show it to all her friends.\n\nAmy asked her mom, \"Can I pick the flower, please?\" Her mom said, \"Yes, let's go for a walk together.\" They went to the park and saw a big rock with a picture of a broken wing. Amy laughed and said, \"Look, this!\"\n\nIn the park, there, Amy saw a frog. The",
-    "step": 36,
-    "val_loss": 2.2969
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys all day long. One day, Lily's mom took her to the park to play. Lily was so happy and had a lot of fun.\n\nAt the park, Lily saw a bird with a broken wing on its wing. Lily thought it was the bird's wing. She asked her mom if she could help the bird feel better. Her mom said yes and they both enjoyed the picnic together. The end.Once upon a time, there was a little girl named Lily. She loved to play with her",
+    "step": 37,
+    "val_loss": 2.2891
   },
-  "step": 36,
-  "updated": "2026-07-31T18:51:12+00:00"
+  "step": 37,
+  "updated": "2026-07-31T19:06:08+00:00"
 }
