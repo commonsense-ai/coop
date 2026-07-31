@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 13,
+      "submissions": 14,
       "tier": "gpu",
-      "tokens": 19972096
+      "tokens": 22020096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the sky. One day, she found a big box in her backyard. She put it up and pulled it out into the yard. She was so happy and showed her mom.\n\n\"Mom, where is my car?\" Lily asked.\n\nHer mom nodded. \"That's a good idea. Let's have a ride to the park.\"\n\n\"Okay, Lily. Your truck is very fast!\" her mom said.\n\nLily put on her car and ran outside. When she got to the park",
-    "step": 26,
-    "val_loss": 2.4963
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her dolls in her backyard. One day, she found a shiny stone in her yard. She picked it up and showed it to her friend, Lily.\n\n\"Look, Lily! It's a stone!\" Lily said, holding the stone.\n\n\"Wow, look at this stone!\" Lily said, eager. She picked it up and showed it to Lily.\n\n\"Wow, that's a caterpillar! Can we taste it?\" Lily asked.\n\n\"Sure, sweetie. Let's take it home,\"",
+    "step": 27,
+    "val_loss": 2.4566
   },
-  "step": 26,
-  "updated": "2026-07-31T15:04:23+00:00"
+  "step": 27,
+  "updated": "2026-07-31T16:54:11+00:00"
 }
