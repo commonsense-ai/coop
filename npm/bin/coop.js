@@ -13,7 +13,9 @@ if (probe.error || probe.status !== 0) {
   );
   process.exit(1);
 }
-const run = spawnSync(uvx, ["--from", "coop-ai", "coop", ...process.argv.slice(2)], {
+// TODO: flip back to "coop-ai" once the PyPI project is approved and published
+const source = "git+https://github.com/commonsense-ai/coop";
+const run = spawnSync(uvx, ["--from", source, "coop", ...process.argv.slice(2)], {
   stdio: "inherit",
 });
 process.exit(run.status ?? 1);
