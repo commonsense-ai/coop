@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 36,
+      "submissions": 37,
       "tier": "gpu",
-      "tokens": 67076096
+      "tokens": 69124096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to play outside in his backyard. One day, Timmy's dad came to visit him and said, \"Timmy, we have a surprise for you. We have to clean up this floor!\"\n\nTimmy was so excited and couldn't wait to answer his parents. He grabbed a big box and put some of tools inside. Then he put all the windows and then turned them on. \n\nTimmy was very happy with his surprise. He put some toys in the box and waited for his birthday to come. Finally, he found the perfect spot",
-    "step": 49,
-    "val_loss": 2.2103
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys and eat candy. One day, she found a shiny penny on the ground. She picked it up and showed it to her friend, Sarah.\n\nSarah said, \"Let's decorate it into the tree!\" They grabbed some leaves and put them in some red, and started to dance along. The tree looked very attractive, but they were also very clever. They had a big party to celebrate. They played games and ate yummy food. When the sun was ready, they both went back to playing some more.",
+    "step": 50,
+    "val_loss": 2.223
   },
-  "step": 49,
-  "updated": "2026-07-31T21:51:48+00:00"
+  "step": 50,
+  "updated": "2026-07-31T22:06:47+00:00"
 }

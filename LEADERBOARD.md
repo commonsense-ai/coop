@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **49** — updated 2026-07-31T21:51:48+00:00.
+Outer step **50** — updated 2026-07-31T22:06:47+00:00.
 
-Val loss at step 49: **2.2103** — sample:
+Val loss at step 50: **2.223** — sample:
 
-> Once upon a time, there was a little boy named Timmy. Timmy loved to play outside in his backyard. One day, Timmy's dad came to visit him and said, "Timmy, we have a surprise for you. We have to clean up this floor!" Timmy was so excited and couldn't wait to answer his parents. He grabbed a big box and put some of tools inside. Then he put all the windows and then turned them on. Timmy was very happy with his surprise. He put some toys in the box and waited for his birthday to come. Finally, he found the perfect spot
+> Once upon a time, there was a little girl named Lily. She loved to play with her toys and eat candy. One day, she found a shiny penny on the ground. She picked it up and showed it to her friend, Sarah. Sarah said, "Let's decorate it into the tree!" They grabbed some leaves and put them in some red, and started to dance along. The tree looked very attractive, but they were also very clever. They had a big party to celebrate. They played games and ate yummy food. When the sun was ready, they both went back to playing some more.
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,6 +12,6 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 36 | 67,076,096 | 1.000 | 67,076,096 |
+| 1 | miacx | gpu | 37 | 69,124,096 | 1.000 | 69,124,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
 | 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
