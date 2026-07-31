@@ -17,6 +17,7 @@ model:
 data:
   hf_dataset: roneneldan/TinyStories
   tokenizer: tokenizer/tinystories-8k.json
+  train_docs: 2119719  # train-split rows; bounds per-user shard offsets in coop-join
 
 inner:               # worker: DiLoCo inner loop
   h_steps: 200       # first round; loop mode then adapts H to the observed tick cadence

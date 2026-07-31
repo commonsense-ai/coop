@@ -30,8 +30,14 @@ def fetch_raw(repo: str, path: str, dest: Path) -> Path:
     return dest
 
 
-def derive_skip(username: str, slots: int = 500, docs: int = 20000) -> int:
-    """Deterministic per-user shard offset so volunteers train on (mostly) disjoint slices."""
+# roneneldan/TinyStories train rows; config data.train_docs overrides at runtime
+TRAIN_DOCS = 2_119_719
+
+
+def derive_skip(username: str, docs: int = 20000, total_docs: int = TRAIN_DOCS) -> int:
+    """Deterministic per-user shard offset so volunteers train on (mostly) disjoint slices.
+    Slots wrap at the dataset end so every username maps to a full shard inside it."""
+    slots = max(1, total_docs // docs)
     h = int(hashlib.sha256(username.encode()).hexdigest(), 16)
     return (h % slots) * docs
 
@@ -73,7 +79,7 @@ def main():
     cfg = yaml.safe_load(fetch_raw(a.repo, "config/run.yaml", work / "run.yaml").read_text())
     tok_path = fetch_raw(a.repo, cfg["data"]["tokenizer"], work / "tokenizer.json")
 
-    skip = derive_skip(user, docs=a.docs)
+    skip = derive_skip(user, docs=a.docs, total_docs=cfg["data"].get("train_docs", TRAIN_DOCS))
     shard = work / f"shard_{skip}_{a.docs}.bin"
     if not shard.exists():
         log.info("building your data shard (docs %d..%d) ...", skip, skip + a.docs)
@@ -102,6 +108,8 @@ def main():
         except KeyboardInterrupt:
             raise
         except Exception as e:
+            if a.once:
+                raise  # single-round runs must fail loudly, not exit 0
             # unattended volunteers: transient network/HF errors retry, never crash
             log.warning("round failed (%s); retrying after pause", e)
             time.sleep(a.pause)
