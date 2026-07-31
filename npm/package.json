@@ -1,0 +1,12 @@
+{
+  "name": "coop-ai",
+  "version": "0.2.0",
+  "description": "Help train a community language model with your computer — npm launcher for the coop CLI",
+  "bin": { "coop": "bin/coop.js" },
+  "files": ["bin"],
+  "engines": { "node": ">=18" },
+  "repository": { "type": "git", "url": "git+https://github.com/commonsense-ai/coop.git" },
+  "homepage": "https://github.com/commonsense-ai/coop#readme",
+  "license": "Apache-2.0",
+  "keywords": ["distributed-training", "community", "language-model", "diloco"]
+}

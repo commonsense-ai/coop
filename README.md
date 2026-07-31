@@ -43,9 +43,19 @@ code, config, and the contributor ledger.
 Install once (needs [uv](https://docs.astral.sh/uv/)), then start:
 
 ```sh
-uv tool install git+https://github.com/commonsense-ai/coop
+uv tool install coop-ai      # or: pipx install coop-ai
 coop start
 ```
+
+Coming from the JavaScript world? The npm launcher wraps the same CLI
+(it still uses uv under the hood and tells you how to get it):
+
+```sh
+npx coop-ai start
+```
+
+Want latest main instead of a release?
+`uv tool install git+https://github.com/commonsense-ai/coop`.
 
 The first run asks you to paste a Hugging Face
 [write token](https://huggingface.co/settings/tokens) (free account) — after that

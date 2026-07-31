@@ -14,6 +14,9 @@ job aggregates them into outer steps on a public HF model repo.
 - format: `uv run ruff format .`
 - worker round: `uv run python -m coop.trainer --data data/<shard>.bin`
 - aggregator tick: `uv run python -m coop.aggregate`
+- release: bump version in pyproject.toml + src/coop/__init__.py + npm/package.json,
+  then `git tag vX.Y.Z && git push origin vX.Y.Z` — Actions publishes PyPI (coop-ai)
+  and npm (coop-ai) via OIDC trusted publishing
 
 ## Architecture invariants (do not violate)
 
