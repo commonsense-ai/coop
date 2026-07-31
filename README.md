@@ -7,6 +7,21 @@ A small language model pretrained by volunteers. No server, no funding, no daemo
 the whole training loop runs on donated consumer hardware plus the free tiers of
 Hugging Face and GitHub Actions.
 
+## Status
+
+Training is live. As of 2026-07-31: outer step 19, validation loss **2.88** (random
+init starts at 9.01), **29M tokens** contributed — ~10% of the ~300M-token Stage 1
+target. Current numbers and sample output:
+[leaderboard](https://github.com/commonsense-ai/coop/blob/ledger/LEADERBOARD.md).
+
+The full loop is production-proven, not just designed: multiple volunteers on
+different machines (Apple Silicon and plain CPU) have trained the same outer step
+and been averaged into one update — the actual data parallelism. A submission that
+raced a tick was accepted one step later at reduced staleness weight; repeat rounds
+from one user merged into a single vote (no token farming); `coop stop` flushed a
+half-finished round instead of discarding it; and the inbox drains to zero every
+tick.
+
 ## How it works
 
 DiLoCo-style low-communication data parallelism:
@@ -19,8 +34,9 @@ DiLoCo-style low-communication data parallelism:
    [HF dataset repo](https://huggingface.co/datasets/commonsense-ai/tinystories-15m-inbox)
    (the "gradient inbox"), opened with `create_commit(create_pr=True)`. Any free HF
    account with a write token can submit; the maintainer grants no permissions.
-3. **The aggregator** is a GitHub Actions cron job (~every 15 min). Each tick is
-   stateless: it reads the checkpoint and the open inbox PRs, drops over-stale
+3. **The aggregator** is a GitHub Actions cron job (scheduled every 15 min;
+   GitHub's shared scheduler actually fires anywhere from minutes to a few hours
+   apart — the protocol tolerates any cadence). Each tick is stateless: it reads the checkpoint and the open inbox PRs, drops over-stale
    submissions, clips and cosine-gates the rest, robust-aggregates them
    (trimmed mean / geometric median), takes one Nesterov outer step, uploads the
    new checkpoint, credits contributors in the
