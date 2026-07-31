@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 8,
+      "submissions": 9,
       "tier": "gpu",
-      "tokens": 9732096
+      "tokens": 11780096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. One day, she went for a walk in the woods and saw something new. It was a very attractive cloud. She was so happy that she hugged it for herself.\n\nSo, she went to get her favorite place and put on her pocket. But she couldn't believe that the light grow! She was so comfortable! She was so happy! She couldn't help, but smile felt very lucky to be safe.Once upon a time, there was a little girl named Lily. She loved to drink and dance around. One day, she",
-    "step": 21,
-    "val_loss": 2.7448
+    "sample": "Once upon a time, there was a little girl called Lucy. Lucy wanted to make her toys. Her mom said no and the little girl got embarrassed. She was very sad and cried.\n\nLucy felt happy that she missed her mom. She had told her mom the little girl and dad all of them all. Lucy felt better and hugged the little girl.Once upon a time, there was a boy named Lily. He loved to jog in the park and learn new things. One day, she saw a beautiful game with lots of things. She asked her mom, \"Mommy, can I play with you",
+    "step": 22,
+    "val_loss": 2.6657
   },
-  "step": 21,
-  "updated": "2026-07-31T07:41:21+00:00"
+  "step": 22,
+  "updated": "2026-07-31T08:36:47+00:00"
 }
