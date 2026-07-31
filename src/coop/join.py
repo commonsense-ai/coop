@@ -67,7 +67,7 @@ def main():
     ap.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
     ap.add_argument("--once", action="store_true", help="run a single round instead of looping")
     ap.add_argument("--rounds", type=int, default=0, help="stop after N rounds (0 = endless)")
-    ap.add_argument("--pause", type=int, default=60, help="seconds between rounds")
+    ap.add_argument("--pause", type=int, default=60, help="retry delay after a failed round")
     a = ap.parse_args()
     if a.once:
         a.rounds = 1
@@ -77,7 +77,7 @@ def main():
     # imported after the token is in the env so hubio picks it up
     from coop import hubio
     from coop.data import fetch_tinystories, load_tokenizer, tokenize_file
-    from coop.trainer import adaptive_h, run_worker, wait_for_new_step
+    from coop.trainer import run_worker
 
     user = hubio.whoami()
     if user == "anonymous":
@@ -104,7 +104,6 @@ def main():
     rnd, h_next, tokens_session = 0, None, 0
     while True:
         try:
-            t0 = time.time()
             _, meta_path = run_worker(
                 cfg,
                 str(shard),
@@ -121,10 +120,8 @@ def main():
             if a.rounds and rnd >= a.rounds:
                 status.update(phase="done")
                 break
-            status.update(phase="waiting", waiting_past_step=meta["start_step"])
-            wait_for_new_step(cfg["repos"]["model"], meta["start_step"], poll=a.pause)
-            h_next = adaptive_h(meta, time.time() - t0, cfg["inner"])
-            log.info("next round: %d inner steps", h_next)
+            # back-to-back rounds; see trainer.main for why waiting is the only waste
+            h_next = cfg["inner"].get("h_max", 500)
         except KeyboardInterrupt:
             raise
         except Exception as e:

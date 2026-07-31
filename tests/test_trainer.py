@@ -57,13 +57,3 @@ def test_worker_round_produces_delta_and_meta(tmp_path, monkeypatch):
     assert set(delta.keys()) == set(state.keys())
     # training moved the weights, so the pseudo-gradient is non-zero
     assert sum(v.abs().sum().item() for v in delta.values()) > 0
-
-
-def test_adaptive_h():
-    from coop.trainer import adaptive_h
-
-    inner = {"h_min": 50, "h_max": 500}
-    meta = {"h_steps": 100, "wall_secs": 50.0}  # 2 inner steps/sec
-    assert adaptive_h(meta, period_secs=100.0, inner=inner) == 160  # 0.8 * 100 * 2
-    assert adaptive_h(meta, period_secs=5.0, inner=inner) == 50  # clamped to floor
-    assert adaptive_h(meta, period_secs=10_000.0, inner=inner) == 500  # DiLoCo ceiling
