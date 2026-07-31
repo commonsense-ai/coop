@@ -1,25 +1,32 @@
 {
   "contributors": {
+    "anonymous": {
+      "first_seen": 17,
+      "reputation": 1.0,
+      "submissions": 1,
+      "tier": "cpu",
+      "tokens": 581632
+    },
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 3,
+      "submissions": 4,
       "tier": "cpu",
-      "tokens": 2191360
+      "tokens": 2768896
     },
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 20,
+      "submissions": 21,
       "tier": "gpu",
-      "tokens": 14540800
+      "tokens": 16588800
     }
   },
   "eval": {
-    "sample": "Once upon a time there was a beautiful bird. The bird loved all the bird would fly around. One day, the bird met a cat a happy cat named Mia. Tom liked to play with her ball and had a pretty doll.\n\nOne day, Lily and her friend, Jack, a. They took some yummy candy. The doll was very happy and Lily was sad. Lily wanted to her, but she didn't want to touch the dress. They tried to, but it was too hard. Lily tried to the dress and tried to grab it.\n\nJust on, Lily saw her doll. Lily",
-    "step": 16,
-    "val_loss": 3.2037
+    "sample": "Once upon a time, there was a big, little girl named Lily went to the park. The puppy was very happy because it was fun.Once upon a time, there was a little girl named Lily. She loved to play outside and play in the park. One day, while she was playing outside and she saw a big, shiny bird. She wanted to help the fly with the swing and it smelled so pretty.\n\nLily tried to catch it up, but it was too big and tried to catch it too. She tried to catch it up, but it was too far. Finally, she jumped",
+    "step": 17,
+    "val_loss": 2.999
   },
-  "step": 16,
-  "updated": "2026-07-31T04:55:29+00:00"
+  "step": 17,
+  "updated": "2026-07-31T05:10:43+00:00"
 }
