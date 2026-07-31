@@ -26,7 +26,8 @@ def run_worker(
     dry_run: bool = False,
     h_override: int | None = None,
     status=None,
-) -> tuple[Path, Path]:
+    stop=None,
+) -> tuple[Path | None, Path | None]:
     inner = cfg["inner"]
     if status:
         status.update(phase="downloading checkpoint")
@@ -49,33 +50,40 @@ def run_worker(
     h = h_override or inner["h_steps"]
     t0 = time.time()
     model.train()
+    steps_done = 0
     for i in range(h):
+        if stop is not None and stop.is_set():
+            log.info("stop requested — packaging the %d steps finished so far", steps_done)
+            break
         x, y = next(batches)
         _, loss = model(x.to(device), y.to(device))
         opt.zero_grad(set_to_none=True)
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), inner["grad_clip"])
         opt.step()
+        steps_done = i + 1
         if i % 10 == 0 or i == h - 1:
             log.info("inner step %d/%d loss %.4f", i + 1, h, loss.item())
             if status:
                 status.update(
                     phase="training",
                     start_step=start_step,
-                    inner_step=i + 1,
+                    inner_step=steps_done,
                     h_steps=h,
                     loss=round(loss.item(), 4),
-                    steps_per_sec=round((i + 1) / max(time.time() - t0, 1e-6), 2),
+                    steps_per_sec=round(steps_done / max(time.time() - t0, 1e-6), 2),
                 )
     wall = time.time() - t0
+    if steps_done == 0:
+        return None, None  # stopped before any training: nothing worth submitting
 
     delta = {k: (theta_outer[k] - v.detach().cpu()).float() for k, v in model.named_parameters()}
     meta = {
         "username": hubio.whoami(),
         "start_step": start_step,
-        "h_steps": h,
+        "h_steps": steps_done,
         "wall_secs": round(wall, 2),
-        "tokens": h * inner["batch_size"] * cfg["model"]["block_size"],
+        "tokens": steps_done * inner["batch_size"] * cfg["model"]["block_size"],
         "tier": "cpu" if device == "cpu" else "gpu",
         "quant": "none",
     }
@@ -100,7 +108,10 @@ def run_worker(
     if do_submit:
         if status:
             status.update(phase="submitting")
-        submit.submit(cfg, str(delta_path), meta, dry_run=dry_run)
+        info = submit.submit(cfg, str(delta_path), meta, dry_run=dry_run)
+        url = getattr(info, "pr_url", None)
+        if status and url:
+            status.update(last_pr=str(url))
     return delta_path, meta_path
 
 

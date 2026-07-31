@@ -32,6 +32,53 @@ CFG = {
 }
 
 
+class StopAfter:
+    """is_set() flips true after n checks — simulates SIGTERM arriving mid-round."""
+
+    def __init__(self, n):
+        self.n = n
+
+    def is_set(self):
+        self.n -= 1
+        return self.n < 0
+
+
+def _shard(tmp_path):
+    bin_path = tmp_path / "shard.bin"
+    np.random.default_rng(0).integers(0, 64, size=2000).astype(np.uint16).tofile(bin_path)
+    return str(bin_path)
+
+
+def test_worker_flushes_partial_round_on_stop(tmp_path, monkeypatch):
+    torch.manual_seed(0)
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo: (state, {"step": 3}))
+    monkeypatch.setattr(hubio, "whoami", lambda: "tester")
+
+    delta_path, meta_path = run_worker(
+        CFG,
+        _shard(tmp_path),
+        out_dir=str(tmp_path / "out"),
+        do_submit=False,
+        h_override=50,
+        stop=StopAfter(2),
+    )
+    meta = json.loads(meta_path.read_text())
+    assert meta["h_steps"] == 2  # only the steps actually finished
+    assert meta["tokens"] == 2 * CFG["inner"]["batch_size"] * CFG["model"]["block_size"]
+    assert delta_path.exists()
+
+
+def test_worker_stopped_before_training_submits_nothing(tmp_path, monkeypatch):
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo: (state, {"step": 3}))
+
+    out = run_worker(
+        CFG, _shard(tmp_path), out_dir=str(tmp_path / "out"), do_submit=False, stop=StopAfter(0)
+    )
+    assert out == (None, None)
+
+
 def test_worker_round_produces_delta_and_meta(tmp_path, monkeypatch):
     torch.manual_seed(0)
     state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))

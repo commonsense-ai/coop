@@ -171,3 +171,38 @@ def test_ensure_token_skips_wizard_when_logged_in(monkeypatch, capsys):
     monkeypatch.setattr(cli.hubio, "whoami", lambda: "naloxene")
     assert cli.ensure_token(None) == "naloxene"
     assert "one-time setup" not in capsys.readouterr().out
+
+
+def test_bar_clamps_and_scales():
+    assert cli.bar(0.0, 10) == "░" * 10
+    assert cli.bar(1.0, 10) == "█" * 10
+    assert cli.bar(2.0, 10) == "█" * 10
+    assert cli.bar(0.5, 10) == "█" * 5 + "░" * 5
+    assert cli.bar(0.029, 30).count("█") == 1  # small progress still visible
+
+
+def test_farewell_shows_session_bars_and_resume(tmp_path, monkeypatch, capsys):
+    def fake_fetch(repo, path, dest, ref="main"):
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(BOARD_MD)
+        return dest
+
+    def boom(repo):
+        raise OSError("offline")
+
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "fetch_raw", fake_fetch)
+    monkeypatch.setattr(cli, "load_run_config", boom)
+    st = {
+        "tokens_session": 819200,
+        "rounds_done": 1,
+        "user": "naloxene",
+        "last_pr": "https://huggingface.co/datasets/x/discussions/9",
+    }
+    cli.farewell(argparse.Namespace(repo="o/r"), st)
+    out = capsys.readouterr().out
+    assert "819,200 tokens" in out
+    assert "█" in out and "░" in out
+    assert "your share" in out and "rank 1" in out
+    assert "discussions/9" in out
+    assert "resume any time: coop start" in out

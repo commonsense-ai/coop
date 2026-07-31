@@ -224,24 +224,77 @@ def cmd_start(a: argparse.Namespace) -> None:
     print("  coop stop      stop contributing")
 
 
-def cmd_stop(_a) -> None:
+def bar(frac: float, width: int = 30) -> str:
+    filled = round(max(0.0, min(1.0, frac)) * width)
+    return "█" * filled + "░" * (width - filled)
+
+
+def farewell(a: argparse.Namespace, st: dict) -> None:
+    print("\nstopped — thanks for training with the co-op!")
+    toks = st.get("tokens_session", 0)
+    if toks:
+        rounds = st.get("rounds_done", 0)
+        print(f"\nyour session: {rounds} round{'s' if rounds != 1 else ''} · {toks:,} tokens,")
+        print("all submitted to Hugging Face — they merge in at the next aggregation tick")
+        if st.get("last_pr"):
+            print(f"  {st['last_pr']}")
+    try:
+        md = fetch_raw(a.repo, "LEADERBOARD.md", HOME / "board.md", ref="ledger").read_text()
+        rows = parse_board(md)
+        total = sum(r["tokens"] for r in rows)
+        print("\ncommunity progress toward a fully trained model (~300M tokens)")
+        print(f"  {bar(total / TOKEN_TARGET)} {100 * total / TOKEN_TARGET:.1f}%")
+        user = st.get("user") or hubio.whoami()
+        mine = next((r for r in rows if r["user"] == user), None)
+        if mine and total:
+            share = mine["tokens"] / total
+            print("\nyour share of everything trained so far")
+            detail = f"{100 * share:.0f}% · {mine['tokens']:,} tokens · rank {mine['rank']}"
+            print(f"  {bar(share)} {detail}")
+    except OSError:
+        pass
+    try:
+        cfg = load_run_config(a.repo)
+        meta = json.loads(Path(hubio.download_file(cfg["repos"]["model"], "meta.json")).read_text())
+        val = meta.get("eval", {}).get("val_loss")
+        if val is not None:
+            # ln(8192) = 9.01: the loss of random guessing over this vocab
+            print(f"\nmodel quality: val loss {val} — started at 9.01, lower is better")
+    except Exception:
+        pass
+    print("\nresume any time: coop start")
+
+
+def cmd_stop(a: argparse.Namespace) -> None:
     pid = read_pid()
     if pid is None or not alive(pid):
         PIDFILE.unlink(missing_ok=True)
         print("no worker running")
         return
+    st = read_status(HOME / STATUS_FILENAME)
     try:
         os.killpg(os.getpgid(pid), signal.SIGTERM)
     except (ProcessLookupError, PermissionError):
         os.kill(pid, signal.SIGTERM)
-    for _ in range(20):
-        if not alive(pid):
-            break
-        time.sleep(0.25)
+    busy = st.get("phase") in ("training", "submitting")
+    if busy:
+        print("stopping — the worker is submitting your work in progress to Hugging Face first")
+    grace = time.time() + (180 if busy else 15)
+    shown = ""
+    while alive(pid) and time.time() < grace:
+        phase = read_status(HOME / STATUS_FILENAME).get("phase", "")
+        if phase and phase != shown:
+            print(f"  {phase} ...")
+            shown = phase
+        time.sleep(0.5)
     if alive(pid):
-        os.killpg(os.getpgid(pid), signal.SIGKILL)
+        try:
+            os.killpg(os.getpgid(pid), signal.SIGKILL)
+        except (ProcessLookupError, PermissionError):
+            pass
+        print("  the worker didn't finish in time — force-stopped, in-progress round lost")
     PIDFILE.unlink(missing_ok=True)
-    print("stopped — credited work stays on the leaderboard; `coop start` to resume")
+    farewell(a, read_status(HOME / STATUS_FILENAME))
 
 
 def cmd_status(a: argparse.Namespace) -> None:
