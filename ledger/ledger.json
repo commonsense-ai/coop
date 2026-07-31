@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 22,
+      "submissions": 23,
       "tier": "gpu",
-      "tokens": 38404096
+      "tokens": 40452096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the park. One day, she saw a big red ball in the park. She ran to it and started to bounce the ball. But then, she tripped and the ball fell down. Lily started to cry.\n\nHer mom came outside and saw the ball on her face. She was happy that she helped her. But then, her mom saw her crying and came over. She hugged her tight and said, \"Lily, that was my ball! Please forgive it. You might fall and hurt yourself.\"\n\n",
-    "step": 35,
-    "val_loss": 2.3047
+    "sample": "Once upon a time, there was a little girl named Amy. Amy was very smart. She liked to read and make new friends. One day, Amy saw a big, pretty flower in the garden. She wanted to show it to all her friends.\n\nAmy asked her mom, \"Can I pick the flower, please?\" Her mom said, \"Yes, let's go for a walk together.\" They went to the park and saw a big rock with a picture of a broken wing. Amy laughed and said, \"Look, this!\"\n\nIn the park, there, Amy saw a frog. The",
+    "step": 36,
+    "val_loss": 2.2969
   },
-  "step": 35,
-  "updated": "2026-07-31T18:36:03+00:00"
+  "step": 36,
+  "updated": "2026-07-31T18:51:12+00:00"
 }
