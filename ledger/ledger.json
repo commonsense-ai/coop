@@ -1,18 +1,25 @@
 {
   "contributors": {
+    "miacx": {
+      "first_seen": 14,
+      "reputation": 1.0,
+      "submissions": 1,
+      "tier": "cpu",
+      "tokens": 819200
+    },
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 17,
+      "submissions": 18,
       "tier": "gpu",
-      "tokens": 9625600
+      "tokens": 11673600
     }
   },
   "eval": {
-    "sample": "Once upon a time there was a little girl named Lily. She loved playing in the park with her garden. One day, she was an elderly man was playing. The little girl was playing with her friends. She saw a big white cat sitting in a tree.\n\nLily said, \"Hello, my cat in the house?\" Her friend gave her a big hat. her said, \"Let's go to a tree!\"!\" her a while she said, \"Yes, we have one.\" Lily sat down. Then, the bird and her a beautiful squirrel was hard to her. She said, \"Thank you",
-    "step": 13,
-    "val_loss": 3.5162
+    "sample": "Once upon a time, there was a little girl feeling a little girl named Lily. She loved to play outside in her. One day, they went to a walk. Lily was playing by and didn. She asked her to help her. She said, \"I'm going to help you. The little girl said, \"Can I read a toy from the house. I help you and help me. So, it's too,\" her Mittens said, and her. \"Of course, Lily. Lily.\"\n\nAfter that the Timmy came to her. Lily went to the bed, Lily. She used it.",
+    "step": 14,
+    "val_loss": 3.6014
   },
-  "step": 13,
-  "updated": "2026-07-31T04:31:42+00:00"
+  "step": 14,
+  "updated": "2026-07-31T04:40:15+00:00"
 }
