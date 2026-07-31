@@ -16,6 +16,7 @@ dependencies = [
 ]
 
 [project.scripts]
+coop = "coop.cli:main"
 coop-join = "coop.join:main"
 
 [dependency-groups]

@@ -9,7 +9,7 @@ from pathlib import Path
 import torch
 from safetensors.torch import save_file
 
-from coop import hubio, load_config, submit
+from coop import hubio, load_config, setup_logging, submit
 from coop.data import iter_batches
 from coop.model import GPT, GPTConfig, load_canonical_state
 
@@ -115,7 +115,7 @@ def wait_for_new_step(model_repo: str, last_step: int, poll: int = 60) -> int:
 
 
 def main():
-    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    setup_logging()
     ap = argparse.ArgumentParser(description="run one DiLoCo worker round")
     ap.add_argument("--config", default="config/run.yaml")
     ap.add_argument("--data", required=True, help="token .bin (see python -m coop.data)")

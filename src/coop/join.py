@@ -51,7 +51,9 @@ def pick_device() -> str:
 
 
 def main():
-    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    from coop import setup_logging
+
+    setup_logging()
     ap = argparse.ArgumentParser(description="join the run: train locally, submit pseudo-gradients")
     ap.add_argument("--hf-token", default=None, help="HF write token (or set HF_TOKEN)")
     ap.add_argument(
