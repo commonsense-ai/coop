@@ -1,0 +1,34 @@
+# Tag vX.Y.Z -> publish the Python package (PyPI: coop-ai) and the npm launcher.
+# Both registries use OIDC trusted publishing: no long-lived tokens in secrets.
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+jobs:
+  pypi:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - run: uv build
+      - uses: pypa/gh-action-pypi-publish@release/v1
+
+  npm:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install -g npm@latest # trusted publishing needs a recent npm
+      - run: npm publish --access public
+        working-directory: npm
