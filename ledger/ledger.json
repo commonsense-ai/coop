@@ -3,23 +3,23 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 1,
+      "submissions": 2,
       "tier": "cpu",
-      "tokens": 819200
+      "tokens": 1552384
     },
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 18,
+      "submissions": 19,
       "tier": "gpu",
-      "tokens": 11673600
+      "tokens": 13721600
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl feeling a little girl named Lily. She loved to play outside in her. One day, they went to a walk. Lily was playing by and didn. She asked her to help her. She said, \"I'm going to help you. The little girl said, \"Can I read a toy from the house. I help you and help me. So, it's too,\" her Mittens said, and her. \"Of course, Lily. Lily.\"\n\nAfter that the Timmy came to her. Lily went to the bed, Lily. She used it.",
-    "step": 14,
-    "val_loss": 3.6014
+    "sample": "Once upon a time, there was a little girl who was very tired. She decided to take some ice ice ice ice ice ice ice in the ice ice cream. She loved to her ice ice cream- ice ice ice ice ice ice medicine. One day, Lily noticed her ice ice cream under her ice-- ice! Lily went into ice ice ice- ice ice ice ice ice ice ice ice ice ice- ice ice cream. Lily accidentally broke. Lily was doing in a broke on the butterfly. Lily was a ice ice ice butterfly ice ice-and-- ice- ice ice ice- ice- ice ice",
+    "step": 15,
+    "val_loss": 3.538
   },
-  "step": 14,
-  "updated": "2026-07-31T04:40:15+00:00"
+  "step": 15,
+  "updated": "2026-07-31T04:48:51+00:00"
 }
