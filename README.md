@@ -54,10 +54,12 @@ shard (a slice derived from your username so volunteers don't overlap), then tra
 and submits rounds until you say otherwise.
 
 ```sh
-coop status    # is it running? what step is the model at?
+coop status    # live progress + ETA, your rank, who else is training
 coop logs -f   # watch it work
 coop stop      # stop contributing; `coop start` resumes any time
 ```
+
+`coop start --rounds 3` contributes a fixed number of rounds and stops by itself.
 
 Prefer a foreground one-off? `uvx --from git+https://github.com/commonsense-ai/coop
 coop-join --hf-token hf_...` runs rounds until ctrl-c (`--once` for a single round,

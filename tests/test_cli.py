@@ -81,3 +81,44 @@ def test_last_activity_skips_stderr_noise(tmp_path):
     assert cli.last_activity(p) == ""
     p.write_text("07-30 21:05:28 inner step 21/200 loss 3.44\n  warnings.warn(\nTraceback:\n")
     assert cli.last_activity(p) == "07-30 21:05:28 inner step 21/200 loss 3.44"
+
+
+def test_fmt_eta():
+    assert cli.fmt_eta(45) == "45s"
+    assert cli.fmt_eta(150) == "2m 30s"
+    assert cli.fmt_eta(7300) == "2h 01m"
+    assert cli.fmt_eta(-5) == "0s"
+
+
+BOARD_MD = """# Leaderboard
+| # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
+|---|-------------|------|----------|--------|------------|-------|
+| 1 | naloxene | cpu | 16 | 8,806,400 | 1.000 | 8,806,400 |
+| 2 | mia-riezebos | gpu | 3 | 2,457,600 | 0.900 | 2,211,840 |
+"""
+
+
+def test_parse_board():
+    rows = cli.parse_board(BOARD_MD)
+    assert [r["user"] for r in rows] == ["naloxene", "mia-riezebos"]
+    assert rows[0]["tokens"] == 8806400
+    assert rows[1]["rank"] == 2
+
+
+def test_now_line_training_has_progress_and_eta():
+    st = {
+        "phase": "training",
+        "inner_step": 100,
+        "h_steps": 500,
+        "loss": 3.21,
+        "steps_per_sec": 2.0,
+    }
+    assert cli.now_line(st) == "training — inner step 100/500 · loss 3.21 · ~3m 20s left"
+
+
+def test_now_line_waiting_names_the_next_step():
+    assert "outer step 13" in cli.now_line({"phase": "waiting", "waiting_past_step": 12})
+
+
+def test_now_line_passes_other_phases_through():
+    assert cli.now_line({"phase": "downloading checkpoint"}) == "downloading checkpoint"
