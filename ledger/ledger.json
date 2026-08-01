@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 49,
+      "submissions": 50,
       "tier": "gpu",
-      "tokens": 93700096
+      "tokens": 95748096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a boy named Timmy. Timmy loved to play outside in the sunshine. One day, he found a net and started to play with it. The net was big and brown, and Timmy was having so much fun. But, he soon realized that he started to panic.\n\nTimmy went back to his mom and asked her what she had seen. His mom told him that a net is like a big toy. Timmy felt sad because he thought it was not safe. But then, he remembered the net that he found some rocks and put them in the net. He told his mom",
-    "step": 62,
-    "val_loss": 2.291
+    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to play outside and explore. One day, he went on a walk in the woods and saw a big, scary squirrel. Timmy was scared and started to run away.\n\nAs he was running, he saw a squirrel with a nut in its beak. The squirrel looked sad and Timmy didn't understand why the squirrel was pass. \n\nTimmy decided to play a game instead. He remembered what the animals meant and felt happy on his face. He ran to the tree and started sitting on the grass. They talked and played together until the",
+    "step": 63,
+    "val_loss": 2.2993
   },
-  "step": 62,
-  "updated": "2026-08-01T04:58:46+00:00"
+  "step": 63,
+  "updated": "2026-08-01T05:05:48+00:00"
 }
