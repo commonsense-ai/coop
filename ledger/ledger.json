@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 95,
+      "submissions": 96,
       "tier": "gpu",
-      "tokens": 187908096
+      "tokens": 189956096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a clever little girl. Her name was Sally. Sally liked to wander. She would wander and far around, until one day she found herself. \n\nSally was looking at the pretty butterfly in a bush. She watched it carefully. But then, she noticed something strange. lots of the collects in one of the bush were singing to her. Sally thought it was so funny. \n\nSally kept wandering and becoming more crazy. To her surprise, she found herself in a field filled with funny, funny noises. Her friends laughed and smiled at her. \n\nSally squirrel again",
-    "step": 108,
-    "val_loss": 2.6276
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the sun. One day, she went back inside and saw a big, fierce dog running around. \"Hello, big dog!! Can you help me out?\" she asked. The dog just rolled out of the bushes and grabbed Lily's hand.\n\nLily was so happy to have helped the big dog. She gave the dog a big hug and thanked the dog. From that day on, Lily and the dog became friends and played together every day. From then on, the dog would always keep Lily with her big",
+    "step": 109,
+    "val_loss": 2.6327
   },
-  "step": 108,
-  "updated": "2026-08-01T15:10:59+00:00"
+  "step": 109,
+  "updated": "2026-08-01T15:22:38+00:00"
 }
