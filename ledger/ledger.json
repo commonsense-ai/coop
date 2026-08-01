@@ -10,16 +10,16 @@
     "ezshroom": {
       "first_seen": 130,
       "reputation": 1.0,
-      "submissions": 3,
+      "submissions": 5,
       "tier": "gpu",
-      "tokens": 6144000
+      "tokens": 10240000
     },
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 118,
+      "submissions": 119,
       "tier": "gpu",
-      "tokens": 235012096
+      "tokens": 237060096
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, in a small town, there were two friends, a cat and a bird. They were happy and loved to play together. One day, they found a big box of treasure chest. The box was very heavy, and they could break easily.\n\nThe cat said, \"Let's share the treasure and play with our toys.\"\n\nSo, the two friends took turns playing with the treasure, and soon they had all the jewels they needed. The cat said, \"I want to keep the treasure forever!\"\n\nThe other bird replied, \"Let's share the treasure with our",
-    "step": 131,
-    "val_loss": 2.2974
+    "sample": "Once upon a time, there was a pretty flower. The flower was very pretty and colorful. One day, the flower saw a big red flower. The flower wanted to pick it and eat it. So, the flower tried to reach the pretty flower. But, the flower was too small.\n\nAs the flower grew, a big storm came. The wind blew the flower away. The flower was sad, but it could not find the way back. The flower kept flying away, but it could not find its way home. The flower was lost forever.Once upon a time, there was a little boy",
+    "step": 132,
+    "val_loss": 2.1526
   },
-  "step": 131,
-  "updated": "2026-08-01T19:53:25+00:00"
+  "step": 132,
+  "updated": "2026-08-01T20:08:50+00:00"
 }
