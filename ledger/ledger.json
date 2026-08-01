@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 64,
+      "submissions": 65,
       "tier": "gpu",
-      "tokens": 124420096
+      "tokens": 126468096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time there was a little girl called Lily. Lily loved to play with her toys and her friends. One day, Lily's friend Tommy came over to play. Tommy had a big box of toys, but Lily didn't want to share them with Tommy. \n\nTommy said, \"Hey everyone, you're too small.\" Lily didn't know what Tommy meant, so she asked him if he wanted to help her. Tommy said, \"Can I help you sell all of your toys if you use them and smile.\" \n\nLily thought about what Tommy said and realized she was right. She helped Tommy",
-    "step": 77,
-    "val_loss": 2.3987
+    "sample": "Once upon a time, there was a tall tree. The tree was very tall and it had big eyes. It was hard to carry the trunk to our home.\n\nOne day, a small bird came to the tall tree. The bird was very gentle and liked to stay tall. The bird did not like the tall tree. The bird did not want to be jealous of the bird.\n\nThe bird flew up to the tall tree and saw a big, tall tree. The bird was very happy to meet the tall tree. The bird said, \"You are very tall, let us look at you as",
+    "step": 78,
+    "val_loss": 2.4051
   },
-  "step": 77,
-  "updated": "2026-08-01T08:21:26+00:00"
+  "step": 78,
+  "updated": "2026-08-01T08:36:27+00:00"
 }
