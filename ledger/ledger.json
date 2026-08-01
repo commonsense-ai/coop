@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 82,
+      "submissions": 83,
       "tier": "gpu",
-      "tokens": 161284096
+      "tokens": 163332096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time there was a big yellow horse. He liked to take long walks around the forest. One day he decided to take a walk. He carried he'd been walking around for a long time when he heard a very strange sound. It was a loud sound and it seemed very strong. He kept walking and soon he found himself lost. He was very scared and he began to miss him so he decided to take a rest.\n\nBut then he heard a voice. It was a beautiful fairy. She said to him, \u00e2\u20ac\u0153Come up here, little one. I found this old man! He",
-    "step": 95,
-    "val_loss": 2.5108
+    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to play with his toy cars and make them zoom about all day. One day, Timmy's mom brought home a new toy, but it wasn't ready yet. Timmy got upset because he didn't want to eat his favorite play. \n\nHis mom saw that Timmy was upset and asked, \"What's wrong, Timmy?\" \n\n\"My toy car is gone,\" Timmy replied. \n\nHis mom said, \"Don't worry, Timmy. We can put it in the toy box and then we can play together.\" \n\nAnd",
+    "step": 96,
+    "val_loss": 2.5253
   },
-  "step": 95,
-  "updated": "2026-08-01T12:21:55+00:00"
+  "step": 96,
+  "updated": "2026-08-01T12:37:04+00:00"
 }
