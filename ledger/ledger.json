@@ -10,9 +10,9 @@
     "ezshroom": {
       "first_seen": 130,
       "reputation": 1.0,
-      "submissions": 8,
+      "submissions": 9,
       "tier": "gpu",
-      "tokens": 16384000
+      "tokens": 18432000
     },
     "miacx": {
       "first_seen": 14,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to eat toast for breakfast every week. One day, she went to the kitchen to get some special toast for breakfast. But when she opened the toast, she didn't know that the toast was not good. So, she asked her mommy to teach her some on the toast. \n\nHer mommy was proud of her and they gave her a big bowl of toast. Lily felt proud of herself for using it and even helped it mommy to eat her toast. From that day on, Lily loved to make toast with her mommy in the bread when",
-    "step": 138,
-    "val_loss": 2.5445
+    "sample": "Once upon a time, there was a little girl named Lucy. She wanted to go on a trip with her family. Her mom said, \"Lucy, we don't want to go on a trip today. Let's go to the zoo!\" \n\nWhen they arrived, Lucy was so excited. She couldn't wait to see all the animals!\n\nThey went to the zoo and got started to walk around. Sara saw so many animals and she was so happy. Then, she noticed a lion sleeping in the sun. \n\nLucy asked her mom, \"Mom, why is the lion sleeping?\" Her mom",
+    "step": 139,
+    "val_loss": 2.3088
   },
-  "step": 138,
-  "updated": "2026-08-01T21:38:51+00:00"
+  "step": 139,
+  "updated": "2026-08-01T21:39:35+00:00"
 }
