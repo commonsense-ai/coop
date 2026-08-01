@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **129** — updated 2026-08-01T19:38:16+00:00.
+Outer step **130** — updated 2026-08-01T19:49:21+00:00.
 
-Val loss at step 129: **2.7152** — sample:
+Val loss at step 130: **2.5179** — sample:
 
-> Once upon a time, Timmy was flying in the sky. He saw a big bird with a broken wing. Timmy was very sad because he was not careful not to fly in the sky. He missed his bird friend the boy because he was a bit too! But then, Timmy saw a bird flying in the sky. He wanted to watch the bird fly and make a new friend. Timmy was happy because he thought the bird was really nice. He decided to make a nest for the bird and share it with him. The bird was very happy and flew away. Timmy felt good that he could help the bird
+> Once upon a time, there was a big boat near the river. The boat had a long, black and white sail on the coral island. One day, a bad storm came and destroyed the boat. The boat could not go anywhere and they felt sad. A little girl named Lily saw her boat and asked, "Why are you sad?" The boat replied, "I lost my boat and I can't find it." Lily said, "Don't worry, little boat. I have an idea. Let's search together." So, they looked and looked. Finally, they
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,6 +12,7 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 116 | 230,916,096 | 1.000 | 230,916,096 |
+| 1 | miacx | gpu | 117 | 232,964,096 | 1.000 | 232,964,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
-| 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
+| 3 | ezshroom | gpu | 1 | 2,048,000 | 1.000 | 2,048,000 |
+| 4 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |

@@ -7,12 +7,19 @@
       "tier": "cpu",
       "tokens": 581632
     },
+    "ezshroom": {
+      "first_seen": 130,
+      "reputation": 1.0,
+      "submissions": 1,
+      "tier": "gpu",
+      "tokens": 2048000
+    },
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 116,
+      "submissions": 117,
       "tier": "gpu",
-      "tokens": 230916096
+      "tokens": 232964096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, Timmy was flying in the sky. He saw a big bird with a broken wing. Timmy was very sad because he was not careful not to fly in the sky. He missed his bird friend the boy because he was a bit too!\n\nBut then, Timmy saw a bird flying in the sky. He wanted to watch the bird fly and make a new friend. Timmy was happy because he thought the bird was really nice. He decided to make a nest for the bird and share it with him. The bird was very happy and flew away. Timmy felt good that he could help the bird",
-    "step": 129,
-    "val_loss": 2.7152
+    "sample": "Once upon a time, there was a big boat near the river. The boat had a long, black and white sail on the coral island. One day, a bad storm came and destroyed the boat. The boat could not go anywhere and they felt sad.\n\nA little girl named Lily saw her boat and asked, \"Why are you sad?\"\n\nThe boat replied, \"I lost my boat and I can't find it.\"\n\nLily said, \"Don't worry, little boat. I have an idea. Let's search together.\"\n\nSo, they looked and looked. Finally, they",
+    "step": 130,
+    "val_loss": 2.5179
   },
-  "step": 129,
-  "updated": "2026-08-01T19:38:16+00:00"
+  "step": 130,
+  "updated": "2026-08-01T19:49:21+00:00"
 }
