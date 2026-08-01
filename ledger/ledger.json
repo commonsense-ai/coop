@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 93,
+      "submissions": 94,
       "tier": "gpu",
-      "tokens": 183812096
+      "tokens": 185860096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little boy named Timmy. He loved to play with his toy phone. One day, Timmy's mom showed him a new phone in the store. It was a new phone!\n\nTimmy was so excited to say thank you, but then he accidentally pressed the button. He heard a loud noise and he opened the phone. It was his grandma!\n\n\" from inside,\" said Timmy's mom. \"I need to fix it.\"\n\nTimmy was being stubborn and he did not want to fix his phone. He kept playing and reading his toys. Later, his dad",
-    "step": 106,
-    "val_loss": 2.6193
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to wear her pretty dress and play outside in the sun. One day, Lily saw a big, scary dog running towards her. She got scared and ran back to her mommy.\n\nHer mommy found her and said, \"Don't worry, Lily. The big dog is friendly.\" Lily felt better and they continued to play together.\n\nLater that day, Lily and her mommy went to the park. They saw a man who looked very serious. They asked Lily if she remembered what the strange dog was told her and let go see",
+    "step": 107,
+    "val_loss": 2.6202
   },
-  "step": 106,
-  "updated": "2026-08-01T14:52:27+00:00"
+  "step": 107,
+  "updated": "2026-08-01T15:07:23+00:00"
 }

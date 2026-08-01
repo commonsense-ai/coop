@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **106** — updated 2026-08-01T14:52:27+00:00.
+Outer step **107** — updated 2026-08-01T15:07:23+00:00.
 
-Val loss at step 106: **2.6193** — sample:
+Val loss at step 107: **2.6202** — sample:
 
-> Once upon a time, there was a little boy named Timmy. He loved to play with his toy phone. One day, Timmy's mom showed him a new phone in the store. It was a new phone! Timmy was so excited to say thank you, but then he accidentally pressed the button. He heard a loud noise and he opened the phone. It was his grandma! " from inside," said Timmy's mom. "I need to fix it." Timmy was being stubborn and he did not want to fix his phone. He kept playing and reading his toys. Later, his dad
+> Once upon a time, there was a little girl named Lily. She loved to wear her pretty dress and play outside in the sun. One day, Lily saw a big, scary dog running towards her. She got scared and ran back to her mommy. Her mommy found her and said, "Don't worry, Lily. The big dog is friendly." Lily felt better and they continued to play together. Later that day, Lily and her mommy went to the park. They saw a man who looked very serious. They asked Lily if she remembered what the strange dog was told her and let go see
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,6 +12,6 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 93 | 183,812,096 | 1.000 | 183,812,096 |
+| 1 | miacx | gpu | 94 | 185,860,096 | 1.000 | 185,860,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
 | 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
