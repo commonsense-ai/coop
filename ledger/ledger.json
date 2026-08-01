@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 60,
+      "submissions": 61,
       "tier": "gpu",
-      "tokens": 116228096
+      "tokens": 118276096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She had a teddy bear that she loved very much. One day, Lily was playing with her teddy bear when she got tired. She looked around and saw a big tree with lots of leaves. But she couldn't reach it. She was sad because she thought she would need some milk.\n\nLily's mom saw that Lily was crying and asked her what was wrong. Lily told her about the problem and how she looked. Her mom looked up and saw the teddy bear in the tree. She realized that Lily was sad. She helped her mom search",
-    "step": 73,
-    "val_loss": 2.3731
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to dance and sing. One day, her daddy told her that they were going on a trip to a faraway place. Lily was excited!\n\nShe put on her favorite dress and practiced putting on her clothes. Then, she put on her favorite dress to dance. She looked in the mirror and smiled.\n\nOn the trip, Lily's daddy told her they were going on a trip. They were going to see the big city and all looked so pretty in Lily's fancy dress. They were very happy and couldn't wait to go",
+    "step": 74,
+    "val_loss": 2.3828
   },
-  "step": 73,
-  "updated": "2026-08-01T07:34:26+00:00"
+  "step": 74,
+  "updated": "2026-08-01T07:36:18+00:00"
 }
