@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 100,
+      "submissions": 101,
       "tier": "gpu",
-      "tokens": 198148096
+      "tokens": 200196096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys and her cat, Mittens. One day, Lily's mommy gave her a new toy. It was a big, shiny button. Lily was so excited to play with it.\n\nAs she was playing, she accidentally knocked her favorite toy mouse over. It broke into many pieces. Lily was sad, but her mommy hugged her tight and said they could try to fix it.\n\nAfter a few minutes, Lily's mommy gave her a new toy. It was a little bell that she could use to eat while",
-    "step": 113,
-    "val_loss": 2.627
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys and her friends. One day, Lily's mom gave her a big box with crayons and paper. Lily was so excited to play with it.\n\nAs she was playing, she accidentally dropped the table and it broke. Lily was very sad and cried. Her mom came to her and said, \"Don't worry, we will fix it together.\" They worked together to fix the table and fixed it together. Lily was fixed and put her special crayons back together.\n\nHer mom hugged her and said, \"",
+    "step": 114,
+    "val_loss": 2.6293
   },
-  "step": 113,
-  "updated": "2026-08-01T16:16:19+00:00"
+  "step": 114,
+  "updated": "2026-08-01T16:22:49+00:00"
 }
