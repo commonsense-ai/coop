@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 41,
+      "submissions": 42,
       "tier": "gpu",
-      "tokens": 77316096
+      "tokens": 79364096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to play outside and explore new things. One day, he went outside to play and he saw a big cloud. He tried to reach it, but it was too high. \n\nTimmy saw a man who looked sad and didn't know where to go. So, he sat down on a bench and started to talk to him. The man said, \"Hello, little boy. What are you doing here?\" Timmy told him the man that he wanted to do something first. \n\nThe man was very nice and said, \"I am",
-    "step": 54,
-    "val_loss": 2.258
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys and run around outside. One day, she found a big box and wanted to open it. But as she was looking at the box, she saw that it was locked.\n\nLily was sad because she lost her toy and now her big brother, Max. But then he remembered what her mom said about the box and decided to help her find it. Lily was happy and they searched the whole day.\n\nWhen they got home, they found the toy in the shed. Lily was so happy that Max worked",
+    "step": 55,
+    "val_loss": 2.2559
   },
-  "step": 54,
-  "updated": "2026-07-31T23:46:18+00:00"
+  "step": 55,
+  "updated": "2026-08-01T01:19:45+00:00"
 }
