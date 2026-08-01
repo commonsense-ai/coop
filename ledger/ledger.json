@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 113,
+      "submissions": 114,
       "tier": "gpu",
-      "tokens": 224772096
+      "tokens": 226820096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in her backyard. One day, she saw a big rock and wanted to climb on it. But her mom told her not to because it was dangerous. \n\nLily tried to climb and reach the top, but she couldn't get it. She felt frustrated because she wanted to do something good so she started to cry. Her mom saw that she was upset and decided to help her. \n\nIn the end, Lily learned a hard lesson because it's important to listen to her mom and not climb so high. But the",
-    "step": 126,
-    "val_loss": 2.6891
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to eat cereal every morning before bed. Her favorite cereal would fold the bowl and add it to the floor.\n\nOne day, Lily's mom came into the kitchen and saw the bowl on Lily's table. \"What are you doing, mommy?\" she asked. \"I'm doing doing confused?\"\n\n\"It's a spoon,\" Lily said. \"Do you want to help me?\"\n\n\"Sure, I do,\" said Lily. \"Let's fold it up and see what can happen?\"\n\nMommy smiled and said",
+    "step": 127,
+    "val_loss": 2.7025
   },
-  "step": 126,
-  "updated": "2026-08-01T18:53:07+00:00"
+  "step": 127,
+  "updated": "2026-08-01T19:08:15+00:00"
 }
