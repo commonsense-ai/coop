@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 45,
+      "submissions": 46,
       "tier": "gpu",
-      "tokens": 85508096
+      "tokens": 87556096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a princess who was very fierce and loved to explore the world. One day, she was exploring in the forest when she heard a voice.\n\nIt was a wise voice that she knew!\n\n\"Hello, princess! What do you want me to do today?\"\n\nThe princess was surprised. She looked up at the princess and said: \"I want to go closer.\"\n\nThe princess was excited. She put on a brave face and said: \"Yes! Can you show me how?\"\n\nThe princess smiled, and said: \"Yes, I want",
-    "step": 58,
-    "val_loss": 2.2542
+    "sample": "Once upon a time there was a girl called Molly. Molly loved to decorate her room with lots of clothes.\n\nMolly's mommy said, \"Molly, can you help me decorate my room?\"\nMolly was very excited. She said, \"Yes, mommy, I can help!\"\n\nMolly's mommy gathered some special dresses and put them on Molly's chair. Molly also put a pretty picture in her room. Then her mommy said, \"Good job Molly! I'm so proud of you Molly. You really likes your work.\"\n\nMolly was very proud of her work. She was so happy with",
+    "step": 59,
+    "val_loss": 2.2662
   },
-  "step": 58,
-  "updated": "2026-08-01T04:05:41+00:00"
+  "step": 59,
+  "updated": "2026-08-01T04:20:43+00:00"
 }
