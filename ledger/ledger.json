@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 127,
+      "submissions": 128,
       "tier": "gpu",
-      "tokens": 253407232
+      "tokens": 255455232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little boy named Tim. Tim loved to play with his toy cars and trucks. One day, Tim's mom told him to put his cars in the garage. Tim was very good at putting his cars in the garage.\n\nTim's mom was busy making dinner for Tim to play with. Tim didn't like to put his cars in the garage. He would laugh and run around the house. Tim's mom was not happy. She told him to lay his toys away before going to bed. Tim was sad, but he knew he had to listen to his mom.\n",
-    "step": 140,
-    "val_loss": 2.1846
+    "sample": "Once upon a time, there was a little boy named Timmy. Timmy was very excited because today was his birthday and he couldn't wait for his birthday. His mommy said they were going to the party.\n\nAt the party, Timmy saw a big box of ingredients. He asked his mommy if they could have some cake. His mommy said yes, but they had to be careful. Timmy thought it looked boring. His mommy explained that they needed to clean up the mess first, but they still needed to examine them.\n\nTimmy saw a box of bricks and asked his mommy if they could have some ingredients.",
+    "step": 141,
+    "val_loss": 2.1987
   },
-  "step": 140,
-  "updated": "2026-08-01T21:53:56+00:00"
+  "step": 141,
+  "updated": "2026-08-01T22:08:34+00:00"
 }
