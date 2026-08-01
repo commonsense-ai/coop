@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 79,
+      "submissions": 80,
       "tier": "gpu",
-      "tokens": 155140096
+      "tokens": 157188096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl. She was only three years old and loved to explore. One day, she went for a walk in the woods and looked around for something special. She saw a big tree with a tall trunk. She pointed at a door and opened the door.\n\nThe door opened and she saw a beautiful look inside. It was a beautiful golden light. The little girl had never seen one before. She looked at it for a moment and then she noticed something else.\n\nShe walked closer and peered inside, she could see a beautiful garden. She felt a strange light",
-    "step": 92,
-    "val_loss": 2.5046
+    "sample": "Once upon a time, there was a big truck. One day, he went to the park to play with his friends. At the park, he saw a little girl named Lily. Lily was very delighted because she had a dress with a big dirty dress. She was showed her friend Timmy the dress and he looked very pretty.\n\nTimmy wanted to wear a costume to keep her dress clean, so he hid it all the time. He looked both ways to make Lily happy. When the sun went down, Lily looked in the mirror and saw that she was not sad anymore. She gave Timmy a big hug to",
+    "step": 93,
+    "val_loss": 2.5087
   },
-  "step": 92,
-  "updated": "2026-08-01T11:51:55+00:00"
+  "step": 93,
+  "updated": "2026-08-01T12:07:00+00:00"
 }
