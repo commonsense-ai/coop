@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 48,
+      "submissions": 49,
       "tier": "gpu",
-      "tokens": 91652096
+      "tokens": 93700096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to play outside and explore. One day, he saw a shiny coin on the ground. He picked it up and showed it to his mommy.\n\n\"Mommy, what is that pretty thing?\" Timmy asked.\n\n\"It's a coin,\" his mommy replied.\n\nTimmy decided to keep it as a left, so he wouldn't lose it. When he got home, he showed his mum his original coin. \"Look at my pretty coin!\" he exclaimed.\n\nHis mum smiled and said, \"That star is so",
-    "step": 61,
-    "val_loss": 2.281
+    "sample": "Once upon a time, there was a boy named Timmy. Timmy loved to play outside in the sunshine. One day, he found a net and started to play with it. The net was big and brown, and Timmy was having so much fun. But, he soon realized that he started to panic.\n\nTimmy went back to his mom and asked her what she had seen. His mom told him that a net is like a big toy. Timmy felt sad because he thought it was not safe. But then, he remembered the net that he found some rocks and put them in the net. He told his mom",
+    "step": 62,
+    "val_loss": 2.291
   },
-  "step": 61,
-  "updated": "2026-08-01T04:50:58+00:00"
+  "step": 62,
+  "updated": "2026-08-01T04:58:46+00:00"
 }
