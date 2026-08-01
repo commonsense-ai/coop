@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **109** — updated 2026-08-01T15:22:38+00:00.
+Outer step **110** — updated 2026-08-01T15:37:30+00:00.
 
-Val loss at step 109: **2.6327** — sample:
+Val loss at step 110: **2.6393** — sample:
 
-> Once upon a time, there was a little girl named Lily. She loved to play outside in the sun. One day, she went back inside and saw a big, fierce dog running around. "Hello, big dog!! Can you help me out?" she asked. The dog just rolled out of the bushes and grabbed Lily's hand. Lily was so happy to have helped the big dog. She gave the dog a big hug and thanked the dog. From that day on, Lily and the dog became friends and played together every day. From then on, the dog would always keep Lily with her big
+> Once upon a time, there was a little girl named Lily. She loved to eat salad, especially when her mommy made it for her. One day, her mommy took her to the store to buy some salad. While they were at the store, Lily saw a toy that she really wanted. She asked her mommy to buy it for her, but her mommy said they didn't have enough money. As they were leaving the store, Lily realized she had lost her favorite salad. She looked everywhere, but couldn't remember what she had Suddenly. She started to cry and cried. Her mommy told her not to
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,6 +12,6 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 96 | 189,956,096 | 1.000 | 189,956,096 |
+| 1 | miacx | gpu | 97 | 192,004,096 | 1.000 | 192,004,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
 | 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
