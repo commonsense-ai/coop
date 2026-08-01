@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 131,
+      "submissions": 132,
       "tier": "gpu",
-      "tokens": 261599232
+      "tokens": 263647232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was an old man who lived in the town. He had a special toy that was very important to him. It was a special toy that could make him very happy. The old man could make the toy himself very special.\n\nOne day, the old man was walking down the street when he saw a little girl. The little girl was playing with her toy. The old man asked her if he wanted to play with her. The little girl was so excited and said yes! The old man gave the little girl a big hug and thanked her.\n\nThe old man then gave",
-    "step": 144,
-    "val_loss": 2.3292
+    "sample": "Once upon a time, there was a little girl named Lily. She had a cat named Mittens who loved to play. One day, Lily was playing with Mittens when she accidentally knocked over a vase. The vase broke into many pieces and Lily was sad.\n\nLily's mommy saw her sad face and asked her what happened. Lily told the broken Mittens and her mommy told her that accidents happen because they might get mad. Lily felt bad for being mean and hugged Mittens tightly. But with her mommy's love and talked too.\n\nThe next day, Lily accidentally knocked over the vase and it broke. She didn",
+    "step": 145,
+    "val_loss": 2.4184
   },
-  "step": 144,
-  "updated": "2026-08-01T22:40:31+00:00"
+  "step": 145,
+  "updated": "2026-08-01T22:53:37+00:00"
 }
