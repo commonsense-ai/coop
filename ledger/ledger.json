@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 52,
+      "submissions": 53,
       "tier": "gpu",
-      "tokens": 99844096
+      "tokens": 101892096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys and drink juice from her favorite glass. One day, she accidentally accidentally knocked over her glass and it broke. \n\nLily's mommy was very upset and asked her what was wrong. Lily told her mommy about the broken glass and how they couldn't fix it. She said to her mommy if she didn't have any stuff available again, so her mommy gave her a big hug and said she could repair it with new pieces. \n\nAfter she was able to fix her glass, Lily was so happy and felt even",
-    "step": 65,
-    "val_loss": 2.3183
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to eat steak because it was yummy and yummy. One day, Lily's mom asked her if she had any steak to eat. Lily was impatient but agreed and found a good steak that Lily really ate all of.\n\nWhen her mom finished eating, Lily and her mom went outside to play. They played tag, tag, and even got a big steak for everyone to eat. Lily was so happy and couldn't wait to eat anything yummy steak to eat. The end.Once upon a time, there was a little girl named Lily",
+    "step": 66,
+    "val_loss": 2.3224
   },
-  "step": 65,
-  "updated": "2026-08-01T05:36:00+00:00"
+  "step": 66,
+  "updated": "2026-08-01T05:51:00+00:00"
 }
