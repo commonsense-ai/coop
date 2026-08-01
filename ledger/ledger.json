@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 88,
+      "submissions": 89,
       "tier": "gpu",
-      "tokens": 173572096
+      "tokens": 175620096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys and never wanted her snacks. One day, Lily's mom gave her a special surprise: a new toy. It was shiny and had a bow on it.\n\nLily was excited to play with the toy, but she knew she needed to be careful. So, she put some candy in a cup and poured some juice. \n\nAfter playing, Lily went outside to play. She saw the same toy she really wanted! She tried to grab it, but it was too big. She thought and thought. Then",
-    "step": 101,
-    "val_loss": 2.5829
+    "sample": "Once upon a time, there was a girl named Lily. She loved to play with her toys and eat yummy snacks. One day, Lily's mom gave her a big bag of snacks. Lily was so excited to eat them!\n\nLily's mom told her they needed to go to the hospital because it was a long and boring. Lily didn't want to go to the hospital because she wanted to play with her friends. Her mom said they would bake a special treat if they could learn in the hospital.\n\nLily loved the hospital so much because she was so big and scared. She couldn't wait to",
+    "step": 102,
+    "val_loss": 2.5941
   },
-  "step": 101,
-  "updated": "2026-08-01T13:52:19+00:00"
+  "step": 102,
+  "updated": "2026-08-01T14:00:31+00:00"
 }
