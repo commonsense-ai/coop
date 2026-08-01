@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **99** — updated 2026-08-01T13:22:12+00:00.
+Outer step **100** — updated 2026-08-01T13:37:05+00:00.
 
-Val loss at step 99: **2.563** — sample:
+Val loss at step 100: **2.5738** — sample:
 
-> Once upon a time, there was a little girl named Anna. Anna loved to play in her garden and collect pretty flowers. One day, she saw a big yellow flower that was not growing in the dirt. She asked her mommy, "Why is that red flower tired?" Mommy replied, "That's a lot of honey, sweetie. It's not good for grow. It needs to grow and grow. Together, they grow big and strong." Anna was sad and angry. She didn't understand why her mommy was mad at her and decided to search for more sticks instead of toys. She went
+> Once upon a time, there was a little boy named Timmy. Timmy loved to play dress-up and put on pretty clothes. He would wear pretty clothes and put them on his feet. One day, Timmy's mom told him to shut the closet door with clothes. Timmy was sad because he wanted to make his mom sad, but he knew he could not. Suddenly, Timmy had an idea. He decided to invite his friends to play with them. They all ran to him and said they found out that Timmy was still a good friend to. They played together and had lots of fun. Timmy
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,6 +12,6 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 86 | 169,476,096 | 1.000 | 169,476,096 |
+| 1 | miacx | gpu | 87 | 171,524,096 | 1.000 | 171,524,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
 | 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
