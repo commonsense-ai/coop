@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 42,
+      "submissions": 43,
       "tier": "gpu",
-      "tokens": 79364096
+      "tokens": 81412096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys and run around outside. One day, she found a big box and wanted to open it. But as she was looking at the box, she saw that it was locked.\n\nLily was sad because she lost her toy and now her big brother, Max. But then he remembered what her mom said about the box and decided to help her find it. Lily was happy and they searched the whole day.\n\nWhen they got home, they found the toy in the shed. Lily was so happy that Max worked",
-    "step": 55,
-    "val_loss": 2.2559
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the sunshine. One day, she was running in the rain, but her mommy said, \"Let's celebrate!\" \n\nSo, Lily and her mommy went outside to play. They played games, jumped, and Lily had so much fun. But soon, Lily got cold and didn't want to go home. Her mommy said, \"Lily, don't go too far. Let's go home now.\" \n\nLily didn't want to go home yet, so she said, \"Okay, Mommy. We can go",
+    "step": 56,
+    "val_loss": 2.2479
   },
-  "step": 55,
-  "updated": "2026-08-01T01:19:45+00:00"
+  "step": 56,
+  "updated": "2026-08-01T03:35:28+00:00"
 }

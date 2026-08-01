@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **55** — updated 2026-08-01T01:19:45+00:00.
+Outer step **56** — updated 2026-08-01T03:35:28+00:00.
 
-Val loss at step 55: **2.2559** — sample:
+Val loss at step 56: **2.2479** — sample:
 
-> Once upon a time, there was a little girl named Lily. She loved to play with her toys and run around outside. One day, she found a big box and wanted to open it. But as she was looking at the box, she saw that it was locked. Lily was sad because she lost her toy and now her big brother, Max. But then he remembered what her mom said about the box and decided to help her find it. Lily was happy and they searched the whole day. When they got home, they found the toy in the shed. Lily was so happy that Max worked
+> Once upon a time, there was a little girl named Lily. She loved to play outside in the sunshine. One day, she was running in the rain, but her mommy said, "Let's celebrate!" So, Lily and her mommy went outside to play. They played games, jumped, and Lily had so much fun. But soon, Lily got cold and didn't want to go home. Her mommy said, "Lily, don't go too far. Let's go home now." Lily didn't want to go home yet, so she said, "Okay, Mommy. We can go
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,6 +12,6 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 42 | 79,364,096 | 1.000 | 79,364,096 |
+| 1 | miacx | gpu | 43 | 81,412,096 | 1.000 | 81,412,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
 | 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
