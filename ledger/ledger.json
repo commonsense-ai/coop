@@ -10,16 +10,16 @@
     "ezshroom": {
       "first_seen": 130,
       "reputation": 1.0,
-      "submissions": 9,
+      "submissions": 11,
       "tier": "gpu",
-      "tokens": 18432000
+      "tokens": 22528000
     },
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 125,
+      "submissions": 127,
       "tier": "gpu",
-      "tokens": 249348096
+      "tokens": 253407232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lucy. She wanted to go on a trip with her family. Her mom said, \"Lucy, we don't want to go on a trip today. Let's go to the zoo!\" \n\nWhen they arrived, Lucy was so excited. She couldn't wait to see all the animals!\n\nThey went to the zoo and got started to walk around. Sara saw so many animals and she was so happy. Then, she noticed a lion sleeping in the sun. \n\nLucy asked her mom, \"Mom, why is the lion sleeping?\" Her mom",
-    "step": 139,
-    "val_loss": 2.3088
+    "sample": "Once upon a time, there was a little boy named Tim. Tim loved to play with his toy cars and trucks. One day, Tim's mom told him to put his cars in the garage. Tim was very good at putting his cars in the garage.\n\nTim's mom was busy making dinner for Tim to play with. Tim didn't like to put his cars in the garage. He would laugh and run around the house. Tim's mom was not happy. She told him to lay his toys away before going to bed. Tim was sad, but he knew he had to listen to his mom.\n",
+    "step": 140,
+    "val_loss": 2.1846
   },
-  "step": 139,
-  "updated": "2026-08-01T21:39:35+00:00"
+  "step": 140,
+  "updated": "2026-08-01T21:53:56+00:00"
 }
