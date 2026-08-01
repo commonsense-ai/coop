@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **89** — updated 2026-08-01T11:09:55+00:00.
+Outer step **90** — updated 2026-08-01T11:21:50+00:00.
 
-Val loss at step 89: **2.4877** — sample:
+Val loss at step 90: **2.4928** — sample:
 
-> Once upon a time, there was a little girl named Lily. She loved to play in her backyard with her toys. One day, she found a plastic ball and decided to play with it. She threw the ball and it went very fast. Suddenly, a magic fairy appeared. She was carrying a sack of plastic toys. The fairy said, "Hello, little one. Would you like to play with me?" Lily said with a smile. The fairy let her in and the playful cup flew out of the sack. It was so pretty that it let Lily play with the toys. As Lily was
+> Once upon a time, there was a big, noisy cat named Tom. Tom loved to eat bananas. One day, he saw a big, red apple hanging from a tree. He wanted to eat it so badly, but it was too high. As Tom tried to reach the apple, he saw a ladder. He climbed up and reached for the bananas. But as soon as he touched it, he started to reach. Tom was surprised and jumped off the tree. Tom was sad but didn't give up. He tried to climb down, but it was not the way. A kind dog named
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,6 +12,6 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 76 | 148,996,096 | 1.000 | 148,996,096 |
+| 1 | miacx | gpu | 77 | 151,044,096 | 1.000 | 151,044,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
 | 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
