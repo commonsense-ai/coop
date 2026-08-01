@@ -22,7 +22,7 @@ concurrency:
 
 jobs:
   tick:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, Linux, X64, docker, talos-olympus]
     timeout-minutes: 20 # well under the 6h kill; a tick should stay < 10 min
     steps:
       - uses: actions/checkout@v4
