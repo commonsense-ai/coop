@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 102,
+      "submissions": 103,
       "tier": "gpu",
-      "tokens": 202244096
+      "tokens": 204292096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time there was a little girl who loved to play outside. One day she was playing in the garden when she noticed something very strange. There was a lot of dust on the ground.\n\nThe little girl was very curious and wanted to know more about the dust, so she went up to take a look. She saw a big banana, a tiny brown bird that had a bright orange and big red feathers.\n\nThe little girl was so excited that she ran to show her mom. Mommy said that the little girl was very interesting. She asked the little girl to make her a snack, but",
-    "step": 115,
-    "val_loss": 2.6428
+    "sample": "Once upon a time, there was a little girl. She was only three years old and loved to explore. One day she decided to explore the world. She started walking around, looking around for something fun. \n\nSuddenly, she heard a loud noise. She stopped to look around and saw something wild. It was so wild! She wanted to get closer. She kept walking and the noise until she saw something amazing - a big, colourful butterfly! \n\nShe watched it for a few more quietly. Then, she saw a bright butterfly flying towards it. She screamed and jumped for joy, but the butterfly flew",
+    "step": 116,
+    "val_loss": 2.6449
   },
-  "step": 115,
-  "updated": "2026-08-01T16:37:41+00:00"
+  "step": 116,
+  "updated": "2026-08-01T16:52:48+00:00"
 }
