@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 132,
+      "submissions": 133,
       "tier": "gpu",
-      "tokens": 263647232
+      "tokens": 265695232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She had a cat named Mittens who loved to play. One day, Lily was playing with Mittens when she accidentally knocked over a vase. The vase broke into many pieces and Lily was sad.\n\nLily's mommy saw her sad face and asked her what happened. Lily told the broken Mittens and her mommy told her that accidents happen because they might get mad. Lily felt bad for being mean and hugged Mittens tightly. But with her mommy's love and talked too.\n\nThe next day, Lily accidentally knocked over the vase and it broke. She didn",
-    "step": 145,
-    "val_loss": 2.4184
+    "sample": "Once upon a time, there was a little girl named Lily. She loved playing outside in her garden. One day, she found a big worm and she picked it up. It was fine! \n\nSuddenly, Lily heard a voice behind her. It said, \"Hello, little worm. Where are you, little worm?\" It asked Lily. \n\nThe worm said, \"I am a worm. I can help you find my way home.\" \n\nLily wanted to help the worm and he said, \"I can will provide you with me with some worm.\" The worm took the worm and Lily thanked it",
+    "step": 146,
+    "val_loss": 2.5123
   },
-  "step": 145,
-  "updated": "2026-08-01T22:53:37+00:00"
+  "step": 146,
+  "updated": "2026-08-01T23:08:40+00:00"
 }
