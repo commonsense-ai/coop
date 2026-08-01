@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 129,
+      "submissions": 130,
       "tier": "gpu",
-      "tokens": 257503232
+      "tokens": 259551232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily who loved to go on adventures with her little brother. One day, they went on a vacation to the beach to look for a special treasure. \n\nAs they were walking, they saw a big wave coming in. \"Watch the wave!\" exclaimed Lily. \"Oh, I'm so big!\"\n\nAs they continued their vacation, they saw a man who was sitting on a bench. \"Hello there, little one,\" said the man. \"What are you doing here?\"\n\n\"I'm looking for the treasure,\" replied Lily. \"Can",
-    "step": 142,
-    "val_loss": 2.2684
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys, especially her teddy bear. One day, Lily's mommy took her to the park to play. While they were there, Lily saw a new toy that she really wanted. \n\n\"Mommy, can I have the toy?\" Lily asked.\n\nThe new toy store was expensive and they couldn't buy it. Lily's mommy tried to cheer her up. \"You can't perfect so much, Lily. We can buy the toy together,\" her mommy replied.\n\nLily was sad, but she still wanted",
+    "step": 143,
+    "val_loss": 2.3985
   },
-  "step": 142,
-  "updated": "2026-08-01T22:23:31+00:00"
+  "step": 143,
+  "updated": "2026-08-01T22:38:40+00:00"
 }
