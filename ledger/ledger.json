@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 108,
+      "submissions": 109,
       "tier": "gpu",
-      "tokens": 214532096
+      "tokens": 216580096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a big cat named Amy. She lived in a small town with many people who did not have feathers. Every day, Amy would look for animals and sing in the town. She had a little bird who was very small.\n\nOne day, Amy found a about to eat with his friends. She was very hungry. She went to find something to eat. She walked and walked until she found a big rock. When she pulled the rock, she ate it all up.\n\nAfter eating, Amy went back to her friends and said, \"Thank you for finding my way",
-    "step": 121,
-    "val_loss": 2.6777
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys, especially her dolls. One day, her mom gave her a pretty necklace with long, sharp stones and a shiny pocket. \n\nLily was so happy with her new necklace and wore it all day long. But then, she accidentally ripped the necklace with her finger. She started to cry and ran to tell her mom. \n\nHer mom came over and asked, \"Why are you crying, Lily?\"\n\nLily said, \"My necklace got torn and my favorite necklace. Can you wipe it off now?\"",
+    "step": 122,
+    "val_loss": 2.6746
   },
-  "step": 121,
-  "updated": "2026-08-01T17:53:02+00:00"
+  "step": 122,
+  "updated": "2026-08-01T18:08:07+00:00"
 }
