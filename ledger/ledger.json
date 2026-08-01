@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 134,
+      "submissions": 135,
       "tier": "gpu",
-      "tokens": 267743232
+      "tokens": 269791232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to play outside, especially when it rained. One day, Timmy's mom took him to a fancy school where they had to wear cool clothes. Timmy thought that was funny, so he laughed and laughed.\n\nBut then, Timmy started to feel bad. He remembered that the fancy school had some weird hats on them. Timmy's mom told him that nature is cool and special. Timmy didn't like them, but he didn't think of them.\n\nTimmy's Mom told him that the fancy hat was special and special to her.",
-    "step": 147,
-    "val_loss": 2.6024
+    "sample": "Once upon a time, there was a boy named Timmy. Timmy liked to play with blocks. He had a big box of blocks that he liked to stack on top of each other. One day, Timmy's friend Billy came over to play. Billy wanted to build a tower too, but Timmy didn't want to share. They began to argue and shout.\n\nTimmy's mom heard the loud singing and came to see what was happening. She asked him to be patient and share his blocks with him. Timmy thought about it and decided to be patient and share his blocks with Billy. They both played with the blocks",
+    "step": 148,
+    "val_loss": 2.6699
   },
-  "step": 147,
-  "updated": "2026-08-01T23:23:40+00:00"
+  "step": 148,
+  "updated": "2026-08-01T23:38:43+00:00"
 }
