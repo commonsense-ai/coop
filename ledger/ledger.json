@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 72,
+      "submissions": 73,
       "tier": "gpu",
-      "tokens": 140804096
+      "tokens": 142852096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved going to the store with her mommy to buy some candy. One day, her mommy told her about the store that she was going to buy some candy. Lily was excited because she loved candy!\n\nAt the store, Lily saw a big red candy on the ground. It looked like candy, but her mommy was happy because she knew the money would come with. So, her mommy asked the store how much it was, and Lily thought it looked yummy. She asked her mommy if she could have the same candy. Her mommy said yes",
-    "step": 85,
-    "val_loss": 2.4671
+    "sample": "Once upon a time, there was a little girl named Lily. She had a pretty pink dress with buttons on it. One day, Lily went to the park to play with her friends. While playing, her friends got scared and started to cry. \"What's wrong?\" her friend asked.\n\n\"I'm scared,\" Lily said. \"Maybe it's just a small bird.\"\n\nHer friend came over to play with a ball and said, \"We can be friends.\"\n\nLily felt better and they all alone. When they were playing, Lily saw her friend he had a ball. \"Yay",
+    "step": 86,
+    "val_loss": 2.4647
   },
-  "step": 85,
-  "updated": "2026-08-01T10:21:39+00:00"
+  "step": 86,
+  "updated": "2026-08-01T10:36:39+00:00"
 }
