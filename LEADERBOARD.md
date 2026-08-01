@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **74** — updated 2026-08-01T07:36:18+00:00.
+Outer step **75** — updated 2026-08-01T07:51:19+00:00.
 
-Val loss at step 74: **2.3828** — sample:
+Val loss at step 75: **2.3883** — sample:
 
-> Once upon a time, there was a little girl named Lily. She loved to dance and sing. One day, her daddy told her that they were going on a trip to a faraway place. Lily was excited! She put on her favorite dress and practiced putting on her clothes. Then, she put on her favorite dress to dance. She looked in the mirror and smiled. On the trip, Lily's daddy told her they were going on a trip. They were going to see the big city and all looked so pretty in Lily's fancy dress. They were very happy and couldn't wait to go
+> Once upon a time there was a little girl who loved to play outside. One day, she saw a pretty flower and wanted to reach it. She tried to reach it with her hands, but it was too high. Then, her mom came outside and asked what was wrong. The little girl said, "I can't reach the flower, please!" Her mom said, "Don't worry, I can help you. Let me get it for you." So the little girl got the flower and put it on the ground twist. The little girl was so happy and picked it up. She said
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,6 +12,6 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 61 | 118,276,096 | 1.000 | 118,276,096 |
+| 1 | miacx | gpu | 62 | 120,324,096 | 1.000 | 120,324,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
 | 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
