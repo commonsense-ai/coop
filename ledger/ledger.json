@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 109,
+      "submissions": 110,
       "tier": "gpu",
-      "tokens": 216580096
+      "tokens": 218628096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys, especially her dolls. One day, her mom gave her a pretty necklace with long, sharp stones and a shiny pocket. \n\nLily was so happy with her new necklace and wore it all day long. But then, she accidentally ripped the necklace with her finger. She started to cry and ran to tell her mom. \n\nHer mom came over and asked, \"Why are you crying, Lily?\"\n\nLily said, \"My necklace got torn and my favorite necklace. Can you wipe it off now?\"",
-    "step": 122,
-    "val_loss": 2.6746
+    "sample": "Once upon a time, there was a strong hunter. He lived in a forest and he was very good at it. One day, a little rabbit was walking around. He saw the hunter and it felt hard to be scared. The hunter warned the rabbit that he should not protect the hunter from the forest. \n\nThe rabbit listened and thought he was safe from the hunter. After a long time, he hopped in his forest and continued his journey. He looked around for other animals to be safe andDon't go too far. \n\nThe hunter was surprised and could not imagine what he was doing. He thought",
+    "step": 123,
+    "val_loss": 2.6753
   },
-  "step": 122,
-  "updated": "2026-08-01T18:08:07+00:00"
+  "step": 123,
+  "updated": "2026-08-01T18:23:00+00:00"
 }
