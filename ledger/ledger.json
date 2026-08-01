@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 70,
+      "submissions": 71,
       "tier": "gpu",
-      "tokens": 136708096
+      "tokens": 138756096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the sun with her friends. One day, they were playing and Lily's friend, Timmy, came to visit.\n\n\"Hello, Lily!\" said Timmy. \"Do you want to play with my toys?\"\n\nLily smiled and said, \"Yes, please!\"\n\nTimmy and Lily played together for a while, but then they both wanted to go home. Lily said, \"Can we stay and play tomorrow?\"\n\nTimmy said, \"Sure, but first you have to go home before it disappeared.\"",
-    "step": 83,
-    "val_loss": 2.4497
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside with her friends. One day, Lily went to the store with her mommy. They had never been to a doctor or a happened. \n\nLily's mommy asked the doctors if she wanted to buy a new toy. The doctor looked at the toy and said, \"Lily, you have a little girl like you and she loves you very much. You will be happy tomorrow.\" \n\nLily was happy to hear that and thanked the doctor. She couldn't wait to play with her friends in the park.Once upon a",
+    "step": 84,
+    "val_loss": 2.4567
   },
-  "step": 83,
-  "updated": "2026-08-01T09:51:34+00:00"
+  "step": 84,
+  "updated": "2026-08-01T10:06:39+00:00"
 }
