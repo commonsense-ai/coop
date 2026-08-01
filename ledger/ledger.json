@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 81,
+      "submissions": 82,
       "tier": "gpu",
-      "tokens": 159236096
+      "tokens": 161284096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a happy girl named Lily. She loved to play in the sand at the beach and make sandcastles with her friends. One day, Lily's mom told her that she could improve her mark a rock which went round and round. Lily was proud to be ready to learn, so she started to practice every day.\n\nAs the sun began to set, Lily felt happy because she knew she could do it again one day. She knew that practice made her strong and smart. When she was done, she wore her new hats and ran to the beach again. She saw all of the",
-    "step": 94,
-    "val_loss": 2.515
+    "sample": "Once upon a time there was a big yellow horse. He liked to take long walks around the forest. One day he decided to take a walk. He carried he'd been walking around for a long time when he heard a very strange sound. It was a loud sound and it seemed very strong. He kept walking and soon he found himself lost. He was very scared and he began to miss him so he decided to take a rest.\n\nBut then he heard a voice. It was a beautiful fairy. She said to him, \u00e2\u20ac\u0153Come up here, little one. I found this old man! He",
+    "step": 95,
+    "val_loss": 2.5108
   },
-  "step": 94,
-  "updated": "2026-08-01T12:15:25+00:00"
+  "step": 95,
+  "updated": "2026-08-01T12:21:55+00:00"
 }
