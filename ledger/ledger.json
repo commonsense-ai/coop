@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 66,
+      "submissions": 67,
       "tier": "gpu",
-      "tokens": 128516096
+      "tokens": 130564096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time there was an hairy bear named Benny. He loved to explore the forest and find new things. One day, Benny wanted to explore the forest and find a new place. He walked and walked until he found a big, friendly bear who was standing on a funny rock. Benny was scared at first, but the bear said, \"Please don't be scared and take your searching. I'm here!\" So Benny said goodbye and the bear returned over the rock with a big smile. The bear told Benny that she had to remain before stuck in this spot. From that day on, Benny and the bear",
-    "step": 79,
-    "val_loss": 2.4085
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside and explore the world outside her house. One day, she found a big rock that she wanted to rock on. \n\nLily tried to move it, but it wouldn't move. She asked her mom for help, but her mom didn't want to give her the rock. So, Lily decided to reverse and push it. She rocked and rocked until she finally managed to push it onto the ground so she could jump. \n\nIn no time, Lily was able to rock herself on it. She realized that sometimes it's",
+    "step": 80,
+    "val_loss": 2.4149
   },
-  "step": 79,
-  "updated": "2026-08-01T08:51:24+00:00"
+  "step": 80,
+  "updated": "2026-08-01T09:06:29+00:00"
 }
