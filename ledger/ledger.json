@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 114,
+      "submissions": 115,
       "tier": "gpu",
-      "tokens": 226820096
+      "tokens": 228868096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to eat cereal every morning before bed. Her favorite cereal would fold the bowl and add it to the floor.\n\nOne day, Lily's mom came into the kitchen and saw the bowl on Lily's table. \"What are you doing, mommy?\" she asked. \"I'm doing doing confused?\"\n\n\"It's a spoon,\" Lily said. \"Do you want to help me?\"\n\n\"Sure, I do,\" said Lily. \"Let's fold it up and see what can happen?\"\n\nMommy smiled and said",
-    "step": 127,
-    "val_loss": 2.7025
+    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to play outside and explore the world around him. One day, he found a big box in his yard. Timmy was so curious and wanted to know what was inside inside. He opened the box and found a toy car inside!\n\nTimmy was so happy to have found a toy car that he thought he loved. He put the toy car on the roof and pretended it was the best car he had. Timmy drove his car around and around, feeling proud of his new toy car in this.\n\nFrom that day on, Timmy played",
+    "step": 128,
+    "val_loss": 2.7143
   },
-  "step": 127,
-  "updated": "2026-08-01T19:08:15+00:00"
+  "step": 128,
+  "updated": "2026-08-01T19:23:05+00:00"
 }
