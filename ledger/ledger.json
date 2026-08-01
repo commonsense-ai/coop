@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 47,
+      "submissions": 48,
       "tier": "gpu",
-      "tokens": 89604096
+      "tokens": 91652096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily who loved to play in the park. One day, she saw a big jug on the ground. \n\nLily's mom asked her to clean it up because it looked heavy and mysterious. Lily didn't want her mom to worry, so she suggested that they clean it up together. \n\nAs they were cleaning the day, Lily saw a squirrel running around it. She asked her mom if she could have one. Her mom said yes, so they cleaned up the jug and made it shiny again. \n\nLily was so happy that she cleaned the jug",
-    "step": 60,
-    "val_loss": 2.2695
+    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to play outside and explore. One day, he saw a shiny coin on the ground. He picked it up and showed it to his mommy.\n\n\"Mommy, what is that pretty thing?\" Timmy asked.\n\n\"It's a coin,\" his mommy replied.\n\nTimmy decided to keep it as a left, so he wouldn't lose it. When he got home, he showed his mum his original coin. \"Look at my pretty coin!\" he exclaimed.\n\nHis mum smiled and said, \"That star is so",
+    "step": 61,
+    "val_loss": 2.281
   },
-  "step": 60,
-  "updated": "2026-08-01T04:35:45+00:00"
+  "step": 61,
+  "updated": "2026-08-01T04:50:58+00:00"
 }
