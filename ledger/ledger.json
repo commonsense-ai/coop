@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 50,
+      "submissions": 51,
       "tier": "gpu",
-      "tokens": 95748096
+      "tokens": 97796096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to play outside and explore. One day, he went on a walk in the woods and saw a big, scary squirrel. Timmy was scared and started to run away.\n\nAs he was running, he saw a squirrel with a nut in its beak. The squirrel looked sad and Timmy didn't understand why the squirrel was pass. \n\nTimmy decided to play a game instead. He remembered what the animals meant and felt happy on his face. He ran to the tree and started sitting on the grass. They talked and played together until the",
-    "step": 63,
-    "val_loss": 2.2993
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the sun on her back. One day, she saw a pretty butterfly in the sky. She wanted to catch it, but it flew away.\n\nLily's mommy said, \"Lily, it's not safe to bother yourself instead. Let's ask the bug for a shelter and look at it together.\" So, Lily and her mommy went to the garden and found some pretty flowers and watered them and waited for them to come. \n\nFrom that day on, Lily loved to look outside and see the pretty flowers in",
+    "step": 64,
+    "val_loss": 2.3111
   },
-  "step": 63,
-  "updated": "2026-08-01T05:05:48+00:00"
+  "step": 64,
+  "updated": "2026-08-01T05:20:51+00:00"
 }
