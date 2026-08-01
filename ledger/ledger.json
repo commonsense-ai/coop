@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 51,
+      "submissions": 52,
       "tier": "gpu",
-      "tokens": 97796096
+      "tokens": 99844096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the sun on her back. One day, she saw a pretty butterfly in the sky. She wanted to catch it, but it flew away.\n\nLily's mommy said, \"Lily, it's not safe to bother yourself instead. Let's ask the bug for a shelter and look at it together.\" So, Lily and her mommy went to the garden and found some pretty flowers and watered them and waited for them to come. \n\nFrom that day on, Lily loved to look outside and see the pretty flowers in",
-    "step": 64,
-    "val_loss": 2.3111
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys and drink juice from her favorite glass. One day, she accidentally accidentally knocked over her glass and it broke. \n\nLily's mommy was very upset and asked her what was wrong. Lily told her mommy about the broken glass and how they couldn't fix it. She said to her mommy if she didn't have any stuff available again, so her mommy gave her a big hug and said she could repair it with new pieces. \n\nAfter she was able to fix her glass, Lily was so happy and felt even",
+    "step": 65,
+    "val_loss": 2.3183
   },
-  "step": 64,
-  "updated": "2026-08-01T05:20:51+00:00"
+  "step": 65,
+  "updated": "2026-08-01T05:36:00+00:00"
 }
