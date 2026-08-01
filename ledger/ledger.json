@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 85,
+      "submissions": 86,
       "tier": "gpu",
-      "tokens": 167428096
+      "tokens": 169476096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time there was a big bear. The bear was very chubby and loved to eat honey. One day, the bear went for a walk in the forest and saw a stick. The bear was very happy and picked the stick up with his mouth. The bear took the stick and ran off his walk. When the bear saw the stick, he thought it was a way to be naughty. He played with the stick and had so much fun. When the bear was tired, he took the stick to his owner and showed his way home. The bear was very grateful and said it was the best day ever.",
-    "step": 98,
-    "val_loss": 2.5581
+    "sample": "Once upon a time, there was a little girl named Anna. Anna loved to play in her garden and collect pretty flowers. One day, she saw a big yellow flower that was not growing in the dirt. She asked her mommy, \"Why is that red flower tired?\"\n\nMommy replied, \"That's a lot of honey, sweetie. It's not good for grow. It needs to grow and grow. Together, they grow big and strong.\"\n\nAnna was sad and angry. She didn't understand why her mommy was mad at her and decided to search for more sticks instead of toys. She went",
+    "step": 99,
+    "val_loss": 2.563
   },
-  "step": 98,
-  "updated": "2026-08-01T13:07:07+00:00"
+  "step": 99,
+  "updated": "2026-08-01T13:22:12+00:00"
 }
