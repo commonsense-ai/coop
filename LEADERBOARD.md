@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **132** — updated 2026-08-01T20:08:50+00:00.
+Outer step **133** — updated 2026-08-01T20:23:44+00:00.
 
-Val loss at step 132: **2.1526** — sample:
+Val loss at step 133: **2.0897** — sample:
 
-> Once upon a time, there was a pretty flower. The flower was very pretty and colorful. One day, the flower saw a big red flower. The flower wanted to pick it and eat it. So, the flower tried to reach the pretty flower. But, the flower was too small. As the flower grew, a big storm came. The wind blew the flower away. The flower was sad, but it could not find the way back. The flower kept flying away, but it could not find its way home. The flower was lost forever.Once upon a time, there was a little boy
+> Once upon a time, there was a little girl named Lily. She loved to sing and dance. One day, Lily's mommy took her to the park to play. They had so much fun together! As they played, Lily saw a bird with beautiful feathers. She wanted to catch it, but her mommy said there was a foolish bird. Lily didn't know what to do. She tried to lift the bird, but it was too high. Lily had an idea. She asked her mommy to help her open the bird. Her mommy said yes and they helped her close the bird. Lily was
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,7 +12,7 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 119 | 237,060,096 | 1.000 | 237,060,096 |
+| 1 | miacx | gpu | 120 | 239,108,096 | 1.000 | 239,108,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
-| 3 | ezshroom | gpu | 5 | 10,240,000 | 1.000 | 10,240,000 |
+| 3 | ezshroom | gpu | 7 | 14,336,000 | 1.000 | 14,336,000 |
 | 4 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |

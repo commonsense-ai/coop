@@ -10,16 +10,16 @@
     "ezshroom": {
       "first_seen": 130,
       "reputation": 1.0,
-      "submissions": 5,
+      "submissions": 7,
       "tier": "gpu",
-      "tokens": 10240000
+      "tokens": 14336000
     },
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 119,
+      "submissions": 120,
       "tier": "gpu",
-      "tokens": 237060096
+      "tokens": 239108096
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a pretty flower. The flower was very pretty and colorful. One day, the flower saw a big red flower. The flower wanted to pick it and eat it. So, the flower tried to reach the pretty flower. But, the flower was too small.\n\nAs the flower grew, a big storm came. The wind blew the flower away. The flower was sad, but it could not find the way back. The flower kept flying away, but it could not find its way home. The flower was lost forever.Once upon a time, there was a little boy",
-    "step": 132,
-    "val_loss": 2.1526
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to sing and dance. One day, Lily's mommy took her to the park to play. They had so much fun together!\n\nAs they played, Lily saw a bird with beautiful feathers. She wanted to catch it, but her mommy said there was a foolish bird. Lily didn't know what to do. She tried to lift the bird, but it was too high.\n\nLily had an idea. She asked her mommy to help her open the bird. Her mommy said yes and they helped her close the bird. Lily was",
+    "step": 133,
+    "val_loss": 2.0897
   },
-  "step": 132,
-  "updated": "2026-08-01T20:08:50+00:00"
+  "step": 133,
+  "updated": "2026-08-01T20:23:44+00:00"
 }
