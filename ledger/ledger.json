@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 59,
+      "submissions": 60,
       "tier": "gpu",
-      "tokens": 114180096
+      "tokens": 116228096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to spin around and around, but her mommy always had to go to the doctor to take care of her.\n\nOne day, Lily's mommy gave her a new player. It was a shiny red ball and she loved it. Lily was so happy and she played with it all day long.\n\nIn the end, Lily's mommy gave her a big, yummy cookie. Lily was very happy and she ate the cookies. When she got home, she put the new snack away and went to sleep with a smile on her face.",
-    "step": 72,
-    "val_loss": 2.3617
+    "sample": "Once upon a time, there was a little girl named Lily. She had a teddy bear that she loved very much. One day, Lily was playing with her teddy bear when she got tired. She looked around and saw a big tree with lots of leaves. But she couldn't reach it. She was sad because she thought she would need some milk.\n\nLily's mom saw that Lily was crying and asked her what was wrong. Lily told her about the problem and how she looked. Her mom looked up and saw the teddy bear in the tree. She realized that Lily was sad. She helped her mom search",
+    "step": 73,
+    "val_loss": 2.3731
   },
-  "step": 72,
-  "updated": "2026-08-01T07:21:09+00:00"
+  "step": 73,
+  "updated": "2026-08-01T07:34:26+00:00"
 }
