@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 89,
+      "submissions": 90,
       "tier": "gpu",
-      "tokens": 175620096
+      "tokens": 177668096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a girl named Lily. She loved to play with her toys and eat yummy snacks. One day, Lily's mom gave her a big bag of snacks. Lily was so excited to eat them!\n\nLily's mom told her they needed to go to the hospital because it was a long and boring. Lily didn't want to go to the hospital because she wanted to play with her friends. Her mom said they would bake a special treat if they could learn in the hospital.\n\nLily loved the hospital so much because she was so big and scared. She couldn't wait to",
-    "step": 102,
-    "val_loss": 2.5941
+    "sample": "Once upon a time, there was a little girl named Lily. One day, her mommy gave her a bowl of chicken to eat. Lily saw the chicken and said, \"Mommy, can I have a knife?\" \n\nMommy said, \"No, Lily. We can't eat it. It's bad.\" \n\nLily was sad and said, \"I'm sorry, Mommy. I won't eat the knife.\" \n\nMommy smiled and said, \"It's okay, Lily. We can eat the eggs together.\" \n\nLily was happy and said, \"Thank you, Mommy. I'm grateful for",
+    "step": 103,
+    "val_loss": 2.5988
   },
-  "step": 102,
-  "updated": "2026-08-01T14:00:31+00:00"
+  "step": 103,
+  "updated": "2026-08-01T14:07:18+00:00"
 }
