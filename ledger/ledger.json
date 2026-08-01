@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 58,
+      "submissions": 59,
       "tier": "gpu",
-      "tokens": 112132096
+      "tokens": 114180096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the sunshine. One day, she saw a big puddle in her backyard. She wanted to jump in it, but she couldn't jump in the puddles because it was too deep.\n\nLily's mom called her inside for lunch. Lily went back inside and took a nap and dreaming of all the fun she had jumping in the puddle. She loved jumping in the puddles and feeling happy and clean. The end.Once upon a time, there was a little girl named Lily. She loved to draw with her crayons and",
-    "step": 71,
-    "val_loss": 2.3531
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to spin around and around, but her mommy always had to go to the doctor to take care of her.\n\nOne day, Lily's mommy gave her a new player. It was a shiny red ball and she loved it. Lily was so happy and she played with it all day long.\n\nIn the end, Lily's mommy gave her a big, yummy cookie. Lily was very happy and she ate the cookies. When she got home, she put the new snack away and went to sleep with a smile on her face.",
+    "step": 72,
+    "val_loss": 2.3617
   },
-  "step": 71,
-  "updated": "2026-08-01T07:06:14+00:00"
+  "step": 72,
+  "updated": "2026-08-01T07:21:09+00:00"
 }
