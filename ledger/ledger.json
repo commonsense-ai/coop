@@ -10,16 +10,16 @@
     "ezshroom": {
       "first_seen": 130,
       "reputation": 1.0,
-      "submissions": 11,
+      "submissions": 12,
       "tier": "gpu",
-      "tokens": 22528000
+      "tokens": 23347200
     },
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 130,
+      "submissions": 131,
       "tier": "gpu",
-      "tokens": 259551232
+      "tokens": 261599232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys, especially her teddy bear. One day, Lily's mommy took her to the park to play. While they were there, Lily saw a new toy that she really wanted. \n\n\"Mommy, can I have the toy?\" Lily asked.\n\nThe new toy store was expensive and they couldn't buy it. Lily's mommy tried to cheer her up. \"You can't perfect so much, Lily. We can buy the toy together,\" her mommy replied.\n\nLily was sad, but she still wanted",
-    "step": 143,
-    "val_loss": 2.3985
+    "sample": "Once upon a time, there was an old man who lived in the town. He had a special toy that was very important to him. It was a special toy that could make him very happy. The old man could make the toy himself very special.\n\nOne day, the old man was walking down the street when he saw a little girl. The little girl was playing with her toy. The old man asked her if he wanted to play with her. The little girl was so excited and said yes! The old man gave the little girl a big hug and thanked her.\n\nThe old man then gave",
+    "step": 144,
+    "val_loss": 2.3292
   },
-  "step": 143,
-  "updated": "2026-08-01T22:38:40+00:00"
+  "step": 144,
+  "updated": "2026-08-01T22:40:31+00:00"
 }
