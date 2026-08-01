@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **97** — updated 2026-08-01T12:52:14+00:00.
+Outer step **98** — updated 2026-08-01T13:07:07+00:00.
 
-Val loss at step 97: **2.5368** — sample:
+Val loss at step 98: **2.5581** — sample:
 
-> Once upon a time, there was an old lady named Mary. Mary always wore her favourite crown. One day, Mary decided to take her crown. She was so excited to have it. Mary put on her crown, but she didn't like it. One day Mary went to the park and sat on her crown. She was very sad because she was not were happy anymore. Mary's crown was ruined and a big mess. Mary started to cry. Her crown was sad because it had ruined her favorite crown. Mary tried to make it even better, but there wasn't need it. In
+> Once upon a time there was a big bear. The bear was very chubby and loved to eat honey. One day, the bear went for a walk in the forest and saw a stick. The bear was very happy and picked the stick up with his mouth. The bear took the stick and ran off his walk. When the bear saw the stick, he thought it was a way to be naughty. He played with the stick and had so much fun. When the bear was tired, he took the stick to his owner and showed his way home. The bear was very grateful and said it was the best day ever.
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,6 +12,6 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 84 | 165,380,096 | 1.000 | 165,380,096 |
+| 1 | miacx | gpu | 85 | 167,428,096 | 1.000 | 167,428,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
 | 3 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
