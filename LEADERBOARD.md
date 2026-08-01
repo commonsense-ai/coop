@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **137** — updated 2026-08-01T21:23:28+00:00.
+Outer step **138** — updated 2026-08-01T21:38:51+00:00.
 
-Val loss at step 137: **2.624** — sample:
+Val loss at step 138: **2.5445** — sample:
 
-> Once upon a time, there was a little girl named Lily. She loved to play at the park with her friends. One day, she wanted to go on the slide, but she was scared of the dark and the dark. Her friend, Timmy, came to help and asked, "Lily, " climb up high and you will fall!" But Lily was still scared and didn't want to go up the slide. Later that day, Lily's friends came over to play. They were playing on the swings and the slide, but Lily's feet sl splashes in the air and she got stuck in
+> Once upon a time, there was a little girl named Lily. She loved to eat toast for breakfast every week. One day, she went to the kitchen to get some special toast for breakfast. But when she opened the toast, she didn't know that the toast was not good. So, she asked her mommy to teach her some on the toast. Her mommy was proud of her and they gave her a big bowl of toast. Lily felt proud of herself for using it and even helped it mommy to eat her toast. From that day on, Lily loved to make toast with her mommy in the bread when
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,7 +12,7 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 124 | 247,300,096 | 1.000 | 247,300,096 |
+| 1 | miacx | gpu | 125 | 249,348,096 | 1.000 | 249,348,096 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
-| 3 | ezshroom | gpu | 7 | 14,336,000 | 1.000 | 14,336,000 |
+| 3 | ezshroom | gpu | 8 | 16,384,000 | 1.000 | 16,384,000 |
 | 4 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |

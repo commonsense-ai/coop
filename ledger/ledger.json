@@ -10,16 +10,16 @@
     "ezshroom": {
       "first_seen": 130,
       "reputation": 1.0,
-      "submissions": 7,
+      "submissions": 8,
       "tier": "gpu",
-      "tokens": 14336000
+      "tokens": 16384000
     },
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 124,
+      "submissions": 125,
       "tier": "gpu",
-      "tokens": 247300096
+      "tokens": 249348096
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play at the park with her friends. One day, she wanted to go on the slide, but she was scared of the dark and the dark.\n\nHer friend, Timmy, came to help and asked, \"Lily, \" climb up high and you will fall!\" But Lily was still scared and didn't want to go up the slide.\n\nLater that day, Lily's friends came over to play. They were playing on the swings and the slide, but Lily's feet sl splashes in the air and she got stuck in",
-    "step": 137,
-    "val_loss": 2.624
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to eat toast for breakfast every week. One day, she went to the kitchen to get some special toast for breakfast. But when she opened the toast, she didn't know that the toast was not good. So, she asked her mommy to teach her some on the toast. \n\nHer mommy was proud of her and they gave her a big bowl of toast. Lily felt proud of herself for using it and even helped it mommy to eat her toast. From that day on, Lily loved to make toast with her mommy in the bread when",
+    "step": 138,
+    "val_loss": 2.5445
   },
-  "step": 137,
-  "updated": "2026-08-01T21:23:28+00:00"
+  "step": 138,
+  "updated": "2026-08-01T21:38:51+00:00"
 }
