@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 56,
+      "submissions": 57,
       "tier": "gpu",
-      "tokens": 108036096
+      "tokens": 110084096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to watch the flowers grow in her garden. One day, she saw a lovely flower and decided to pour some water all over her garden. \n\nLily's mom came outside and saw the flower grow. She told Lily that the flower was very beautiful and they had a lot. Lily was happy to hear that. \n\nBut then, her little brother came and accidentally dropped the flower. The flower grew bigger and bigger until it became a growing flower. Lily was so happy and proud of herself. She played with the flower every day and dreamed",
-    "step": 69,
-    "val_loss": 2.3303
+    "sample": "Once upon a time, there was a happy bunny. The bunny loved to hop and play all day. One day, the bunny met a little bunny. The bunny was very shy and didn't talk to the bunny.\n\nThe bunny asked the bunny, \"Why are you so blue?\" The bunny said, \"I am shy. I may say hello to you, but I do not like you to hop too much!\" The bunny was surprised and said, \"Okay, you can like me too!\"\n\nThe bunny hopped around the bunny and said, \"You are even shy. I don't believe you",
+    "step": 70,
+    "val_loss": 2.341
   },
-  "step": 69,
-  "updated": "2026-08-01T06:36:04+00:00"
+  "step": 70,
+  "updated": "2026-08-01T06:51:08+00:00"
 }
