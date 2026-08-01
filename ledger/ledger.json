@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 110,
+      "submissions": 111,
       "tier": "gpu",
-      "tokens": 218628096
+      "tokens": 220676096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a strong hunter. He lived in a forest and he was very good at it. One day, a little rabbit was walking around. He saw the hunter and it felt hard to be scared. The hunter warned the rabbit that he should not protect the hunter from the forest. \n\nThe rabbit listened and thought he was safe from the hunter. After a long time, he hopped in his forest and continued his journey. He looked around for other animals to be safe andDon't go too far. \n\nThe hunter was surprised and could not imagine what he was doing. He thought",
-    "step": 123,
-    "val_loss": 2.6753
+    "sample": "Once upon a time, there was a famous town. Everyone came near the city. One day, the famous town had a special job. There was bad news. The people there could not stop the bad news.\n\nThe people were sad and they wanted to help the same job. So, they invited the famous friend to come and help the famous friend. \n\nThe friend was so happy and they went to the special job. The friend said, \u00e2\u20ac\u0153Let\u00e2\u20ac\u2122s go!\u00e2\u20ac So the famous friend and the famous friend went to the special place and waited. \n\nFrom that day on,",
+    "step": 124,
+    "val_loss": 2.6768
   },
-  "step": 123,
-  "updated": "2026-08-01T18:23:00+00:00"
+  "step": 124,
+  "updated": "2026-08-01T18:33:29+00:00"
 }
