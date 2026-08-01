@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 75,
+      "submissions": 76,
       "tier": "gpu",
-      "tokens": 146948096
+      "tokens": 148996096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside and explore on the world. One day, she saw a big, dark cloud in the sky. \"What's that?\" she asked her mom. \"It's a fire,\" her mom replied. \"But be careful, it's very quiet.\"\n\nLily wanted to make a picture for her mom to stay safe. So, she went outside and found a piece of sticks. She put them on the fire and watched them grow. \"Wow, this is so cool!\" she exclaimed. \"Yes, it is,\" her",
-    "step": 88,
-    "val_loss": 2.4836
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play in her backyard with her toys. One day, she found a plastic ball and decided to play with it. She threw the ball and it went very fast.\n\nSuddenly, a magic fairy appeared. She was carrying a sack of plastic toys. The fairy said, \"Hello, little one. Would you like to play with me?\" Lily said with a smile. The fairy let her in and the playful cup flew out of the sack. It was so pretty that it let Lily play with the toys.\n\nAs Lily was",
+    "step": 89,
+    "val_loss": 2.4877
   },
-  "step": 88,
-  "updated": "2026-08-01T11:06:57+00:00"
+  "step": 89,
+  "updated": "2026-08-01T11:09:55+00:00"
 }
