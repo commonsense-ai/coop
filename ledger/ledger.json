@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 94,
+      "submissions": 95,
       "tier": "gpu",
-      "tokens": 185860096
+      "tokens": 187908096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to wear her pretty dress and play outside in the sun. One day, Lily saw a big, scary dog running towards her. She got scared and ran back to her mommy.\n\nHer mommy found her and said, \"Don't worry, Lily. The big dog is friendly.\" Lily felt better and they continued to play together.\n\nLater that day, Lily and her mommy went to the park. They saw a man who looked very serious. They asked Lily if she remembered what the strange dog was told her and let go see",
-    "step": 107,
-    "val_loss": 2.6202
+    "sample": "Once upon a time, there was a clever little girl. Her name was Sally. Sally liked to wander. She would wander and far around, until one day she found herself. \n\nSally was looking at the pretty butterfly in a bush. She watched it carefully. But then, she noticed something strange. lots of the collects in one of the bush were singing to her. Sally thought it was so funny. \n\nSally kept wandering and becoming more crazy. To her surprise, she found herself in a field filled with funny, funny noises. Her friends laughed and smiled at her. \n\nSally squirrel again",
+    "step": 108,
+    "val_loss": 2.6276
   },
-  "step": 107,
-  "updated": "2026-08-01T15:07:23+00:00"
+  "step": 108,
+  "updated": "2026-08-01T15:10:59+00:00"
 }
