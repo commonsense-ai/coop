@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 63,
+      "submissions": 64,
       "tier": "gpu",
-      "tokens": 122372096
+      "tokens": 124420096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lucy. She was very naughty. One day, she wanted to play outside, but it was too tough to go. Lucy was sad, but then she had an idea.\n\nLucy went to her friend, Mr. Bear, and he showed her a big bow. Lucy was very excited, because Mr. Bear looked good. He said, \"Lucy, I want you to play with Mr. Bear. Can you teach me a lot?\"\n\nLucy was excited and said, \"Yes, Mr. Bear! I will listen to you.\" So,",
-    "step": 76,
-    "val_loss": 2.3963
+    "sample": "Once upon a time there was a little girl called Lily. Lily loved to play with her toys and her friends. One day, Lily's friend Tommy came over to play. Tommy had a big box of toys, but Lily didn't want to share them with Tommy. \n\nTommy said, \"Hey everyone, you're too small.\" Lily didn't know what Tommy meant, so she asked him if he wanted to help her. Tommy said, \"Can I help you sell all of your toys if you use them and smile.\" \n\nLily thought about what Tommy said and realized she was right. She helped Tommy",
+    "step": 77,
+    "val_loss": 2.3987
   },
-  "step": 76,
-  "updated": "2026-08-01T08:06:20+00:00"
+  "step": 77,
+  "updated": "2026-08-01T08:21:26+00:00"
 }
