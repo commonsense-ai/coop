@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 78,
+      "submissions": 79,
       "tier": "gpu",
-      "tokens": 153092096
+      "tokens": 155140096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little bird who wanted to fly outside the wide world. She saw a little boy and a cat and she wanted to fly too. She flapped her wings and flew over to the cat. The boy said, \"Wait for my surprise, I can fly with a new path?\" \n\nThe cat replied, \"That's a nice path, but let's just sit and rest.\" \n\nThe boy liked the path so much, that he followed the cat down the road. As they were walking, the boy said, \"Let's crawl!\" And they both crawled out of the",
-    "step": 91,
-    "val_loss": 2.5039
+    "sample": "Once upon a time, there was a little girl. She was only three years old and loved to explore. One day, she went for a walk in the woods and looked around for something special. She saw a big tree with a tall trunk. She pointed at a door and opened the door.\n\nThe door opened and she saw a beautiful look inside. It was a beautiful golden light. The little girl had never seen one before. She looked at it for a moment and then she noticed something else.\n\nShe walked closer and peered inside, she could see a beautiful garden. She felt a strange light",
+    "step": 92,
+    "val_loss": 2.5046
   },
-  "step": 91,
-  "updated": "2026-08-01T11:36:54+00:00"
+  "step": 92,
+  "updated": "2026-08-01T11:51:55+00:00"
 }
