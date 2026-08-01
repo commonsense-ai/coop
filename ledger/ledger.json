@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 77,
+      "submissions": 78,
       "tier": "gpu",
-      "tokens": 151044096
+      "tokens": 153092096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a big, noisy cat named Tom. Tom loved to eat bananas. One day, he saw a big, red apple hanging from a tree. He wanted to eat it so badly, but it was too high.\n\nAs Tom tried to reach the apple, he saw a ladder. He climbed up and reached for the bananas. But as soon as he touched it, he started to reach. Tom was surprised and jumped off the tree.\n\nTom was sad but didn't give up. He tried to climb down, but it was not the way. A kind dog named",
-    "step": 90,
-    "val_loss": 2.4928
+    "sample": "Once upon a time, there was a little bird who wanted to fly outside the wide world. She saw a little boy and a cat and she wanted to fly too. She flapped her wings and flew over to the cat. The boy said, \"Wait for my surprise, I can fly with a new path?\" \n\nThe cat replied, \"That's a nice path, but let's just sit and rest.\" \n\nThe boy liked the path so much, that he followed the cat down the road. As they were walking, the boy said, \"Let's crawl!\" And they both crawled out of the",
+    "step": 91,
+    "val_loss": 2.5039
   },
-  "step": 90,
-  "updated": "2026-08-01T11:21:50+00:00"
+  "step": 91,
+  "updated": "2026-08-01T11:36:54+00:00"
 }
