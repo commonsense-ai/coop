@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 80,
+      "submissions": 81,
       "tier": "gpu",
-      "tokens": 157188096
+      "tokens": 159236096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a big truck. One day, he went to the park to play with his friends. At the park, he saw a little girl named Lily. Lily was very delighted because she had a dress with a big dirty dress. She was showed her friend Timmy the dress and he looked very pretty.\n\nTimmy wanted to wear a costume to keep her dress clean, so he hid it all the time. He looked both ways to make Lily happy. When the sun went down, Lily looked in the mirror and saw that she was not sad anymore. She gave Timmy a big hug to",
-    "step": 93,
-    "val_loss": 2.5087
+    "sample": "Once upon a time, there was a happy girl named Lily. She loved to play in the sand at the beach and make sandcastles with her friends. One day, Lily's mom told her that she could improve her mark a rock which went round and round. Lily was proud to be ready to learn, so she started to practice every day.\n\nAs the sun began to set, Lily felt happy because she knew she could do it again one day. She knew that practice made her strong and smart. When she was done, she wore her new hats and ran to the beach again. She saw all of the",
+    "step": 94,
+    "val_loss": 2.515
   },
-  "step": 93,
-  "updated": "2026-08-01T12:07:00+00:00"
+  "step": 94,
+  "updated": "2026-08-01T12:15:25+00:00"
 }
