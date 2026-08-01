@@ -10,16 +10,16 @@
     "ezshroom": {
       "first_seen": 130,
       "reputation": 1.0,
-      "submissions": 1,
+      "submissions": 3,
       "tier": "gpu",
-      "tokens": 2048000
+      "tokens": 6144000
     },
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 117,
+      "submissions": 118,
       "tier": "gpu",
-      "tokens": 232964096
+      "tokens": 235012096
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a big boat near the river. The boat had a long, black and white sail on the coral island. One day, a bad storm came and destroyed the boat. The boat could not go anywhere and they felt sad.\n\nA little girl named Lily saw her boat and asked, \"Why are you sad?\"\n\nThe boat replied, \"I lost my boat and I can't find it.\"\n\nLily said, \"Don't worry, little boat. I have an idea. Let's search together.\"\n\nSo, they looked and looked. Finally, they",
-    "step": 130,
-    "val_loss": 2.5179
+    "sample": "Once upon a time, in a small town, there were two friends, a cat and a bird. They were happy and loved to play together. One day, they found a big box of treasure chest. The box was very heavy, and they could break easily.\n\nThe cat said, \"Let's share the treasure and play with our toys.\"\n\nSo, the two friends took turns playing with the treasure, and soon they had all the jewels they needed. The cat said, \"I want to keep the treasure forever!\"\n\nThe other bird replied, \"Let's share the treasure with our",
+    "step": 131,
+    "val_loss": 2.2974
   },
-  "step": 130,
-  "updated": "2026-08-01T19:49:21+00:00"
+  "step": 131,
+  "updated": "2026-08-01T19:53:25+00:00"
 }
