@@ -10,9 +10,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 83,
+      "submissions": 84,
       "tier": "gpu",
-      "tokens": 163332096
+      "tokens": 165380096
     },
     "naloxene": {
       "first_seen": 1,
@@ -23,10 +23,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to play with his toy cars and make them zoom about all day. One day, Timmy's mom brought home a new toy, but it wasn't ready yet. Timmy got upset because he didn't want to eat his favorite play. \n\nHis mom saw that Timmy was upset and asked, \"What's wrong, Timmy?\" \n\n\"My toy car is gone,\" Timmy replied. \n\nHis mom said, \"Don't worry, Timmy. We can put it in the toy box and then we can play together.\" \n\nAnd",
-    "step": 96,
-    "val_loss": 2.5253
+    "sample": "Once upon a time, there was an old lady named Mary. Mary always wore her favourite crown. One day, Mary decided to take her crown. She was so excited to have it. \n\nMary put on her crown, but she didn't like it. One day Mary went to the park and sat on her crown. She was very sad because she was not were happy anymore.  Mary's crown was ruined and a big mess. \n\nMary started to cry. Her crown was sad because it had ruined her favorite crown. Mary tried to make it even better, but there wasn't need it. In",
+    "step": 97,
+    "val_loss": 2.5368
   },
-  "step": 96,
-  "updated": "2026-08-01T12:37:04+00:00"
+  "step": 97,
+  "updated": "2026-08-01T12:52:14+00:00"
 }
