@@ -17,9 +17,10 @@ model:                # ~145M params with tied embeddings
 
 data:
   hf_dataset: HuggingFaceFW/fineweb-edu
+  hf_config: sample-10BT   # streaming .skip() reads rows: offsets must fit a small subset
   text_field: text
-  tokenizer: tokenizer/fineweb-32k.json  # train via runbook step 2
-  train_docs: 0                          # set from the chosen subset's row count (runbook step 3)
+  tokenizer: tokenizer/fineweb-32k.json
+  train_docs: 9622101      # sample-10BT has 9,672,101 rows; last 50k reserved for val.bin
 
 inner:
   h_steps: 200
@@ -42,6 +43,7 @@ outer:
   max_norm: 10.0
   max_val_regression: 0.3  # tighter breaker: stage-2 steps move val loss less than stage 1's
   probation_weight: 0.25   # unproven identities vote at quarter influence until first accept
+  credit: sum_distinct     # pay every genuinely-different round, capped at plausible size
 
 staleness:
   tau_max: 8

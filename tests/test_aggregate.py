@@ -319,6 +319,49 @@ def test_same_user_same_step_submissions_merge(tmp_path):
     assert led["contributors"]["alice"]["reputation"] == 1.0
 
 
+def test_sum_distinct_credit_pays_different_work_once_each(tmp_path):
+    torch.manual_seed(0)
+    cfg = {
+        **CFG,
+        "outer": {**CFG["outer"], "credit": "sum_distinct"},
+        "inner": {"h_max": 2, "batch_size": 2},  # round cap = 2*2*16 = 64 tokens
+    }
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    d1 = {k: 0.005 * torch.randn_like(v) for k, v in state.items()}
+    d2 = {k: 0.005 * torch.randn_like(v) for k, v in state.items()}  # distinct work
+    dup = {k: 1.0001 * v for k, v in d1.items()}  # replay of d1
+
+    pr_files = {
+        1: write_submission(tmp_path, "a1", d1, {**sub_meta("alice", 5), "tokens": 50}),
+        2: write_submission(tmp_path, "a2", d2, {**sub_meta("alice", 5), "tokens": 40}),
+        3: write_submission(tmp_path, "a3", dup, {**sub_meta("alice", 5), "tokens": 60}),
+    }
+    hub = FakeHub(state, {"step": 5}, pr_files)
+    run_tick(cfg, hub=hub, repo_root=str(tmp_path))
+
+    led = json.loads((tmp_path / "ledger" / "ledger.json").read_text())
+    # dup (60) kept as the largest of its near-duplicate pair, d1 (50) collapsed into
+    # it, d2 (40) is genuinely different work: credit = 60 + 40
+    assert led["contributors"]["alice"]["tokens"] == 100
+
+
+def test_sum_distinct_caps_accumulated_claims(tmp_path):
+    torch.manual_seed(0)
+    cfg = {
+        **CFG,
+        "outer": {**CFG["outer"], "credit": "sum_distinct"},
+        "inner": {"h_max": 2, "batch_size": 2},  # round cap = 64
+    }
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    d = {k: 0.005 * torch.randn_like(v) for k, v in state.items()}
+    meta = {**sub_meta("alice", 5), "tokens": 999, "tokens_total": 250_000, "rounds": 3}
+    hub = FakeHub(state, {"step": 5}, {1: write_submission(tmp_path, "a", d, meta)})
+    run_tick(cfg, hub=hub, repo_root=str(tmp_path))
+
+    led = json.loads((tmp_path / "ledger" / "ledger.json").read_text())
+    assert led["contributors"]["alice"]["tokens"] == 3 * 64  # claim capped at rounds*cap
+
+
 def test_tick_no_prs_is_noop(tmp_path):
     state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
     hub = FakeHub(state, {"step": 5}, {})

@@ -29,20 +29,24 @@ def test_fetch_docs_uses_configured_dataset_and_field(tmp_path, monkeypatch):
 
     seen = {}
 
-    def fake_load(name, split, streaming):
-        seen["name"], seen["split"] = name, split
+    def fake_load(name, config=None, split=None, streaming=True):
+        seen["name"], seen["config"], seen["split"] = name, config, split
         return FakeStream([{"content": "hello"}, {"content": "world"}])
 
     monkeypatch.setattr(datasets, "load_dataset", fake_load)
-    out = data.fetch_docs(str(tmp_path / "s.txt"), 2, dataset="org/corpus", text_field="content")
-    assert seen == {"name": "org/corpus", "split": "train"}
+    out = data.fetch_docs(
+        str(tmp_path / "s.txt"), 2, dataset="org/corpus", text_field="content", config="sample"
+    )
+    assert seen == {"name": "org/corpus", "config": "sample", "split": "train"}
     assert "hello" in Path(out).read_text()
 
 
 def test_fetch_docs_raises_past_dataset_end(tmp_path, monkeypatch):
     import datasets
 
-    monkeypatch.setattr(datasets, "load_dataset", lambda *a, **k: FakeStream([{"text": "x"}]))
+    monkeypatch.setattr(
+        datasets, "load_dataset", lambda *a, **k: FakeStream([{"text": "x"}])
+    )  # config-agnostic
     with pytest.raises(ValueError, match="past the end"):
         data.fetch_docs(str(tmp_path / "s.txt"), 5, skip=10)
 
