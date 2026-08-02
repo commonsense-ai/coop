@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 138,
+      "submissions": 139,
       "tier": "gpu",
-      "tokens": 275935232
+      "tokens": 277983232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside and explore the woods near her house. One day, she found a fake flower in her garden. She picked it up and showed it to her best friend, Max.\n\nMax went to Lily's house and knocked on the door. \"Hi Lily! Do you want to play with me?\" Lily asked. Max smiled and said, \"I understand. Would you like to play with me?\" \n\nLily and Max looked at each other. They decided to play a game of hide and seek. Lily had to find a",
-    "step": 151,
-    "val_loss": 2.7496
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the tall grass. One day, she found a shiny stone and decided to keep it as a pet. She told her friend, \"This is mine, Lily. You can keep it forever!\" \n\nBut when Lily got home, she noticed that the stone was not as pretty as her own. It was ugly too magical to her. Lily said, \"Oh no, we have no more shiny things. Please give it back.\" \n\nHer friend felt sad and said, \"I'm sorry, Lily. I didn",
+    "step": 152,
+    "val_loss": 2.7562
   },
-  "step": 151,
-  "updated": "2026-08-02T00:12:18+00:00"
+  "step": 152,
+  "updated": "2026-08-02T00:23:49+00:00"
 }
