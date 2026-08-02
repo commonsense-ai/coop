@@ -206,6 +206,54 @@ def test_tick_runs_eval_when_configured(tmp_path):
     assert f"Val loss at step 6: **{meta['eval']['val_loss']}**" in board
 
 
+def test_probation_downweights_unproven_identities(tmp_path):
+    torch.manual_seed(0)
+    cfg = {**CFG, "outer": {**CFG["outer"], "probation_weight": 0.0}}
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    keys = list(state.keys())
+    d1 = {k: 0.005 * torch.randn_like(v) for k, v in state.items()}
+    d2 = {k: v + 0.0005 * torch.randn_like(v) for k, v in d1.items()}  # correlated: passes gate
+
+    (tmp_path / "ledger").mkdir()
+    (tmp_path / "ledger" / "ledger.json").write_text(
+        json.dumps(
+            {
+                "step": 5,
+                "updated": None,
+                "contributors": {
+                    "alice": {
+                        "first_seen": 1,
+                        "submissions": 3,
+                        "tokens": 5000,
+                        "tier": "gpu",
+                        "reputation": 1.0,
+                    }
+                },
+            }
+        )
+    )
+    pr_files = {
+        1: write_submission(tmp_path, "alice_a", d1, sub_meta("alice", 5)),
+        2: write_submission(tmp_path, "newbie_n", d2, sub_meta("newbie", 5)),
+    }
+    hub = FakeHub(state, {"step": 5}, pr_files)
+
+    summary = run_tick(cfg, hub=hub, repo_root=str(tmp_path))
+    assert summary["accepted"] == 2
+
+    # newbie's vote is scaled to zero influence; alice's carries the step alone
+    v1 = clip_norm(_flatten(d1, keys), CFG["outer"]["max_norm"])
+    d_agg = torch.stack([v1, torch.zeros_like(v1)]).mean(0)
+    new_state, _, _ = hub.uploaded
+    expected = _flatten(state, keys) - 0.7 * 1.9 * d_agg
+    assert torch.allclose(_flatten(new_state, keys), expected, atol=1e-5)
+
+    # probation scales influence, never credit
+    led = json.loads((tmp_path / "ledger" / "ledger.json").read_text())
+    assert led["contributors"]["newbie"]["tokens"] == 1000
+    assert led["contributors"]["newbie"]["reputation"] > 1.0 - 0.11
+
+
 def test_circuit_breaker_discards_regressing_step(tmp_path):
     torch.manual_seed(0)
     cfg = {
