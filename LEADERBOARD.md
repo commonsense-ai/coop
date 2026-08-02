@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **167** — updated 2026-08-02T03:57:36+00:00.
+Outer step **168** — updated 2026-08-02T04:09:24+00:00.
 
-Val loss at step 167: **2.8189** — sample:
+Val loss at step 168: **2.8321** — sample:
 
-> Once upon a time, there was a little girl named Lily. She loved to play outside with her friends. One day, they wanted to go on a picnic with their parents. Lily was very excited and asked her parents if they could bring their sandwiches with cookies. After they arrived at the park, they met a friendly dog named Buddy. Buddy wanted to take a cookie from Ben's lady, but Mommy said no. Buddy got upset and went to find Ben. When they got to the store, they saw that Buddy had lots of treats to eat all the treats. Lily's mom said, "
+> Once upon a time, there was a little bird who loved to whistle. Every day, she would whistle out her own song to all the other birds and animals in the forest. The bird was very thankful to her and always had a friend to help her when she was feeling sad. Every day she would whistle her special whistle and her friends would hear her singing. And every day she would blew her whistle, remember the birds and her great song every day. And she would whistle her song every day and her song would whistle it. The bird continued to whistle her soundly, always happy
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,7 +12,7 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 154 | 308,703,232 | 1.000 | 308,703,232 |
+| 1 | miacx | gpu | 155 | 310,751,232 | 1.000 | 310,751,232 |
 | 2 | naloxene | gpu | 27 | 25,919,488 | 1.000 | 25,919,488 |
 | 3 | ezshroom | gpu | 12 | 23,347,200 | 1.000 | 23,347,200 |
 | 4 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
