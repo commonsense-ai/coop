@@ -47,3 +47,28 @@ def test_machine_seed_stable_per_workdir_distinct_across(tmp_path):
     a.mkdir(), b.mkdir()
     assert join.machine_seed(a) == join.machine_seed(a)  # persisted, stable
     assert join.machine_seed(a) != join.machine_seed(b)  # two machines, two seeds
+
+
+def test_corpus_fingerprint_distinguishes_runs():
+    a = join.corpus_fingerprint({"hf_dataset": "d1", "tokenizer": "t1"})
+    b = join.corpus_fingerprint({"hf_dataset": "d2", "tokenizer": "t1"})
+    c = join.corpus_fingerprint({"hf_dataset": "d1", "tokenizer": "t2"})
+    assert len({a, b, c}) == 3  # any run-identity change means a different shard file
+    assert a == join.corpus_fingerprint({"hf_dataset": "d1", "tokenizer": "t1"})
+
+
+def test_config_changed_detects_new_run_but_not_blips(monkeypatch, tmp_path):
+    def fake_fetch(repo, path, dest, ref="main"):
+        dest.write_text("repos: {model: new/run}")
+        return dest
+
+    monkeypatch.setattr(join, "fetch_raw", fake_fetch)
+    assert join.config_changed("o/r", tmp_path, "repos: {model: old/run}")
+    assert not join.config_changed("o/r", tmp_path, "repos: {model: new/run}")
+
+    def boom(repo, path, dest, ref="main"):
+        raise OSError("offline")
+
+    monkeypatch.setattr(join, "fetch_raw", boom)
+    # a network blip must never restart the worker
+    assert not join.config_changed("o/r", tmp_path, "repos: {model: old/run}")
