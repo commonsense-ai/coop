@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 152,
+      "submissions": 153,
       "tier": "gpu",
-      "tokens": 304607232
+      "tokens": 306655232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She had a new room with a big bed and a chair. One day, she wanted to explore the library. She asked her mom if she could go.\n\nHer mom said, \u00e2\u20ac\u0153No. We don\u00e2\u20ac\u2122t listen to the library and follow me. Let\u00e2\u20ac\u2122s go to the library and stay there\u00e2\u20ac\u2122s with us.\"\n\nLily listened to the library and found an old book with a big whitera gross pes. She opened the book and started to read. She saw so many books that she never wanted to climb",
-    "step": 165,
-    "val_loss": 2.7969
+    "sample": "Once upon a time, there was a girl named Lily. She had a unique toy car that she loved to play with. One day, she took it outside to play outside. She saw her friend, Timmy, playing with a new toy car. \n\nLily wanted to play with Timmy's toy car, but Timmy said no. Lily felt sad and went home. She asked Timmy if she wanted to play with her doll. Timmy said yes and they went to his bedroom and had so much fun.\n\nWhen they got home, Lily ran to her room and dropped the doll. She cried and cried, but",
+    "step": 166,
+    "val_loss": 2.8081
   },
-  "step": 165,
-  "updated": "2026-08-02T03:39:20+00:00"
+  "step": 166,
+  "updated": "2026-08-02T03:54:23+00:00"
 }
