@@ -15,7 +15,7 @@ from coop.data import load_tokenizer
 from coop.eval import eval_val_loss, sample
 from coop.model import GPT, GPTConfig, canonical_state, load_canonical_state
 from coop.staleness import staleness_weight
-from coop.submit import dequantize_delta
+from coop.submit import dequantize_delta, dequantize_delta_int4
 
 log = logging.getLogger(__name__)
 
@@ -49,6 +49,8 @@ def _load_submission(files: dict[str, str]) -> tuple[dict, dict]:
     delta = load_file(st)
     if meta.get("quant") == "int8":
         delta = dequantize_delta(delta)
+    elif meta.get("quant") == "int4":
+        delta = dequantize_delta_int4(delta)
     return delta, meta
 
 

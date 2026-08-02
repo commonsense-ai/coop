@@ -2,7 +2,15 @@ import logging
 
 import torch
 
-from coop.submit import dequantize_delta, quantize_delta, submission_paths, submit
+from coop.submit import (
+    SCALE_SUFFIX,
+    dequantize_delta,
+    dequantize_delta_int4,
+    quantize_delta,
+    quantize_delta_int4,
+    submission_paths,
+    submit,
+)
 
 CFG = {"repos": {"dataset": "x/inbox"}}
 
@@ -32,3 +40,16 @@ def test_dry_run_logs_paths_without_network(caplog):
     assert result is None
     assert "submissions/step_7/alice_" in caplog.text
     assert "x/inbox" in caplog.text
+
+
+def test_int4_roundtrip_and_size():
+    torch.manual_seed(0)
+    delta = {"w": torch.randn(33, 7), "b": torch.randn(5)}  # odd numels exercise padding
+    q = quantize_delta_int4(delta)
+    assert q["w"].dtype == torch.uint8 and q["w"].numel() == (33 * 7 + 1) // 2
+    out = dequantize_delta_int4(q)
+    for k in delta:
+        scale = q[k + SCALE_SUFFIX].item()
+        assert out[k].numel() == delta[k].numel()
+        # symmetric int4: max error is half a quantization step
+        assert torch.allclose(out[k], delta[k].reshape(-1), atol=scale / 2 + 1e-6)

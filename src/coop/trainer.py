@@ -90,9 +90,13 @@ def run_worker(
         "tier": "cpu" if device == "cpu" else "gpu",
         "quant": "none",
     }
-    if inner.get("quantize") == "int8":
+    quant = inner.get("quantize")
+    if quant == "int8":
         delta = submit.quantize_delta(delta)
         meta["quant"] = "int8"
+    elif quant == "int4":
+        delta = submit.quantize_delta_int4(delta)
+        meta["quant"] = "int4"
 
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
