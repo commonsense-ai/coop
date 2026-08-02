@@ -56,22 +56,22 @@ code, config, and the contributor ledger.
 
 ## Donate compute
 
-Install once (needs [uv](https://docs.astral.sh/uv/)), then start:
-
-```sh
-uv tool install coop-ai      # or: pipx install coop-ai
-coop start
-```
-
-Coming from the JavaScript world? The npm launcher wraps the same CLI
-(it still uses uv under the hood and tells you how to get it):
+One command if you have Node (it uses [uv](https://docs.astral.sh/uv/) under
+the hood and tells you how to get it):
 
 ```sh
 npx coop-ai start
 ```
 
-Want latest main instead of a release?
-`uv tool install git+https://github.com/commonsense-ai/coop`.
+Or install with uv directly:
+
+```sh
+uv tool install git+https://github.com/commonsense-ai/coop
+coop start
+```
+
+(`uv tool install coop-ai` / `pipx install coop-ai` once the PyPI package
+clears review.)
 
 The first run asks you to paste a Hugging Face
 [write token](https://huggingface.co/settings/tokens) (free account) — after that
