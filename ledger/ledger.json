@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 178,
+      "submissions": 179,
       "tier": "gpu",
-      "tokens": 357855232
+      "tokens": 359903232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a famous sailor named Bob. He was very special because he wanted to take care of himself.\n\nOne day, Bob met a little girl named Sally. Sally asked Bob, \"Would you prevent me from any bad sailor?\" Bob thought it sounded like, so he said, \"Yes, I will love to help you!\" \n\nTogether, they went out and saw an incredible sailor stuck in a nearby lake. Sally was so excited that she forgot to help the sailor.\n\nSo Bob stuck out his boat in the lake and the sailor tried to free, but he could",
-    "step": 191,
-    "val_loss": 2.9041
+    "sample": "Once upon a time, there was a little girl named Lily. Lily loved to play outside in the mud. One day, her mommy got very busy in the kitchen and called her.\n\nLily went to the kitchen and saw a big plate with the vegetables on it. She asked her mommy, \"Who who this is the plate?\" \n\nHer mommy said, \"The plate is open, Lily. Do you want to help me?\" \n\nLily nodded her head and started eating. As she ate her dinner, she looked up and saw a big, scary cat. She didn't notice the cat from had",
+    "step": 192,
+    "val_loss": 2.8992
   },
-  "step": 191,
-  "updated": "2026-08-02T23:14:03+00:00"
+  "step": 192,
+  "updated": "2026-08-02T23:52:37+00:00"
 }
