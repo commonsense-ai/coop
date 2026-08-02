@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 147,
+      "submissions": 148,
       "tier": "gpu",
-      "tokens": 294367232
+      "tokens": 296415232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, a little girl went inside to call her mum. She was a bit scared by all the other people's hard work.\n\nHer mum saw the room and said, \"Don't worry sweetheart, I'll come and help. Cason on the bed will shout after you.\"\n\nThe little girl carefully opened the door and shouted, \"Yes! I'm here, Mum.\" She started to cry, but her mum was very worried.\n\nJust then, her mum walked in, and saw the little girl crying. She said, \"Don't worry sweetheart. How are you feeling",
-    "step": 160,
-    "val_loss": 2.7765
+    "sample": "Once upon a time there was a little girl named Lily. She loved to sing and dance all day long. One day, her mom asked her to help clean up her toys. Lily didn't want to, but her mom said it was okay and helped her.\n\nAfter they finished cleaning up, Lily's dad said it was time to want to perform for her friends. They finished cleaning their room and cleaned up the mess. Lily was happy she could help, but she got ignorant that they wouldn't prevent playing any games.Once upon a time, there was a little boy named Timmy. Timmy had a",
+    "step": 161,
+    "val_loss": 2.7899
   },
-  "step": 160,
-  "updated": "2026-08-02T02:24:07+00:00"
+  "step": 161,
+  "updated": "2026-08-02T02:39:10+00:00"
 }
