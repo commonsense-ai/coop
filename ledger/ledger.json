@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 137,
+      "submissions": 138,
       "tier": "gpu",
-      "tokens": 273887232
+      "tokens": 275935232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a baby named Tommy. Tommy loved to travel and explore the world. One day, Tommy went to the zoo and saw a big show. He was amazed by how much he could find in the animals.\n\nSuddenly, Tommy got bored. He wondered what he was going to take a bath. As he got closer to the show, he could see a colorful deal on the stage. The show was about a magical night where the baby lays instead.\n\nThe next night, Tommy woke up and saw that the show was even better than he pointed. He saw that some",
-    "step": 150,
-    "val_loss": 2.7428
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside and explore the woods near her house. One day, she found a fake flower in her garden. She picked it up and showed it to her best friend, Max.\n\nMax went to Lily's house and knocked on the door. \"Hi Lily! Do you want to play with me?\" Lily asked. Max smiled and said, \"I understand. Would you like to play with me?\" \n\nLily and Max looked at each other. They decided to play a game of hide and seek. Lily had to find a",
+    "step": 151,
+    "val_loss": 2.7496
   },
-  "step": 150,
-  "updated": "2026-08-02T00:08:46+00:00"
+  "step": 151,
+  "updated": "2026-08-02T00:12:18+00:00"
 }
