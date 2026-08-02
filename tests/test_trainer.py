@@ -1,3 +1,4 @@
+import contextlib
 import json
 
 import numpy as np
@@ -7,7 +8,7 @@ from safetensors.torch import load_file
 from coop import hubio
 from coop.model import GPT, GPTConfig, canonical_state
 from coop.submit import dequantize_delta
-from coop.trainer import run_worker
+from coop.trainer import autocast_ctx, make_adamw, pick_device, run_worker
 
 CFG = {
     "repos": {"model": "x/model", "dataset": "x/inbox"},
@@ -104,3 +105,37 @@ def test_worker_round_produces_delta_and_meta(tmp_path, monkeypatch):
     assert set(delta.keys()) == set(state.keys())
     # training moved the weights, so the pseudo-gradient is non-zero
     assert sum(v.abs().sum().item() for v in delta.values()) > 0
+
+
+def test_device_helpers_fall_back_safely():
+    assert pick_device() in ("cuda", "mps", "cpu")
+    # cpu always trains fp32 no matter what precision asks for
+    assert isinstance(autocast_ctx("cpu", "auto"), contextlib.nullcontext)
+    assert isinstance(autocast_ctx("cpu", "bf16"), contextlib.nullcontext)
+    opt = make_adamw(GPT.from_config(GPTConfig(**CFG["model"])).parameters(), CFG["inner"])
+    assert isinstance(opt, torch.optim.AdamW)
+
+
+def test_delta_keys_survive_compile_wrapping(tmp_path, monkeypatch):
+    """torch.compile prefixes named_parameters with _orig_mod. — the pseudo-gradient
+    must keep canonical keys or the aggregator rejects the submission."""
+
+    class Wrapped(torch.nn.Module):  # named_parameters mimics torch's OptimizedModule
+        def __init__(self, mod):
+            super().__init__()
+            self._orig_mod = mod
+
+        def forward(self, *args, **kwargs):
+            return self._orig_mod(*args, **kwargs)
+
+    torch.manual_seed(0)
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo: (state, {"step": 3}))
+    monkeypatch.setattr(hubio, "whoami", lambda: "tester")
+    monkeypatch.setattr(torch, "compile", lambda m, **kw: Wrapped(m))
+
+    delta_path, _ = run_worker(
+        CFG, _shard(tmp_path), out_dir=str(tmp_path / "out"), do_submit=False, compile_model=True
+    )
+    delta = dequantize_delta(load_file(str(delta_path)))
+    assert set(delta.keys()) == set(state.keys())
