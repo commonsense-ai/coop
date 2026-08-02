@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 146,
+      "submissions": 147,
       "tier": "gpu",
-      "tokens": 292319232
+      "tokens": 294367232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a big red car. The car had four wheels on its road. One day, the car was driving and the car couldn't find what happened. It was stuck in the ground and couldn't move. The car didn't know what to do.\n\nThen, a nice person saw the car and decided to help. They used a ladder to rescue the car from the car. The man saw the car and decided to lend the wheels to go away. He took the car and went for a long time. Now, the car was ready to go for a ride.\n\n",
-    "step": 159,
-    "val_loss": 2.7613
+    "sample": "Once upon a time, a little girl went inside to call her mum. She was a bit scared by all the other people's hard work.\n\nHer mum saw the room and said, \"Don't worry sweetheart, I'll come and help. Cason on the bed will shout after you.\"\n\nThe little girl carefully opened the door and shouted, \"Yes! I'm here, Mum.\" She started to cry, but her mum was very worried.\n\nJust then, her mum walked in, and saw the little girl crying. She said, \"Don't worry sweetheart. How are you feeling",
+    "step": 160,
+    "val_loss": 2.7765
   },
-  "step": 159,
-  "updated": "2026-08-02T02:09:05+00:00"
+  "step": 160,
+  "updated": "2026-08-02T02:24:07+00:00"
 }
