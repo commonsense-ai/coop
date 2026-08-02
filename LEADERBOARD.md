@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **184** — updated 2026-08-02T16:41:45+00:00.
+Outer step **185** — updated 2026-08-02T17:38:44+00:00.
 
-Val loss at step 184: **2.8018** — sample:
+Val loss at step 185: **2.789** — sample:
 
-> Once upon a time, there was a little girl named Lily. She loved to play outside in the rain. One day, she saw a big puddle and started to jump in it. She tried to swim but her hands were too high. Suddenly, a little bird saw her and wanted to play in it. The bird flew down and saw Lily was curious, so she reached out her hand. The bird saw her earlier realized that Lily was scared and wanted to say "Thank you for warning me, little bird. I didn't mean to make you feel embarrassed." Lily felt bad and realized that she
+> Once upon a time, there was a little boy named Timmy. Timmy loved playing with his toys and his friends. One day, Timmy's mom asked him to clean up his toys and put them in the rightful room. Timmy didn't want to clean up his toys, he wanted to keep playing. Suddenly, Timmy's friends came over and saw how happy Timmy was having. They asked him to stop playing and give him a towel to clean up. Timmy realized he didn't want to stop playing and put away his toys. The moral of the story is that it's important to clean up after
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,7 +12,7 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 171 | 343,519,232 | 1.000 | 343,519,232 |
+| 1 | miacx | gpu | 172 | 345,567,232 | 1.000 | 345,567,232 |
 | 2 | naloxene | gpu | 31 | 34,111,488 | 1.000 | 34,111,488 |
 | 3 | ezshroom | gpu | 12 | 23,347,200 | 1.000 | 23,347,200 |
 | 4 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
