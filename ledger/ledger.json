@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 139,
+      "submissions": 140,
       "tier": "gpu",
-      "tokens": 277983232
+      "tokens": 280031232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the tall grass. One day, she found a shiny stone and decided to keep it as a pet. She told her friend, \"This is mine, Lily. You can keep it forever!\" \n\nBut when Lily got home, she noticed that the stone was not as pretty as her own. It was ugly too magical to her. Lily said, \"Oh no, we have no more shiny things. Please give it back.\" \n\nHer friend felt sad and said, \"I'm sorry, Lily. I didn",
-    "step": 152,
-    "val_loss": 2.7562
+    "sample": "Once upon a time, there was a little girl who was very eager to explore the world. On the forest she went to the forest. She wanted to discover all the wonderful things in her life.\n\nAs she explored she found some hundching branches and dirt which was so good for her. She discovered different things, and enjoyed looking for bugs and stones.\n\nSoon it was time to go home. The girl was sad to leave and she knew she had gone back. She waved goodbye and everything she had seen. \n\nThe next day, the girl went back to the forest. She discovered a",
+    "step": 153,
+    "val_loss": 2.7438
   },
-  "step": 152,
-  "updated": "2026-08-02T00:23:49+00:00"
+  "step": 153,
+  "updated": "2026-08-02T00:38:51+00:00"
 }
