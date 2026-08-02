@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 151,
+      "submissions": 152,
       "tier": "gpu",
-      "tokens": 302559232
+      "tokens": 304607232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys in the living room. One day, her mom came into the room and said, \"Lily, pretend we are having a great time today. Lions are good for you, even if they fit in the house!\"\n\nLily was so excited to play with her toys at the house. She ran around and pretended to was a princess. But then, she accidentally broke the same picture. She was very upset and cried. Her mom tried to put it away, but it was too late.\n\nIn the",
-    "step": 164,
-    "val_loss": 2.7897
+    "sample": "Once upon a time, there was a little girl named Lily. She had a new room with a big bed and a chair. One day, she wanted to explore the library. She asked her mom if she could go.\n\nHer mom said, \u00e2\u20ac\u0153No. We don\u00e2\u20ac\u2122t listen to the library and follow me. Let\u00e2\u20ac\u2122s go to the library and stay there\u00e2\u20ac\u2122s with us.\"\n\nLily listened to the library and found an old book with a big whitera gross pes. She opened the book and started to read. She saw so many books that she never wanted to climb",
+    "step": 165,
+    "val_loss": 2.7969
   },
-  "step": 164,
-  "updated": "2026-08-02T03:24:18+00:00"
+  "step": 165,
+  "updated": "2026-08-02T03:39:20+00:00"
 }
