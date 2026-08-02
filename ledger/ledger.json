@@ -17,23 +17,23 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 159,
+      "submissions": 160,
       "tier": "gpu",
-      "tokens": 318943232
+      "tokens": 320991232
     },
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 28,
+      "submissions": 30,
       "tier": "gpu",
-      "tokens": 27967488
+      "tokens": 32063488
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily who loved to play with her toys. One day, she found a red ball and started to play with it. She threw it and it went roll around a little bug.\n\nLily's mom said, \"Lily, be careful with the big red ball. It can be dangerous.\"\n\nLily didn't listen and started to throw the ball too hard and it went back to Lily. She threw the ball and it went back to her mom.\n\n\"Mom, look what I did!\" she asked.\n\n\"I accidentally threw the ball",
-    "step": 172,
-    "val_loss": 2.5773
+    "sample": "Once upon a time, there was a little girl named Lily. She had a small puppy named Max who was very loyal. They loved to play together every day. One day, Lily and Max went for a walk in the park. \n\nAs they walked, Lily saw a big tree and ran to it. Max said, \"I want to climb that tree!\" But Lily was stubborn and said, \"No, Max! That tree is too big for us!\" \n\nMax tried to climb the tree, but he was too tall and heavy. Lily started to cry and Max tried to get up the tree.",
+    "step": 173,
+    "val_loss": 2.2933
   },
-  "step": 172,
-  "updated": "2026-08-02T05:08:36+00:00"
+  "step": 173,
+  "updated": "2026-08-02T05:24:50+00:00"
 }
