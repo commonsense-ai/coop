@@ -49,11 +49,14 @@ def fetch_docs(
     split: str = "train",
     dataset: str = "roneneldan/TinyStories",
     text_field: str = "text",
+    config: str | None = None,
 ) -> str:
-    """Stream a worker-sized shard from any HF text dataset; `skip` picks disjoint slices."""
+    """Stream a worker-sized shard from any HF text dataset; `skip` picks disjoint slices.
+    `config` selects a subset (e.g. fineweb-edu sample-10BT) — streaming .skip() reads
+    through rows, so shard offsets must stay within a subset-sized row count."""
     from datasets import load_dataset
 
-    ds = load_dataset(dataset, split=split, streaming=True)
+    ds = load_dataset(dataset, config, split=split, streaming=True)
     n = 0
     with open(out_txt, "w") as f:
         for ex in ds.skip(skip).take(n_docs):
@@ -82,6 +85,7 @@ def main():
     ap = argparse.ArgumentParser(description="fetch and tokenize a text-dataset shard")
     ap.add_argument("--out-dir", default="data")
     ap.add_argument("--dataset", default="roneneldan/TinyStories")
+    ap.add_argument("--config-name", default=None, help="dataset subset, e.g. sample-10BT")
     ap.add_argument("--text-field", default="text")
     ap.add_argument("--docs", type=int, default=20000)
     ap.add_argument("--skip", type=int, default=0)
@@ -103,6 +107,7 @@ def main():
         a.split,
         dataset=a.dataset,
         text_field=a.text_field,
+        config=a.config_name,
     )
     if a.train_tokenizer:
         tok = train_tokenizer([txt], a.vocab, a.tokenizer)

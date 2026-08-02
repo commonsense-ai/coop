@@ -37,6 +37,25 @@ def _unflatten(vec: torch.Tensor, keys: list[str], ref: dict) -> dict:
     return out
 
 
+def _capped_tokens(meta: dict, round_cap: int) -> int:
+    """A submission can claim at most what its rounds could plausibly have trained."""
+    claimed = int(meta.get("tokens_total", meta.get("tokens", 0)))
+    return min(claimed, int(meta.get("rounds", 1)) * round_cap)
+
+
+def _distinct_credit(group: list, round_cap: int) -> int:
+    """Sum capped tokens across genuinely-different submissions: near-duplicate deltas
+    (cosine > 0.95) count once, so replaying the same work earns nothing extra."""
+    kept: list[torch.Tensor] = []
+    total = 0
+    for e in sorted(group, key=lambda e: -float(e[3].get("tokens", 0))):
+        if any(torch.nn.functional.cosine_similarity(e[1], k, dim=0) > 0.95 for k in kept):
+            continue
+        kept.append(e[1])
+        total += _capped_tokens(e[3], round_cap)
+    return total
+
+
 def _load_submission(files: dict[str, str]) -> tuple[dict, dict]:
     st = next((p for f, p in files.items() if f.endswith(".safetensors")), None)
     js = next((p for f, p in files.items() if f.endswith(".json")), None)
@@ -140,20 +159,33 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
 
     # Same user, same start step: token-weighted merge into one entry. All the
     # signal is used, but one contributor is one vote in the robust layer (no
-    # electorate stuffing) and credit counts only the largest single round (no
-    # token farming). Clipped vectors stay within max_norm under a convex mix.
+    # electorate stuffing). Credit policy (outer.credit): "largest" counts only the
+    # biggest single round; "sum_distinct" sums near-duplicate-collapsed submissions,
+    # each capped at what its rounds could plausibly train — pays multi-machine and
+    # GPU contributors without rewarding replayed deltas or inflated claims.
+    credit = out_cfg.get("credit", "largest")
+    inner_cfg = cfg.get("inner", {})
+    round_cap = (
+        inner_cfg.get("h_max", 500) * inner_cfg.get("batch_size", 8) * cfg["model"]["block_size"]
+    )
     groups: dict[tuple[str, int], list] = {}
     for entry in accepted:
         groups.setdefault((entry[3]["username"], entry[3]["start_step"]), []).append(entry)
     accepted, absorbed = [], []
     for group in groups.values():
         if len(group) == 1:
-            accepted.append(group[0])
+            pr, vec, w, m = group[0]
+            if credit == "sum_distinct":
+                m = {**m, "tokens": _capped_tokens(m, round_cap)}
+            accepted.append((pr, vec, w, m))
             continue
         toks = [max(float(e[3].get("tokens", 0)), 1.0) for e in group]
         vec = sum(t * e[1] for t, e in zip(toks, group)) / sum(toks)
         best = max(group, key=lambda e: e[3].get("tokens", 0))
-        accepted.append((best[0], vec, best[2], best[3]))
+        best_meta = best[3]
+        if credit == "sum_distinct":
+            best_meta = {**best_meta, "tokens": _distinct_credit(group, round_cap)}
+        accepted.append((best[0], vec, best[2], best_meta))
         absorbed += [(e[0], e[3]) for e in group if e[0] is not best[0]]
 
     if accepted:

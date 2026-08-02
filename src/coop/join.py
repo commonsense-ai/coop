@@ -113,6 +113,7 @@ def main():
             skip,
             dataset=cfg["data"].get("hf_dataset", "roneneldan/TinyStories"),
             text_field=cfg["data"].get("text_field", "text"),
+            config=cfg["data"].get("hf_config"),
         )
         tokenize_file(load_tokenizer(str(tok_path)), txt, str(shard))
 
