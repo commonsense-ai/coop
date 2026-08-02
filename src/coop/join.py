@@ -57,11 +57,11 @@ def corpus_fingerprint(dcfg: dict) -> str:
     return hashlib.sha256(ident.encode()).hexdigest()[:8]
 
 
-def config_changed(repo: str, work: Path, current: str) -> bool:
-    """True when the coordinator's run.yaml differs from what this worker started with.
+def config_changed(repo: str, work: Path, current: str, path: str = "config/run.yaml") -> bool:
+    """True when the coordinator's run config differs from what this worker started with.
     Fetch failures count as unchanged: never restart on a network blip."""
     try:
-        latest = fetch_raw(repo, "config/run.yaml", work / "run.latest.yaml").read_text()
+        latest = fetch_raw(repo, path, work / "run.latest.yaml").read_text()
     except OSError:
         return False
     return latest != current
@@ -92,6 +92,7 @@ def main():
     ap.add_argument(
         "--repo", default=DEFAULT_REPO, help="GitHub repo holding the coordinator config"
     )
+    ap.add_argument("--run-config", default="config/run.yaml", help="which run to train")
     ap.add_argument("--workdir", default="~/.coop")
     ap.add_argument("--docs", type=int, default=20000, help="TinyStories docs in your shard")
     ap.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
@@ -114,7 +115,7 @@ def main():
         raise SystemExit("no HF credentials: pass --hf-token or set HF_TOKEN (write scope)")
 
     work = Path(a.workdir).expanduser()
-    cfg_text = fetch_raw(a.repo, "config/run.yaml", work / "run.yaml").read_text()
+    cfg_text = fetch_raw(a.repo, a.run_config, work / "run.yaml").read_text()
     cfg = yaml.safe_load(cfg_text)
     tok_path = fetch_raw(a.repo, cfg["data"]["tokenizer"], work / "tokenizer.json")
 
@@ -169,7 +170,7 @@ def main():
             status.update(rounds_done=rnd, tokens_session=tokens_session)
             if a.rounds and rnd >= a.rounds:
                 break
-            if config_changed(a.repo, work, cfg_text):
+            if config_changed(a.repo, work, cfg_text, path=a.run_config):
                 # a new run (or retuned config) shipped: re-exec picks up everything —
                 # new model, tokenizer, shard, credit rules — with the same pid
                 log.info("coordinator config changed — restarting to adopt the new run")

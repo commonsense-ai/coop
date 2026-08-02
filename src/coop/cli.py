@@ -55,12 +55,111 @@ one-time setup — coop needs a free Hugging Face account:
 DEVICE_NAMES = {"mps": "Apple GPU", "cuda": "NVIDIA GPU", "cpu": "CPU"}
 
 
-def load_run_config(repo: str) -> dict:
-    HOME.mkdir(parents=True, exist_ok=True)
+SETTINGS = HOME / "settings.json"
+
+
+def read_settings() -> dict:
     try:
-        return yaml.safe_load(fetch_raw(repo, "config/run.yaml", HOME / "run.yaml").read_text())
+        return json.loads(SETTINGS.read_text())
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def write_settings(**kw) -> None:
+    HOME.mkdir(parents=True, exist_ok=True)
+    SETTINGS.write_text(json.dumps({**read_settings(), **kw}, indent=2))
+
+
+def run_config_path() -> str:
+    return read_settings().get("run_config", "config/run.yaml")
+
+
+def load_run_config(repo: str, path: str | None = None) -> dict:
+    HOME.mkdir(parents=True, exist_ok=True)
+    path = path or run_config_path()
+    try:
+        return yaml.safe_load(fetch_raw(repo, path, HOME / "run.yaml").read_text())
     except OSError as e:
         raise SystemExit(f"could not fetch the run config from github.com/{repo}: {e}") from e
+
+
+def load_runs(repo: str) -> list[dict]:
+    """The run menu. Repos without a registry present their single run.yaml."""
+    try:
+        raw = fetch_raw(repo, "config/runs.yaml", HOME / "runs.yaml").read_text()
+        return yaml.safe_load(raw)["runs"]
+    except Exception:
+        return [{"name": None, "config": "config/run.yaml", "status": "live", "blurb": ""}]
+
+
+def choose_run(runs: list[dict], name: str | None, stored: str | None, interactive: bool):
+    """Explicit name > remembered setting > picker (None) > the live run."""
+    live = [r for r in runs if r.get("status") == "live"]
+    if name:
+        for r in runs:
+            rn = r.get("name") or ""
+            if name in (rn, rn.split("-")[0]):
+                if r not in live:
+                    raise SystemExit(f"{rn} is complete — it no longer accepts training")
+                return r
+        known = ", ".join(str(r.get("name")) for r in runs)
+        raise SystemExit(f"unknown model {name!r} — available: {known}")
+    if stored:
+        for r in live:
+            if r["config"] == stored:
+                return r
+    if interactive and len(runs) > 1:
+        return None  # caller shows the arrow-key picker
+    if not live:
+        raise SystemExit("no run is accepting training right now — check the repo")
+    return live[0]
+
+
+def pick(rows: list[str], enabled: list[bool]) -> int:
+    """Arrow-key picker (↑/↓ or j/k, enter). Falls back to a numbered prompt on
+    terminals without raw mode."""
+    idx = enabled.index(True)
+    n = len(rows)
+
+    def render(first: bool = False) -> None:
+        if not first:
+            sys.stdout.write(f"\x1b[{n}F")
+        for i, r in enumerate(rows):
+            line = f"  {'>' if i == idx else ' '} {r}"
+            sys.stdout.write("\x1b[2K" + (f"\x1b[7m{line}\x1b[0m" if i == idx else line) + "\n")
+        sys.stdout.flush()
+
+    try:
+        import termios
+        import tty
+
+        render(first=True)
+        fd = sys.stdin.fileno()
+        old = termios.tcgetattr(fd)
+        try:
+            tty.setcbreak(fd)
+            while True:
+                ch = sys.stdin.read(1)
+                if ch == "\x1b" and sys.stdin.read(1) == "[":
+                    ch = {"A": "k", "B": "j"}.get(sys.stdin.read(1), "")
+                if ch == "k":
+                    idx = (idx - 1) % n
+                elif ch == "j":
+                    idx = (idx + 1) % n
+                elif ch in ("\r", "\n") and enabled[idx]:
+                    return idx
+                elif ch == "\x03":
+                    raise KeyboardInterrupt
+                render()
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old)
+    except (ImportError, OSError):
+        for i, r in enumerate(rows):
+            print(f"  {i + 1}. {r}")
+        while True:
+            choice = input("pick a number: ").strip()
+            if choice.isdigit() and 1 <= int(choice) <= n and enabled[int(choice) - 1]:
+                return int(choice) - 1
 
 
 def model_from_words(words: list[str]) -> str | None:
@@ -69,14 +168,6 @@ def model_from_words(words: list[str]) -> str | None:
     if len(rest) > 1:
         raise SystemExit(f"too many arguments: {' '.join(words)}")
     return rest[0] if rest else None
-
-
-def resolve_model(name: str | None, cfg: dict) -> str:
-    repo = cfg["repos"]["model"]
-    short = repo.split("/")[-1]
-    if name in (None, repo, short, short.split("-")[0]):
-        return repo
-    raise SystemExit(f"unknown model {name!r}: this run trains {repo} (just say `coop start`)")
 
 
 def read_pid() -> int | None:
@@ -181,12 +272,26 @@ def ensure_token(explicit: str | None) -> str:
 
 
 def cmd_start(a: argparse.Namespace) -> None:
-    cfg = load_run_config(a.repo)
-    model_repo = resolve_model(a.model, cfg)
     pid = read_pid()
     if pid and alive(pid):
         print(f"already contributing (pid {pid}) — `coop status` to check on it")
         return
+    runs = load_runs(a.repo)
+    stored = None if a.choose else read_settings().get("run_config")
+    sel = choose_run(runs, a.model, stored, interactive=sys.stdin.isatty())
+    if sel is None:
+        print("which model do you want to train?  (arrows + enter)\n")
+        live = [r.get("status") == "live" for r in runs]
+        rows = [
+            f"{r.get('name') or 'the current run':<18}"
+            f"{r.get('blurb', '')}{'' if ok else '  [complete]'}"
+            for r, ok in zip(runs, live)
+        ]
+        sel = runs[pick(rows, live)]
+        print()
+    write_settings(run_config=sel["config"], run_name=sel.get("name"))
+    cfg = load_run_config(a.repo, sel["config"])
+    model_repo = cfg["repos"]["model"]
     user = ensure_token(a.hf_token)
     env = os.environ | {
         # daemon log: coop's own lines with timestamps, no progress bars
@@ -195,6 +300,7 @@ def cmd_start(a: argparse.Namespace) -> None:
         "COOP_LOG_TS": "1",
     }
     cmd = [sys.executable, "-m", "coop.join", "--workdir", str(HOME), "--repo", a.repo]
+    cmd += ["--run-config", sel["config"]]
     if a.device:
         cmd += ["--device", a.device]
     if a.rounds:
@@ -216,6 +322,7 @@ def cmd_start(a: argparse.Namespace) -> None:
     device = a.device or pick_device()
     hw = DEVICE_NAMES.get(device, device)
     print(f"training {model_repo} as {user} on your {hw} (pid {p.pid})")
+    print("(switch models any time: coop stop, then coop start --choose)")
     if a.rounds:
         print(f"will stop by itself after {a.rounds} round{'s' if a.rounds > 1 else ''}")
     print("the first round downloads the model and builds your data shard — that one-time")
@@ -390,6 +497,7 @@ def main() -> None:
     st = sub.add_parser("start", help="start contributing in the background")
     st.add_argument("words", nargs="*", metavar="[training] [model]")
     st.add_argument("--hf-token", default=None, help="Hugging Face write token (first run only)")
+    st.add_argument("--choose", action="store_true", help="re-open the model picker")
     st.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
     st.add_argument(
         "--rounds", type=int, default=0, help="stop after N rounds (default: run until coop stop)"

@@ -17,14 +17,52 @@ def test_model_from_words_strips_the_training_noun():
         cli.model_from_words(["tinystories", "gpt5"])
 
 
-def test_resolve_model_accepts_aliases():
-    for name in (None, "tinystories", "tinystories-15m", "commonsense-ai/tinystories-15m"):
-        assert cli.resolve_model(name, CFG) == "commonsense-ai/tinystories-15m"
+RUNS = [
+    {"name": "fineweb-150m", "config": "config/run.yaml", "status": "live", "blurb": "145M"},
+    {"name": "tinystories-15m", "config": "config/stage1.yaml", "status": "complete", "blurb": ""},
+]
 
 
-def test_resolve_model_rejects_unknown():
+def test_choose_run_by_name_and_alias():
+    assert cli.choose_run(RUNS, "fineweb", None, False)["name"] == "fineweb-150m"
+    assert cli.choose_run(RUNS, "fineweb-150m", None, False)["name"] == "fineweb-150m"
+
+
+def test_choose_run_refuses_completed_runs():
+    with pytest.raises(SystemExit, match="complete"):
+        cli.choose_run(RUNS, "tinystories", None, False)
+
+
+def test_choose_run_rejects_unknown():
     with pytest.raises(SystemExit, match="unknown model"):
-        cli.resolve_model("gpt5", CFG)
+        cli.choose_run(RUNS, "gpt5", None, False)
+
+
+def test_choose_run_remembers_setting_and_recovers_from_stale_one():
+    assert cli.choose_run(RUNS, None, "config/run.yaml", True)["name"] == "fineweb-150m"
+    assert cli.choose_run(RUNS, None, "config/gone.yaml", True) is None  # -> picker
+
+
+def test_choose_run_non_interactive_defaults_to_the_live_run():
+    assert cli.choose_run(RUNS, None, None, False)["name"] == "fineweb-150m"
+
+
+def test_load_runs_falls_back_to_single_run(monkeypatch):
+    def boom(repo, path, dest, ref="main"):
+        raise OSError("no registry")
+
+    monkeypatch.setattr(cli, "fetch_raw", boom)
+    runs = cli.load_runs("o/r")
+    assert runs[0]["config"] == "config/run.yaml" and runs[0]["status"] == "live"
+
+
+def test_settings_roundtrip_and_merge(tmp_path, monkeypatch):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "SETTINGS", tmp_path / "settings.json")
+    assert cli.read_settings() == {}
+    cli.write_settings(run_config="config/run.yaml")
+    cli.write_settings(run_name="fineweb-150m")
+    assert cli.read_settings() == {"run_config": "config/run.yaml", "run_name": "fineweb-150m"}
 
 
 def test_alive():
