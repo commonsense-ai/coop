@@ -1,12 +1,50 @@
+from pathlib import Path
+
 import numpy as np
+import pytest
 import torch
 
+from coop import data
 from coop.data import EOT, iter_batches, load_tokenizer, tokenize_file, train_tokenizer
 
 CORPUS = (
     "Once upon a time there was a tiny robot. "
     "The robot liked to read stories about dragons and stars. "
 ) * 50
+
+
+class FakeStream:
+    def __init__(self, docs):
+        self.docs = docs
+
+    def skip(self, n):
+        return FakeStream(self.docs[n:])
+
+    def take(self, n):
+        return self.docs[:n]
+
+
+def test_fetch_docs_uses_configured_dataset_and_field(tmp_path, monkeypatch):
+    import datasets
+
+    seen = {}
+
+    def fake_load(name, split, streaming):
+        seen["name"], seen["split"] = name, split
+        return FakeStream([{"content": "hello"}, {"content": "world"}])
+
+    monkeypatch.setattr(datasets, "load_dataset", fake_load)
+    out = data.fetch_docs(str(tmp_path / "s.txt"), 2, dataset="org/corpus", text_field="content")
+    assert seen == {"name": "org/corpus", "split": "train"}
+    assert "hello" in Path(out).read_text()
+
+
+def test_fetch_docs_raises_past_dataset_end(tmp_path, monkeypatch):
+    import datasets
+
+    monkeypatch.setattr(datasets, "load_dataset", lambda *a, **k: FakeStream([{"text": "x"}]))
+    with pytest.raises(ValueError, match="past the end"):
+        data.fetch_docs(str(tmp_path / "s.txt"), 5, skip=10)
 
 
 def test_tokenizer_roundtrip(tmp_path):

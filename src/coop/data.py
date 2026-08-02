@@ -42,19 +42,26 @@ def tokenize_file(tok: Tokenizer, text_path: str, out_bin: str) -> int:
     return len(ids)
 
 
-def fetch_tinystories(out_txt: str, n_docs: int, skip: int = 0, split: str = "train") -> str:
-    """Stream a worker-sized shard; `skip` lets workers pick disjoint slices."""
+def fetch_docs(
+    out_txt: str,
+    n_docs: int,
+    skip: int = 0,
+    split: str = "train",
+    dataset: str = "roneneldan/TinyStories",
+    text_field: str = "text",
+) -> str:
+    """Stream a worker-sized shard from any HF text dataset; `skip` picks disjoint slices."""
     from datasets import load_dataset
 
-    ds = load_dataset("roneneldan/TinyStories", split=split, streaming=True)
+    ds = load_dataset(dataset, split=split, streaming=True)
     n = 0
     with open(out_txt, "w") as f:
         for ex in ds.skip(skip).take(n_docs):
-            f.write(ex["text"].strip() + f"\n{EOT}\n")
+            f.write(ex[text_field].strip() + f"\n{EOT}\n")
             n += 1
     if n == 0:
         # fail here with a clear cause, not later as "cannot mmap an empty file"
-        raise ValueError(f"no {split} docs at skip={skip}: past the end of the dataset")
+        raise ValueError(f"no {split} docs in {dataset} at skip={skip}: past the end")
     return out_txt
 
 
@@ -72,8 +79,10 @@ def iter_batches(token_bin: str, batch: int, block: int, seed: int = 0):
 
 
 def main():
-    ap = argparse.ArgumentParser(description="fetch and tokenize a TinyStories shard")
+    ap = argparse.ArgumentParser(description="fetch and tokenize a text-dataset shard")
     ap.add_argument("--out-dir", default="data")
+    ap.add_argument("--dataset", default="roneneldan/TinyStories")
+    ap.add_argument("--text-field", default="text")
     ap.add_argument("--docs", type=int, default=20000)
     ap.add_argument("--skip", type=int, default=0)
     ap.add_argument("--split", default="train")
@@ -87,7 +96,14 @@ def main():
     out = Path(a.out_dir)
     out.mkdir(parents=True, exist_ok=True)
     tag = f"{a.skip}_{a.docs}" if a.split == "train" else f"{a.split}_{a.skip}_{a.docs}"
-    txt = fetch_tinystories(str(out / f"shard_{tag}.txt"), a.docs, a.skip, a.split)
+    txt = fetch_docs(
+        str(out / f"shard_{tag}.txt"),
+        a.docs,
+        a.skip,
+        a.split,
+        dataset=a.dataset,
+        text_field=a.text_field,
+    )
     if a.train_tokenizer:
         tok = train_tokenizer([txt], a.vocab, a.tokenizer)
     else:
