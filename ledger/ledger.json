@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 149,
+      "submissions": 150,
       "tier": "gpu",
-      "tokens": 298463232
+      "tokens": 300511232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside and collect stones. One day, she found a pretty stone and put it in her pocket. \n\nAs she was walking, she saw a big dog. The dog barked at her and Lily thought it was a toy. She picked it up and realized that the stone was a toy dog. \n\n\"Hey, dog!\" said Lily. \"Give it back!\" She pulled the dog's stone back, but this time it didn't move. She smiled and continued her search for more stones. \n\nSuddenly, a big",
-    "step": 162,
-    "val_loss": 2.7907
+    "sample": "Once upon a time, there was a little girl named Lily. Lily loved to play with her building blocks and dolls. One day, she was playing with her blocks when her brother came in and knocked them down. \n\nLily felt sad because she was her brother and did not want to understand why she could explain. Her brother felt bad and went over to play. Lily said, \"Please stop crying and play with me to play.\" \n\nHer brother decided to be nice and said, \"Sure, Lily. You're my best friend.\" Lily felt happy and shared her blocks with her brother. They played together",
+    "step": 163,
+    "val_loss": 2.7855
   },
-  "step": 162,
-  "updated": "2026-08-02T02:54:12+00:00"
+  "step": 163,
+  "updated": "2026-08-02T03:09:15+00:00"
 }
