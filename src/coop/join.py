@@ -78,7 +78,7 @@ def main():
         os.environ["HF_TOKEN"] = a.hf_token
     # imported after the token is in the env so hubio picks it up
     from coop import hubio
-    from coop.data import fetch_tinystories, load_tokenizer, tokenize_file
+    from coop.data import fetch_docs, load_tokenizer, tokenize_file
     from coop.trainer import run_worker
 
     user = hubio.whoami()
@@ -97,7 +97,13 @@ def main():
     if not shard.exists():
         log.info("building your data shard (docs %d..%d) ...", skip, skip + a.docs)
         status.update(phase="building your data shard (one-time)")
-        txt = fetch_tinystories(str(work / "shard.txt"), a.docs, skip)
+        txt = fetch_docs(
+            str(work / "shard.txt"),
+            a.docs,
+            skip,
+            dataset=cfg["data"].get("hf_dataset", "roneneldan/TinyStories"),
+            text_field=cfg["data"].get("text_field", "text"),
+        )
         tokenize_file(load_tokenizer(str(tok_path)), txt, str(shard))
 
     device = a.device or pick_device()
