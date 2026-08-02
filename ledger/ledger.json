@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 150,
+      "submissions": 151,
       "tier": "gpu",
-      "tokens": 300511232
+      "tokens": 302559232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. Lily loved to play with her building blocks and dolls. One day, she was playing with her blocks when her brother came in and knocked them down. \n\nLily felt sad because she was her brother and did not want to understand why she could explain. Her brother felt bad and went over to play. Lily said, \"Please stop crying and play with me to play.\" \n\nHer brother decided to be nice and said, \"Sure, Lily. You're my best friend.\" Lily felt happy and shared her blocks with her brother. They played together",
-    "step": 163,
-    "val_loss": 2.7855
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play with her toys in the living room. One day, her mom came into the room and said, \"Lily, pretend we are having a great time today. Lions are good for you, even if they fit in the house!\"\n\nLily was so excited to play with her toys at the house. She ran around and pretended to was a princess. But then, she accidentally broke the same picture. She was very upset and cried. Her mom tried to put it away, but it was too late.\n\nIn the",
+    "step": 164,
+    "val_loss": 2.7897
   },
-  "step": 163,
-  "updated": "2026-08-02T03:09:15+00:00"
+  "step": 164,
+  "updated": "2026-08-02T03:24:18+00:00"
 }
