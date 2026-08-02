@@ -218,7 +218,8 @@ def cmd_start(a: argparse.Namespace) -> None:
     print(f"training {model_repo} as {user} on your {hw} (pid {p.pid})")
     if a.rounds:
         print(f"will stop by itself after {a.rounds} round{'s' if a.rounds > 1 else ''}")
-    print("the first round downloads the model and builds your data shard (a few minutes)")
+    print("the first round downloads the model and builds your data shard — that one-time")
+    print("prep can take a while for big datasets; `coop status` always shows the phase")
     print("  coop status    how it's going")
     print("  coop logs -f   watch it work")
     print("  coop stop      stop contributing")

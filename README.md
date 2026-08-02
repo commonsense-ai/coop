@@ -9,9 +9,9 @@ Hugging Face and GitHub Actions.
 
 ## Status
 
-Training is live. As of 2026-07-31: outer step 19, validation loss **2.88** (random
-init starts at 9.01), **29M tokens** contributed — ~10% of the ~300M-token Stage 1
-target. Current numbers and sample output:
+**Stage 2 is live**: a ~145M-param model pretraining from scratch on FineWeb-Edu.
+Stage 1 (15M on TinyStories) completed past its Chinchilla-optimal budget — proof
+that the whole mechanism works. Current numbers and sample output:
 [leaderboard](https://github.com/commonsense-ai/coop/blob/ledger/LEADERBOARD.md).
 
 The full loop is production-proven, not just designed: multiple volunteers on
@@ -27,11 +27,11 @@ tick.
 DiLoCo-style low-communication data parallelism:
 
 1. **Workers** (you) download the current checkpoint from the
-   [HF model repo](https://huggingface.co/commonsense-ai/tinystories-15m),
-   run `H` local AdamW steps on a TinyStories shard, and compute a
+   [HF model repo](https://huggingface.co/commonsense-ai/fineweb-150m),
+   run `H` local AdamW steps on a personal data shard, and compute a
    **pseudo-gradient**: `delta = theta_outer - theta_local`.
 2. **Submission** is a pull request against a public
-   [HF dataset repo](https://huggingface.co/datasets/commonsense-ai/tinystories-15m-inbox)
+   [HF dataset repo](https://huggingface.co/datasets/commonsense-ai/fineweb-150m-inbox)
    (the "gradient inbox"), opened with `create_commit(create_pr=True)`. Any free HF
    account with a write token can submit; the maintainer grants no permissions.
 3. **The aggregator** is a GitHub Actions cron job (scheduled every 15 min;
@@ -49,10 +49,21 @@ DiLoCo-style low-communication data parallelism:
 Weights and optimizer state live **only** on Hugging Face (safetensors). Git holds
 code, config, and the contributor ledger.
 
-## Stage 1
+## Stage 2 (current run)
 
-~15M parameter decoder-only transformer (6 layers, 6 heads, d=396, 512 context,
-8k byte-level BPE vocab, tied embeddings) on TinyStories. It trains on a laptop CPU.
+~145M parameter decoder-only transformer (12 layers, 14 heads, d=896, 1024 context,
+32k byte-level BPE vocab, tied embeddings) on
+[FineWeb-Edu](https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu) — real
+educational web text. GPUs and Apple Silicon pull their weight here; plain CPUs are
+better suited to CPU-tier work (see [CONTRIBUTING.md](CONTRIBUTING.md)).
+
+## Stage 1 (complete)
+
+The proof run: a 15M-param model pretrained past its Chinchilla-optimal budget on
+TinyStories by volunteers in six days, val loss 9.01 → 2.8. It stays usable forever —
+[commonsense-ai/tinystories-15m](https://huggingface.co/commonsense-ai/tinystories-15m)
+has the weights, the model card, and a working load-and-generate snippet. The final
+stage-1 leaderboard is archived as `LEADERBOARD-stage1.md` on the ledger branch.
 
 ## Donate compute
 
