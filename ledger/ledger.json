@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 173,
+      "submissions": 174,
       "tier": "gpu",
-      "tokens": 347615232
+      "tokens": 349663232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little dog named Max. Max was very happy and loved to play with his toys. One day, Max went to the park to play with his ball. He was having so much fun, but he was also very shy.\n\nMax saw a little girl named Lily. \"Hi Lily, what's wrong?\" Max asked. \"I lost my ball,\" Lily replied. \"Let's share it,\" Max said. They played together and had a lot of fun.\n\nAfter playing, Max and Lily decided to take turns playing with their toys. They laughed and had a",
-    "step": 186,
-    "val_loss": 2.7896
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the sunshine and run around with her friends. One day, Lily's mommy asked her to put on her uniform so she wouldn't be messy. \n\nLily tried and tried, but she couldn't do it right. She felt very sad. Her mommy asked her why she didn't just smile at her for a uniform, but Lily didn't listen. She just wanted to keep playing. \n\nLater that day, Lily's uniform got dirty and she had to wear it. She didn't like it because it was dirty",
+    "step": 187,
+    "val_loss": 2.8133
   },
-  "step": 186,
-  "updated": "2026-08-02T17:46:11+00:00"
+  "step": 187,
+  "updated": "2026-08-02T18:45:57+00:00"
 }
