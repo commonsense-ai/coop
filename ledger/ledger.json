@@ -17,23 +17,23 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 160,
+      "submissions": 161,
       "tier": "gpu",
-      "tokens": 320991232
+      "tokens": 323039232
     },
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 30,
+      "submissions": 31,
       "tier": "gpu",
-      "tokens": 32063488
+      "tokens": 34111488
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She had a small puppy named Max who was very loyal. They loved to play together every day. One day, Lily and Max went for a walk in the park. \n\nAs they walked, Lily saw a big tree and ran to it. Max said, \"I want to climb that tree!\" But Lily was stubborn and said, \"No, Max! That tree is too big for us!\" \n\nMax tried to climb the tree, but he was too tall and heavy. Lily started to cry and Max tried to get up the tree.",
-    "step": 173,
-    "val_loss": 2.2933
+    "sample": "Once upon a time, there was a little girl named Lily. She had a very special kind and special toy called a big, blue box. One day, Lily's mommy told her they were going on a trip to the beach. Lily was excited and said, \"I love to go on adventures.\"\n\nAs they drove to the beach, Lily saw a big boat on the water. She wanted to go on it, but her mommy said it was too far away. Lily was sad, but she knew she had to be careful.\n\nAs they continued to walk, Lily's mommy asked her a question",
+    "step": 174,
+    "val_loss": 2.1616
   },
-  "step": 173,
-  "updated": "2026-08-02T05:24:50+00:00"
+  "step": 174,
+  "updated": "2026-08-02T05:40:04+00:00"
 }
