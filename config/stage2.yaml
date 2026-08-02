@@ -31,6 +31,7 @@ inner:
   weight_decay: 0.1
   grad_clip: 1.0
   quantize: int4       # ~75MB per submission instead of ~150MB at int8
+  accumulate_rounds: true  # one refreshed PR per user per step: bounds tick downloads
 
 outer:
   lr: 0.7

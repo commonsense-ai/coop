@@ -125,6 +125,17 @@ def open_pr(dataset_repo: str, operations: list[CommitOperationAdd], message: st
     )
 
 
+def update_pr(dataset_repo: str, pr_num: int, operations: list[CommitOperationAdd], message: str):
+    """Replace files on an existing open PR (raises if the PR was closed meanwhile)."""
+    return api().create_commit(
+        repo_id=dataset_repo,
+        repo_type="dataset",
+        operations=operations,
+        commit_message=message,
+        revision=f"refs/pr/{pr_num}",
+    )
+
+
 def merge_or_close_pr(
     dataset_repo: str, pr_num: int, merge: bool = False, comment: str | None = None
 ) -> None:

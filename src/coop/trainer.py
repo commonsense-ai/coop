@@ -28,6 +28,7 @@ def run_worker(
     status=None,
     stop=None,
     username: str | None = None,
+    accumulator=None,
 ) -> tuple[Path | None, Path | None]:
     inner = cfg["inner"]
     if status:
@@ -79,6 +80,7 @@ def run_worker(
         return None, None  # stopped before any training: nothing worth submitting
 
     delta = {k: (theta_outer[k] - v.detach().cpu()).float() for k, v in model.named_parameters()}
+    raw_delta = delta  # accumulation averages float deltas; quantize only per upload
     meta = {
         # a per-round whoami() once flaked into "anonymous" mid-run; resolve identity
         # once at startup (join does) and thread it through instead
@@ -115,7 +117,10 @@ def run_worker(
     if do_submit:
         if status:
             status.update(phase="submitting")
-        info = submit.submit(cfg, str(delta_path), meta, dry_run=dry_run)
+        if accumulator is not None and not dry_run:
+            info = submit.submit_accumulated(cfg, accumulator, raw_delta, meta)
+        else:
+            info = submit.submit(cfg, str(delta_path), meta, dry_run=dry_run)
         url = getattr(info, "pr_url", None)
         if status and url:
             status.update(last_pr=str(url))
@@ -136,6 +141,7 @@ def main():
     ap.add_argument("--pause", type=int, default=60, help="retry delay after a failed round")
     a = ap.parse_args()
     cfg = load_config(a.config)
+    acc = submit.StepAccumulator() if cfg["inner"].get("accumulate_rounds") else None
     rnd, h_next = 0, None
     while True:
         try:
@@ -148,6 +154,7 @@ def main():
                 do_submit=not a.no_submit,
                 dry_run=a.dry_run,
                 h_override=h_next,
+                accumulator=acc,
             )
             # Rounds run back-to-back: each re-resolves the head checkpoint, and
             # same-user same-step submissions token-weight merge into one vote, so

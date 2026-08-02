@@ -14,6 +14,7 @@ import signal
 import threading
 import time
 import urllib.request
+import uuid
 from pathlib import Path
 
 import torch
@@ -37,6 +38,15 @@ def fetch_raw(repo: str, path: str, dest: Path, ref: str = "main") -> Path:
 
 # roneneldan/TinyStories train rows; config data.train_docs overrides at runtime
 TRAIN_DOCS = 2_119_719
+
+
+def machine_seed(work: Path) -> int:
+    """Stable per-machine seed base: a user's machines must train different batches,
+    or their merged submissions carry duplicated signal."""
+    p = work / "machine-id"
+    if not p.exists():
+        p.write_text(uuid.uuid4().hex)
+    return int(p.read_text()[:8], 16)
 
 
 def derive_skip(username: str, docs: int = 20000, total_docs: int = TRAIN_DOCS) -> int:
@@ -77,7 +87,7 @@ def main():
     if a.hf_token:
         os.environ["HF_TOKEN"] = a.hf_token
     # imported after the token is in the env so hubio picks it up
-    from coop import hubio
+    from coop import hubio, submit
     from coop.data import fetch_docs, load_tokenizer, tokenize_file
     from coop.trainer import run_worker
 
@@ -114,6 +124,8 @@ def main():
     stop = threading.Event()
     signal.signal(signal.SIGTERM, lambda *_: stop.set())
 
+    seed_base = machine_seed(work)
+    acc = submit.StepAccumulator() if cfg["inner"].get("accumulate_rounds") else None
     rnd, h_next, tokens_session = 0, None, 0
     while not stop.is_set():
         try:
@@ -122,11 +134,12 @@ def main():
                 str(shard),
                 out_dir=str(work / "out"),
                 device=device,
-                seed=rnd,
+                seed=seed_base + rnd,
                 h_override=h_next,
                 status=status,
                 stop=stop,
                 username=user,
+                accumulator=acc,
             )
             if meta_path is None:  # stopped before the round trained anything
                 break
