@@ -11,6 +11,7 @@ import json
 import logging
 import os
 import signal
+import sys
 import threading
 import time
 import urllib.request
@@ -47,6 +48,23 @@ def machine_seed(work: Path) -> int:
     if not p.exists():
         p.write_text(uuid.uuid4().hex)
     return int(p.read_text()[:8], 16)
+
+
+def corpus_fingerprint(dcfg: dict) -> str:
+    """Shard files are keyed by dataset+tokenizer identity: a run change must never
+    silently reuse a shard tokenized for a different run."""
+    ident = f"{dcfg.get('hf_dataset')}|{dcfg.get('hf_config')}|{dcfg.get('tokenizer')}"
+    return hashlib.sha256(ident.encode()).hexdigest()[:8]
+
+
+def config_changed(repo: str, work: Path, current: str) -> bool:
+    """True when the coordinator's run.yaml differs from what this worker started with.
+    Fetch failures count as unchanged: never restart on a network blip."""
+    try:
+        latest = fetch_raw(repo, "config/run.yaml", work / "run.latest.yaml").read_text()
+    except OSError:
+        return False
+    return latest != current
 
 
 def derive_skip(username: str, docs: int = 20000, total_docs: int = TRAIN_DOCS) -> int:
@@ -96,14 +114,15 @@ def main():
         raise SystemExit("no HF credentials: pass --hf-token or set HF_TOKEN (write scope)")
 
     work = Path(a.workdir).expanduser()
-    cfg = yaml.safe_load(fetch_raw(a.repo, "config/run.yaml", work / "run.yaml").read_text())
+    cfg_text = fetch_raw(a.repo, "config/run.yaml", work / "run.yaml").read_text()
+    cfg = yaml.safe_load(cfg_text)
     tok_path = fetch_raw(a.repo, cfg["data"]["tokenizer"], work / "tokenizer.json")
 
     status = StatusFile(work / STATUS_FILENAME)
     status.update(user=user, phase="starting", rounds_target=a.rounds or None)
 
     skip = derive_skip(user, docs=a.docs, total_docs=cfg["data"].get("train_docs", TRAIN_DOCS))
-    shard = work / f"shard_{skip}_{a.docs}.bin"
+    shard = work / f"shard_{corpus_fingerprint(cfg['data'])}_{skip}_{a.docs}.bin"
     if not shard.exists():
         log.info("building your data shard (docs %d..%d) ...", skip, skip + a.docs)
         status.update(phase="building your data shard (one-time)")
@@ -150,6 +169,12 @@ def main():
             status.update(rounds_done=rnd, tokens_session=tokens_session)
             if a.rounds and rnd >= a.rounds:
                 break
+            if config_changed(a.repo, work, cfg_text):
+                # a new run (or retuned config) shipped: re-exec picks up everything —
+                # new model, tokenizer, shard, credit rules — with the same pid
+                log.info("coordinator config changed — restarting to adopt the new run")
+                status.update(phase="new run detected — restarting to join it")
+                os.execv(sys.executable, [sys.executable, "-m", "coop.join", *sys.argv[1:]])
             # back-to-back rounds; see trainer.main for why waiting is the only waste
             h_next = cfg["inner"].get("h_max", 500)
         except KeyboardInterrupt:
