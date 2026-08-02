@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **176** — updated 2026-08-02T08:09:27+00:00.
+Outer step **177** — updated 2026-08-02T09:02:15+00:00.
 
-Val loss at step 176: **2.3765** — sample:
+Val loss at step 177: **2.5921** — sample:
 
-> Once upon a time, there was a little girl named Lily. She loved to play outside in the sunshine. One day, she saw a beautiful purple flower. It was so pretty and attractive that she ran to it to show off to her mom. Her mom smiled and said, "Wow, Lily! This flower is very pretty. You did a great job." Lily was happy that she could make more things with her mom's help. She decided to make a flower as a flower grow, just like her mom's. When she was finished, she ran outside to play again. She found a purple flower
+> Once upon a time, there was a little girl named Lily. She was very stubborn and never wanted to do her own. One day, Lily's mom asked her to help load the bucket into the car. Lily was excited to help and she started to load the bucket into the garage. After a while, Lily was having trouble. She felt happy and proud of herself for being so wise. Suddenly, Lily's mom called her and said, "Lily, it's time to come here! Watch my time!" Lily ran to the car and got off the driving. She drove past a big red car that
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,7 +12,7 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | miacx | gpu | 163 | 327,135,232 | 1.000 | 327,135,232 |
+| 1 | miacx | gpu | 164 | 329,183,232 | 1.000 | 329,183,232 |
 | 2 | naloxene | gpu | 31 | 34,111,488 | 1.000 | 34,111,488 |
 | 3 | ezshroom | gpu | 12 | 23,347,200 | 1.000 | 23,347,200 |
 | 4 | anonymous | cpu | 1 | 581,632 | 1.000 | 581,632 |
