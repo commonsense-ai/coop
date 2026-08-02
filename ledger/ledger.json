@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 174,
+      "submissions": 175,
       "tier": "gpu",
-      "tokens": 349663232
+      "tokens": 351711232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the sunshine and run around with her friends. One day, Lily's mommy asked her to put on her uniform so she wouldn't be messy. \n\nLily tried and tried, but she couldn't do it right. She felt very sad. Her mommy asked her why she didn't just smile at her for a uniform, but Lily didn't listen. She just wanted to keep playing. \n\nLater that day, Lily's uniform got dirty and she had to wear it. She didn't like it because it was dirty",
-    "step": 187,
-    "val_loss": 2.8133
+    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the grass. Her favorite thing to do was to jump over the ground. She jumped and danced around, feeling so free.\n\nAfter playing for a while, Lily's mom called out from the porch. She was sad because she didn't want to let her toys be safe. But Lily didn't want to upset because she was feeling miserable.\n\nHer mom noticed that she was upset and asked her what was wrong. Lily told her mom that she couldn't jump over the porch without her favorite color. Her mom",
+    "step": 188,
+    "val_loss": 2.8487
   },
-  "step": 187,
-  "updated": "2026-08-02T18:45:57+00:00"
+  "step": 188,
+  "updated": "2026-08-02T20:01:44+00:00"
 }
