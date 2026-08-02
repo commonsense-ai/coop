@@ -40,3 +40,10 @@ def test_fetch_raw(monkeypatch, tmp_path):
     p = join.fetch_raw("o/r", "config/run.yaml", tmp_path / "sub" / "run.yaml")
     assert p.read_text() == "data: 1"
     assert captured["url"] == "https://raw.githubusercontent.com/o/r/main/config/run.yaml"
+
+
+def test_machine_seed_stable_per_workdir_distinct_across(tmp_path):
+    a, b = tmp_path / "a", tmp_path / "b"
+    a.mkdir(), b.mkdir()
+    assert join.machine_seed(a) == join.machine_seed(a)  # persisted, stable
+    assert join.machine_seed(a) != join.machine_seed(b)  # two machines, two seeds

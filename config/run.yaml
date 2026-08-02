@@ -29,6 +29,7 @@ inner:               # worker: DiLoCo inner loop
   weight_decay: 0.1
   grad_clip: 1.0
   quantize: int8     # int8 | int4 | none
+  # accumulate_rounds: true  # one refreshed PR per user per step (stage 2 default)
 
 outer:               # aggregator: Nesterov outer step
   lr: 0.7
