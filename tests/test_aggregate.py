@@ -35,8 +35,9 @@ CFG = {
 
 
 class FakeHub:
-    def __init__(self, state, meta, pr_files):
+    def __init__(self, state, meta, pr_files, authors=None):
         self.state, self.meta, self.pr_files = state, meta, pr_files
+        self.authors = authors or {}
         self.uploaded = None
         self.closed = {}
         self.files = {}
@@ -54,7 +55,7 @@ class FakeHub:
         return None
 
     def list_open_prs(self, repo):
-        return [SimpleNamespace(num=n) for n in sorted(self.pr_files)]
+        return [SimpleNamespace(num=n, author=self.authors.get(n)) for n in sorted(self.pr_files)]
 
     def list_repo_files(self, repo, **kw):
         return []
@@ -85,6 +86,28 @@ def sub_meta(user, start_step, tier="gpu", quant="none"):
         "tier": tier,
         "quant": quant,
     }
+
+
+def test_username_stamped_from_pr_author(tmp_path):
+    torch.manual_seed(0)
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    direction = {k: 0.01 * torch.randn_like(v) for k, v in state.items()}
+    near = {k: v + 0.0005 * torch.randn_like(v) for k, v in direction.items()}
+    pr_files = {
+        1: write_submission(tmp_path, "spoof_s", direction, sub_meta("alice", 5)),  # claims alice
+        2: write_submission(tmp_path, "anon_a", near, sub_meta("anonymous", 5)),  # whoami flaked
+    }
+    hub = FakeHub(state, {"step": 5}, pr_files, authors={1: "mallory", 2: "miacx"})
+
+    run_tick(CFG, hub=hub, repo_root=str(tmp_path))
+
+    led = json.loads((tmp_path / "ledger" / "ledger.json").read_text())
+    # credit follows the authenticated PR author, not the self-reported field
+    assert "alice" not in led["contributors"]
+    assert "anonymous" not in led["contributors"]
+    assert led["contributors"]["mallory"]["tokens"] == 1000
+    assert led["contributors"]["miacx"]["tokens"] == 1000
+    assert sorted(hub.uploaded[1]["contributors"]) == ["mallory", "miacx"]
 
 
 def test_tick_end_to_end(tmp_path):

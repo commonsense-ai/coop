@@ -120,6 +120,7 @@ def main():
                 h_override=h_next,
                 status=status,
                 stop=stop,
+                username=user,
             )
             if meta_path is None:  # stopped before the round trained anything
                 break
