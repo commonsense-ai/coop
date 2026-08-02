@@ -17,23 +17,23 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 158,
+      "submissions": 159,
       "tier": "gpu",
-      "tokens": 316895232
+      "tokens": 318943232
     },
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 27,
+      "submissions": 28,
       "tier": "gpu",
-      "tokens": 25919488
+      "tokens": 27967488
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in the sunshine. One day, she saw a little bird with a broken wing. The bird could shoot its wings and flew away.\n\nLily wanted to help the bird. She asked her dad for help. Her dad put a bandage on the ground so it could fly again and be safe. Lily was happy that she could help the little bird.\n\nAfter a while, the bird could fly again and it would fly again. Lily wanted to help the bird when it came back. She knew that she had a brave",
-    "step": 171,
-    "val_loss": 2.8219
+    "sample": "Once upon a time, there was a little girl named Lily who loved to play with her toys. One day, she found a red ball and started to play with it. She threw it and it went roll around a little bug.\n\nLily's mom said, \"Lily, be careful with the big red ball. It can be dangerous.\"\n\nLily didn't listen and started to throw the ball too hard and it went back to Lily. She threw the ball and it went back to her mom.\n\n\"Mom, look what I did!\" she asked.\n\n\"I accidentally threw the ball",
+    "step": 172,
+    "val_loss": 2.5773
   },
-  "step": 171,
-  "updated": "2026-08-02T04:54:31+00:00"
+  "step": 172,
+  "updated": "2026-08-02T05:08:36+00:00"
 }
