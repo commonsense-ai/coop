@@ -38,6 +38,8 @@ outer:               # aggregator: Nesterov outer step
   min_cos: 0.0           # reject submissions anti-correlated with the clipped mean
   max_norm: 10.0         # per-submission L2 clip on the flattened delta
   max_val_regression: 0.5  # circuit breaker: discard any step that raises val loss this much
+  # probation_weight: 0.25  # vote influence of identities with no accepted history (credit
+  #                         # untouched); enable for runs worth attacking — planned for stage 2
 
 staleness:
   tau_max: 8         # linear ramp to zero; submissions older than 8 outer steps are dropped

@@ -96,6 +96,14 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
         log.info("nothing to do (%.1fs)", time.time() - t0)
         return None
 
+    led_path = Path(repo_root) / "ledger" / "ledger.json"
+    led = ledger.load_ledger(led_path)
+    # Probation: identities with no accepted history get their vote influence scaled
+    # (credit is untouched). A fresh Sybil army votes at probation_weight each, so it
+    # cannot steer the gate reference or the trimmed mean. 1.0 (default) disables.
+    prob_w = out_cfg.get("probation_weight", 1.0)
+    proven = {u for u, e in led["contributors"].items() if e.get("submissions", 0) > 0}
+
     base_files = set(hub.list_repo_files(dataset_repo))
     accepted: list[tuple] = []  # (pr, vec, weight, meta)
     rejected: list[tuple] = []  # (pr, meta | None, reason)
@@ -123,6 +131,8 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
                 (pr, sub_meta, f"stale: from step {sub_meta['start_step']}, now {step}")
             )
             continue
+        if sub_meta["username"] not in proven:
+            w *= prob_w
         vec = robust.clip_norm(_flatten(delta, keys), out_cfg["max_norm"])
         accepted.append((pr, vec, w, sub_meta))
 
@@ -149,7 +159,7 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
         ws = [w for _, _, w, _ in accepted]
         # Clipping above bounds any single submission's pull on this reference, which is
         # what makes a plain weighted mean safe to gate against.
-        ref = sum(w * v for v, w in zip(vecs, ws)) / sum(ws)
+        ref = sum(w * v for v, w in zip(vecs, ws)) / max(sum(ws), 1e-12)
         keep = robust.cosine_gate(vecs, ref, out_cfg["min_cos"])
         gated = [entry for entry, k in zip(accepted, keep) if not k]
         accepted = [entry for entry, k in zip(accepted, keep) if k]
@@ -202,8 +212,6 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
             new_meta.pop("eval", None)
         hub.upload_checkpoint(model_repo, state, new_meta, opt_state=momentum)
 
-    led_path = Path(repo_root) / "ledger" / "ledger.json"
-    led = ledger.load_ledger(led_path)
     if evals and advanced:
         led["eval"] = {"step": step + 1, **evals}
     ledger.update_ledger(
