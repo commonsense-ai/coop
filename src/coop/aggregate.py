@@ -156,7 +156,7 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
         rejected += [(pr, m, "cosine gate: anti-correlated with cohort") for pr, _, _, m in gated]
 
     advanced = bool(accepted)
-    evals = None
+    evals, tripped = None, False
     if advanced:
         # Staleness weight scales each survivor: stale work still helps, just less.
         scaled = [v * w for _, v, w, _ in accepted]
@@ -174,6 +174,21 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
             state[k] = state[k] - lr * (mu * momentum[k] + d_agg[k])
 
         evals = _eval_checkpoint(cfg, state, hub)
+        # Circuit breaker: a cohort whose step damages val loss beyond the threshold
+        # is discarded wholesale — no upload, no credit, no reputation damage (blame
+        # is not attributable within a cohort). Eval failure never blocks (evals None).
+        prev_val = (meta.get("eval") or {}).get("val_loss")
+        max_reg = out_cfg.get("max_val_regression")
+        if None not in (max_reg, prev_val) and evals:
+            if evals["val_loss"] > prev_val + max_reg:
+                log.warning(
+                    "circuit breaker: val loss %.4f vs %.4f (+%.2f allowed) — step discarded",
+                    evals["val_loss"],
+                    prev_val,
+                    max_reg,
+                )
+                advanced, tripped = False, True
+    if advanced:
         new_meta = {
             **meta,
             "step": step + 1,
@@ -189,53 +204,62 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
 
     led_path = Path(repo_root) / "ledger" / "ledger.json"
     led = ledger.load_ledger(led_path)
-    if evals:
+    if evals and advanced:
         led["eval"] = {"step": step + 1, **evals}
     ledger.update_ledger(
         led,
-        [m for _, _, _, m in accepted],
+        [] if tripped else [m for _, _, _, m in accepted],
         step + 1 if advanced else step,
         rejected=[m for _, m, _ in rejected if m],
     )
     ledger.save_ledger(led, led_path)
     (Path(repo_root) / "LEADERBOARD.md").write_text(ledger.render_leaderboard(led))
 
+    discard_note = (
+        "Discarded: this cohort's outer step regressed validation loss past the safety "
+        "threshold, so the whole step was skipped. No credit and no penalty — resubmit "
+        "against the current checkpoint."
+    )
     for pr, _, _, m in accepted:
-        hub.merge_or_close_pr(
-            dataset_repo,
-            pr.num,
-            merge=False,
-            comment=f"Accepted into outer step {step + 1}: +{m['tokens']} tokens for "
-            f"{m['username']}. Closed without merging to keep the inbox small.",
+        comment = (
+            discard_note
+            if tripped
+            else f"Accepted into outer step {step + 1}: +{m['tokens']} tokens for "
+            f"{m['username']}. Closed without merging to keep the inbox small."
         )
+        hub.merge_or_close_pr(dataset_repo, pr.num, merge=False, comment=comment)
     for pr, _, reason in rejected:
         hub.merge_or_close_pr(dataset_repo, pr.num, merge=False, comment=f"Rejected ({reason}).")
     for pr, m in absorbed:
-        hub.merge_or_close_pr(
-            dataset_repo,
-            pr.num,
-            merge=False,
-            comment=f"Merged: averaged into {m['username']}'s step {m['start_step']} submission "
-            "(one vote per contributor per step); credit counts the largest single round.",
+        comment = (
+            discard_note
+            if tripped
+            else f"Merged: averaged into {m['username']}'s step {m['start_step']} submission "
+            "(one vote per contributor per step); credit counts the largest single round."
         )
+        hub.merge_or_close_pr(dataset_repo, pr.num, merge=False, comment=comment)
 
     wall = time.time() - t0
     log.info(
-        "tick done in %.1fs: step %d -> %d, %d accepted, %d rejected, %d merged",
+        "tick done in %.1fs: step %d -> %d, %d accepted, %d rejected, %d merged%s",
         wall,
         step,
         step + 1 if advanced else step,
-        len(accepted),
+        0 if tripped else len(accepted),
         len(rejected),
         len(absorbed),
+        f", {len(accepted)} discarded (circuit breaker)" if tripped else "",
     )
-    return {
+    summary = {
         "step": step + 1 if advanced else step,
-        "accepted": len(accepted),
+        "accepted": 0 if tripped else len(accepted),
         "rejected": len(rejected),
         "merged": len(absorbed),
         "wall_secs": round(wall, 1),
     }
+    if tripped:
+        summary["discarded"] = len(accepted)
+    return summary
 
 
 def init_checkpoint(cfg: dict, hub=hubio, seed: int = 0) -> None:

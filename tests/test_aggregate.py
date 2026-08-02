@@ -206,6 +206,38 @@ def test_tick_runs_eval_when_configured(tmp_path):
     assert f"Val loss at step 6: **{meta['eval']['val_loss']}**" in board
 
 
+def test_circuit_breaker_discards_regressing_step(tmp_path):
+    torch.manual_seed(0)
+    cfg = {
+        **CFG,
+        "model": {**CFG["model"], "vocab_size": 512},
+        "outer": {**CFG["outer"], "max_val_regression": 0.5},
+        "data": {"tokenizer": str(tmp_path / "tok.json")},
+        "eval": {"val_file": "val.bin", "batches": 2, "batch_size": 2, "sample_tokens": 4},
+    }
+    corpus = tmp_path / "c.txt"
+    corpus.write_text("once upon a time there was a robot. " * 50)
+    train_tokenizer([str(corpus)], 512, str(tmp_path / "tok.json"))
+    val = tmp_path / "val.bin"
+    np.random.default_rng(0).integers(0, 512, size=500).astype(np.uint16).tofile(val)
+
+    state = canonical_state(GPT.from_config(GPTConfig(**cfg["model"])))
+    delta = {k: 0.005 * torch.randn_like(v) for k, v in state.items()}
+    pr_files = {1: write_submission(tmp_path, "alice_a", delta, sub_meta("alice", 5))}
+    # previous eval is impossibly good, so any real step regresses past the threshold
+    hub = FakeHub(state, {"step": 5, "eval": {"val_loss": 0.001}}, pr_files)
+    hub.files["val.bin"] = str(val)
+
+    summary = run_tick(cfg, hub=hub, repo_root=str(tmp_path))
+
+    assert summary["step"] == 5 and summary["accepted"] == 0 and summary["discarded"] == 1
+    assert hub.uploaded is None  # checkpoint untouched
+    assert "Discarded" in hub.closed[1]
+    led = json.loads((tmp_path / "ledger" / "ledger.json").read_text())
+    assert "alice" not in led["contributors"]  # no credit, no reputation damage
+    assert "eval" not in led
+
+
 def test_same_user_same_step_submissions_merge(tmp_path):
     torch.manual_seed(0)
     state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
