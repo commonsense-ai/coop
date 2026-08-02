@@ -27,6 +27,7 @@ def run_worker(
     h_override: int | None = None,
     status=None,
     stop=None,
+    username: str | None = None,
 ) -> tuple[Path | None, Path | None]:
     inner = cfg["inner"]
     if status:
@@ -79,7 +80,9 @@ def run_worker(
 
     delta = {k: (theta_outer[k] - v.detach().cpu()).float() for k, v in model.named_parameters()}
     meta = {
-        "username": hubio.whoami(),
+        # a per-round whoami() once flaked into "anonymous" mid-run; resolve identity
+        # once at startup (join does) and thread it through instead
+        "username": username or hubio.whoami(),
         "start_step": start_step,
         "h_steps": steps_done,
         "wall_secs": round(wall, 2),

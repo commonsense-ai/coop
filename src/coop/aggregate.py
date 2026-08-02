@@ -109,6 +109,14 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
         except Exception as e:
             rejected.append((pr, None, f"malformed: {e}"))
             continue
+        # Identity is the PR's authenticated author, never the submission body:
+        # meta.username is self-reported, so it can be flaked ("anonymous") or spoofed.
+        author = getattr(pr, "author", None)
+        if author and sub_meta["username"] != author:
+            log.info(
+                "PR #%d: stamping username %r -> author %r", pr.num, sub_meta["username"], author
+            )
+            sub_meta["username"] = author
         w = staleness_weight(sub_meta["start_step"], step, cfg["staleness"]["tau_max"])
         if w <= 0.0:
             rejected.append(
