@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 156,
+      "submissions": 157,
       "tier": "gpu",
-      "tokens": 312799232
+      "tokens": 314847232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. She loved to play outside in her backyard. One day, she saw a big, scary cloud in the sky. It made her scared and didn't want to go inside.\n\nLater inside, Lily's mom made her a cozy bed under her bed. Lily snuggled up on her pillow and fell asleep. When she woke up, she was happy and safe with her safe home. The end.Once upon a time, there was a big slide. It had roll down the slide every morning. One day, the slide had stopped when it was",
-    "step": 169,
-    "val_loss": 2.8301
+    "sample": "Once upon a time, there were two friends - took a walk down the river in the water and stopped at look at the big river. The friends were all excited to see so many of the ducks had never seen before.\n\nBu said, \"Let's go and see all the different creatures!\"\n\nBut there was an unusual idea.\n\nSo they decided to go explore and discover everything together. They made their way to the other side of the river and started to explore.\n\nAt first it didn't plane any faster. But then, it said, \"R crawling, it'll be",
+    "step": 170,
+    "val_loss": 2.8141
   },
-  "step": 169,
-  "updated": "2026-08-02T04:24:28+00:00"
+  "step": 170,
+  "updated": "2026-08-02T04:39:29+00:00"
 }
