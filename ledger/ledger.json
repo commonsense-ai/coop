@@ -1,39 +1,5 @@
 {
-  "contributors": {
-    "anonymous": {
-      "first_seen": 17,
-      "reputation": 1.0,
-      "submissions": 1,
-      "tier": "cpu",
-      "tokens": 581632
-    },
-    "ezshroom": {
-      "first_seen": 130,
-      "reputation": 1.0,
-      "submissions": 12,
-      "tier": "gpu",
-      "tokens": 23347200
-    },
-    "miacx": {
-      "first_seen": 14,
-      "reputation": 1.0,
-      "submissions": 182,
-      "tier": "gpu",
-      "tokens": 366047232
-    },
-    "naloxene": {
-      "first_seen": 1,
-      "reputation": 1.0,
-      "submissions": 31,
-      "tier": "gpu",
-      "tokens": 34111488
-    }
-  },
-  "eval": {
-    "sample": "Once upon a time, there was a little boy named Timmy. Timmy loved to draw with his magnet. But one day, he lost it in the river and he couldn't find it. Timmy felt sad and frustrated because he couldn't find it anywhere.\n\nHis mom saw that he was upset and asked him what was wrong. Timmy told her about his magnet and the fish gave it back to him. His mom was so happy and gave him a big hug. Timmy felt happy again and went back to drawing.\n\nFrom that day on, Timmy made sure to keep his magnet in a safe place so he",
-    "step": 195,
-    "val_loss": 2.8716
-  },
-  "step": 195,
-  "updated": "2026-08-03T02:51:45+00:00"
+  "contributors": {},
+  "step": 0,
+  "updated": null
 }
