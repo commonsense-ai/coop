@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 180,
+      "submissions": 181,
       "tier": "gpu",
-      "tokens": 361951232
+      "tokens": 363999232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time there were two friends, Jack and Jill. They were playing at the park together. Suddenly, Jack had an idea. He wanted to try and find something to put on his shoes. Jill was scared.\n\n\"What do you want to do?\" asked Jack.\n\n\"Let's go for a walk,\" said Jill.\n\nThey walked over to the park and saw something rare - a tree.\n\n\"I can see what's behind the tree,\" said Jill.\n\n\"It's a great place,\" said Jack.\n\nSo, Jill and Jack climbed the tree",
-    "step": 193,
-    "val_loss": 2.8906
+    "sample": "Once upon a time, there was a little girl named Lily. She loved making cookies with her mom in the kitchen. One day, Lily's mom asked her to help bake cookies by the backyard. \n\nLily went outside and saw the other kids playing in the backyard. She thought it looked fun so she said yes. \n\nLater that night, Lily's mom asked her to help bake cookies. Lily was happy because they had yummy cookies to help. She went to the kitchen and ordered some cookies and cookies. \n\nBut when it was time to go back home, Lily saw that her mom had made a",
+    "step": 194,
+    "val_loss": 2.8787
   },
-  "step": 193,
-  "updated": "2026-08-03T00:16:46+00:00"
+  "step": 194,
+  "updated": "2026-08-03T02:36:31+00:00"
 }
