@@ -3,16 +3,16 @@
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 2,
+      "submissions": 3,
       "tier": "gpu",
-      "tokens": 2867200
+      "tokens": 4558848
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the the back as.\n.\n- to the your, with, the.\n.\n- of the the to that what of the\nThe in of learning.\nWhat.\nAfter in the and\n- of the are of the is still.\n-.\nThe, the of the (, the and and of in you an, the of the is of the to you.\n.\n.\n, the of the most, the.\n.\n.\n.\nThe that in and to the disease, and be do, the I was.\n, the",
-    "step": 2,
-    "val_loss": 8.2505
+    "sample": "The most important thing to understand about, and from a is more is, are to, you, of it to, is and the for and to of a is to they is a or that have, with and has can, and in, it. to, and can your, with in the a to be.\n.\n.\n.\n or has can, it from this\u2019, it is to to be you and is to.\n.\n- would.\nThe a in is, can.\n-, to have. The.\nIn it is\u2019 really, and a.\n- is are that",
+    "step": 3,
+    "val_loss": 7.7134
   },
-  "step": 2,
-  "updated": "2026-08-03T04:04:04+00:00"
+  "step": 3,
+  "updated": "2026-08-03T04:19:44+00:00"
 }
