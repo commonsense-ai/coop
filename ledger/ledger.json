@@ -1,5 +1,18 @@
 {
-  "contributors": {},
-  "step": 0,
-  "updated": null
+  "contributors": {
+    "naloxene": {
+      "first_seen": 1,
+      "reputation": 1.0,
+      "submissions": 1,
+      "tier": "gpu",
+      "tokens": 819200
+    }
+  },
+  "eval": {
+    "sample": "The most important thing to understand about the ( the.\ns in the.\n the\n.\n you are.\n,\njoy and in breat.\n nob.\n is\n.\n\n\nAfter of the.\n.\n,. to the.\n. the\nuda the Freeman to from.\n\n.\n is from.\n flavors.\n sl logo.. you Horse.\n of are\n to intertwined of\n to\n. sl of the-.\n to.\n and,.\n,\n samples\n the,, the. McCl,.\n. 2.\n of. willessions",
+    "step": 1,
+    "val_loss": 9.1168
+  },
+  "step": 1,
+  "updated": "2026-08-03T03:10:59+00:00"
 }
