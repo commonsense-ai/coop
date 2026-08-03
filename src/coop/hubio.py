@@ -84,6 +84,7 @@ def upload_checkpoint(model_repo: str, state_dict: dict, meta: dict, opt_state=N
             repo_id=model_repo,
             operations=ops,
             commit_message=f"step {meta.get('step')}",
+            num_threads=1,
         )
 
 
