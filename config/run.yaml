@@ -1,53 +1,56 @@
-# The single coordinator config. Workers and the aggregator both read this file.
+# DRAFT — stage 2 run config. Not live. STAGE2.md is the launch runbook;
+# launch day this file replaces config/run.yaml (the single source of run config).
 
 repos:
-  model: commonsense-ai/tinystories-15m          # HF model repo: weights + optimizer state
-  dataset: commonsense-ai/tinystories-15m-inbox  # HF dataset repo: pseudo-gradient PR inbox
-  github: commonsense-ai/coop  # code, ledger, leaderboard
+  model: commonsense-ai/fineweb-150m          # DRAFT name — decide before genesis
+  dataset: commonsense-ai/fineweb-150m-inbox
+  github: commonsense-ai/coop
 
-model:
-  n_layer: 6
-  n_head: 6
-  n_embd: 396        # ~14.8M params with tied embeddings
-  block_size: 512
-  vocab_size: 8192
+model:                # ~145M params with tied embeddings
+  n_layer: 12
+  n_head: 14
+  n_embd: 896
+  block_size: 1024
+  vocab_size: 32768
   dropout: 0.0
   bias: true
 
 data:
-  hf_dataset: roneneldan/TinyStories
-  tokenizer: tokenizer/tinystories-8k.json
-  train_docs: 2119719  # train-split rows; bounds per-user shard offsets in coop-join
+  hf_dataset: HuggingFaceFW/fineweb-edu
+  hf_config: sample-10BT   # streaming .skip() reads rows: offsets must fit a small subset
+  text_field: text
+  tokenizer: tokenizer/fineweb-32k.json
+  train_docs: 9622101      # sample-10BT has 9,672,101 rows; last 50k reserved for val.bin
 
-inner:               # worker: DiLoCo inner loop
-  h_steps: 200       # first round (fast first submission); loop then runs h_max rounds
+inner:
+  h_steps: 200
   h_min: 50
-  h_max: 500         # DiLoCo's validated inner-horizon ceiling
-  batch_size: 8
+  h_max: 500
+  batch_size: 4        # 4x1024 tokens/step: ~150M model + AdamW fits 16GB laptops in f32
   lr: 3.0e-4
   betas: [0.9, 0.95]
   weight_decay: 0.1
   grad_clip: 1.0
-  quantize: int8     # int8 | int4 | none
-  # accumulate_rounds: true  # one refreshed PR per user per step (stage 2 default)
+  quantize: int4       # ~75MB per submission instead of ~150MB at int8
+  accumulate_rounds: true  # one refreshed PR per user per step: bounds tick downloads
 
-outer:               # aggregator: Nesterov outer step
+outer:
   lr: 0.7
   momentum: 0.9
-  method: trimmed_mean   # trimmed_mean | geometric_median
+  method: trimmed_mean
   trim_frac: 0.2
-  min_cos: 0.0           # reject submissions anti-correlated with the clipped mean
-  max_norm: 10.0         # per-submission L2 clip on the flattened delta
-  max_val_regression: 0.5  # circuit breaker: discard any step that raises val loss this much
-  # probation_weight: 0.25  # vote influence of identities with no accepted history (credit
-  #                         # untouched); enable for runs worth attacking — planned for stage 2
+  min_cos: 0.0
+  max_norm: 10.0
+  max_val_regression: 0.3  # tighter breaker: stage-2 steps move val loss less than stage 1's
+  probation_weight: 0.25   # unproven identities vote at quarter influence until first accept
+  credit: sum_distinct     # pay every genuinely-different round, capped at plausible size
 
 staleness:
-  tau_max: 8         # linear ramp to zero; submissions older than 8 outer steps are dropped
+  tau_max: 8
 
-eval:                # aggregator: evaluate each new checkpoint during the tick
-  val_file: val.bin  # TinyStories validation tokens, stored in the HF model repo
+eval:
+  val_file: val.bin
   batches: 8
-  batch_size: 4
-  sample_prompt: "Once upon a time"
+  batch_size: 2
+  sample_prompt: "The most important thing to understand about"
   sample_tokens: 120

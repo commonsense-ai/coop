@@ -1,0 +1,11 @@
+# The menu `coop start` shows. status: live runs are aggregated by the tick;
+# complete runs stay usable on HF but no longer accept training.
+runs:
+  - name: fineweb-150m
+    config: config/run.yaml
+    status: live
+    blurb: 145M params, FineWeb-Edu - the current run; GPUs and Apple Silicon shine
+  - name: tinystories-15m
+    config: config/stage1.yaml
+    status: complete
+    blurb: 15M params, TinyStories - stage 1, finished; model stays usable on HF

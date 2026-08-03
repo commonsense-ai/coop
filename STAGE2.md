@@ -1,5 +1,12 @@
 # Stage 2 launch runbook
 
+> **Status: launched.** Tokenizer trained (`tokenizer/fineweb-32k.json`),
+> `train_docs` pinned (9,622,101 of sample-10BT; 50k-doc tail reserved for val),
+> val.bin built from the reserved tail and uploaded, genesis at
+> [commonsense-ai/fineweb-150m](https://huggingface.co/commonsense-ai/fineweb-150m),
+> config cut over (stage 1 archived as `config/stage1.yaml`). Remaining mid-run
+> work: verification via redundant shard assignment; multi-run ledger schema.
+
 Stage 1 (tinystories-15m) is complete: ~363M tokens, val 2.83, four contributors.
 Stage 2 scales to a ~145M-param model on FineWeb-Edu. `config/stage2.yaml` is the
 draft run config; this file is everything left between here and launch day.
