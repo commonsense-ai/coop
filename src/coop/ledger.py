@@ -60,7 +60,7 @@ def score(entry: dict) -> float:
     return entry["tokens"] * entry["reputation"]
 
 
-def render_leaderboard(ledger: dict) -> str:
+def render_leaderboard(ledger: dict, archives: list[str] = ()) -> str:
     rows = sorted(ledger["contributors"].items(), key=lambda kv: (-score(kv[1]), kv[0]))
     lines = [
         "# Leaderboard",
@@ -89,4 +89,9 @@ def render_leaderboard(ledger: dict) -> str:
             f"| {i} | {user} | {e['tier']} | {e['submissions']} | {e['tokens']:,} "
             f"| {e['reputation']:.3f} | {score(e):,.0f} |"
         )
+    if archives:
+        lines += ["", "## Past runs", ""]
+        for fname in archives:
+            tag = fname.removeprefix("LEADERBOARD-").removesuffix(".md")
+            lines.append(f"- [{tag} — final board]({fname})")
     return "\n".join(lines) + "\n"

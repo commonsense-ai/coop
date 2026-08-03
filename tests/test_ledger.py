@@ -56,3 +56,11 @@ def test_roundtrip(tmp_path):
     save_ledger(led, path)
     assert load_ledger(path) == led
     assert load_ledger(tmp_path / "missing.json") == empty_ledger()
+
+
+def test_render_leaderboard_lists_archived_runs():
+    led = empty_ledger()
+    board = render_leaderboard(led, archives=["LEADERBOARD-stage1.md"])
+    assert "## Past runs" in board
+    assert "[stage1 — final board](LEADERBOARD-stage1.md)" in board
+    assert "## Past runs" not in render_leaderboard(led)

@@ -10,3 +10,6 @@ rather than the live table.
 Score = tokens contributed × reputation (an EMA of acceptance). GPU training and
 CPU-tier data work (tokenize / dedup / filter / eval) rank on the same board. See
 [CONTRIBUTING.md](CONTRIBUTING.md) to get on it.
+
+Past runs keep their final boards forever:
+**[stage 1 — tinystories-15m](https://github.com/commonsense-ai/coop/blob/ledger/LEADERBOARD-stage1.md)**.
