@@ -1,5 +1,6 @@
-# DRAFT — stage 2 run config. Not live. STAGE2.md is the launch runbook;
-# launch day this file replaces config/run.yaml (the single source of run config).
+# Stage 2 run config — the live coordinator truth.
+
+goal_tokens: 3000000000  # Chinchilla-optimal for ~145M params; overtraining continues past it
 
 repos:
   model: commonsense-ai/fineweb-150m          # DRAFT name — decide before genesis

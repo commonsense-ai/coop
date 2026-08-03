@@ -197,7 +197,11 @@ def tail(path: Path, n: int) -> str:
 TS = re.compile(r"^\d\d-\d\d \d\d:\d\d:\d\d ")
 # leaderboard row: | rank | user | tier | accepted | tokens | reputation | score |
 BOARD_ROW = re.compile(r"^\| (\d+) \| (\S+) \| \S+ \| \d+ \| ([\d,]+) \| ")
-TOKEN_TARGET = 300_000_000  # Chinchilla-optimal for a ~15M-param model
+TOKEN_TARGET = 300_000_000  # fallback when the run config doesn't declare goal_tokens
+
+
+def goal_tokens(cfg: dict) -> int:
+    return int(cfg.get("goal_tokens", TOKEN_TARGET))
 
 
 def fmt_eta(secs: float) -> str:
@@ -350,8 +354,12 @@ def farewell(a: argparse.Namespace, st: dict) -> None:
         md = fetch_raw(a.repo, "LEADERBOARD.md", HOME / "board.md", ref="ledger").read_text()
         rows = parse_board(md)
         total = sum(r["tokens"] for r in rows)
-        print("\ncommunity progress toward a fully trained model (~300M tokens)")
-        print(f"  {bar(total / TOKEN_TARGET)} {100 * total / TOKEN_TARGET:.1f}%")
+        try:
+            target = goal_tokens(load_run_config(a.repo))
+        except (SystemExit, Exception):  # goal display must never hide the bars
+            target = TOKEN_TARGET
+        print(f"\ncommunity progress toward a fully trained model (~{target:,} tokens)")
+        print(f"  {bar(total / target)} {100 * total / target:.1f}%")
         user = st.get("user") or hubio.whoami()
         mine = next((r for r in rows if r["user"] == user), None)
         if mine and total:
@@ -447,8 +455,9 @@ def cmd_status(a: argparse.Namespace) -> None:
             you = f"{user} — {mine['tokens']:,} tokens credited"
             print(f"you      {you} · rank {mine['rank']} of {len(rows)}")
         total = sum(r["tokens"] for r in rows)
-        pct = 100 * total / TOKEN_TARGET
-        print(f"goal     {total:,} of ~{TOKEN_TARGET:,} community tokens ({pct:.1f}%)")
+        target = goal_tokens(cfg)
+        pct = 100 * total / target
+        print(f"goal     {total:,} of ~{target:,} community tokens ({pct:.1f}%)")
     except OSError:
         pass
     try:
