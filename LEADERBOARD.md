@@ -13,3 +13,7 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
 | 1 | naloxene | gpu | 3 | 4,558,848 | 1.000 | 4,558,848 |
+
+## Past runs
+
+- [stage1 — final board](LEADERBOARD-stage1.md)
