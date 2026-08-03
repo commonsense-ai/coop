@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 14,
       "reputation": 1.0,
-      "submissions": 179,
+      "submissions": 180,
       "tier": "gpu",
-      "tokens": 359903232
+      "tokens": 361951232
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "Once upon a time, there was a little girl named Lily. Lily loved to play outside in the mud. One day, her mommy got very busy in the kitchen and called her.\n\nLily went to the kitchen and saw a big plate with the vegetables on it. She asked her mommy, \"Who who this is the plate?\" \n\nHer mommy said, \"The plate is open, Lily. Do you want to help me?\" \n\nLily nodded her head and started eating. As she ate her dinner, she looked up and saw a big, scary cat. She didn't notice the cat from had",
-    "step": 192,
-    "val_loss": 2.8992
+    "sample": "Once upon a time there were two friends, Jack and Jill. They were playing at the park together. Suddenly, Jack had an idea. He wanted to try and find something to put on his shoes. Jill was scared.\n\n\"What do you want to do?\" asked Jack.\n\n\"Let's go for a walk,\" said Jill.\n\nThey walked over to the park and saw something rare - a tree.\n\n\"I can see what's behind the tree,\" said Jill.\n\n\"It's a great place,\" said Jack.\n\nSo, Jill and Jack climbed the tree",
+    "step": 193,
+    "val_loss": 2.8906
   },
-  "step": 192,
-  "updated": "2026-08-02T23:52:37+00:00"
+  "step": 193,
+  "updated": "2026-08-03T00:16:46+00:00"
 }
