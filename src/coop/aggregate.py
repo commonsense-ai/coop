@@ -255,7 +255,8 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
         rejected=[m for _, m, _ in rejected if m],
     )
     ledger.save_ledger(led, led_path)
-    (Path(repo_root) / "LEADERBOARD.md").write_text(ledger.render_leaderboard(led))
+    archives = sorted(p.name for p in Path(repo_root).glob("LEADERBOARD-*.md"))
+    (Path(repo_root) / "LEADERBOARD.md").write_text(ledger.render_leaderboard(led, archives))
 
     discard_note = (
         "Discarded: this cohort's outer step regressed validation loss past the safety "

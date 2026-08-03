@@ -131,6 +131,7 @@ def test_tick_end_to_end(tmp_path):
         5: write_submission(tmp_path, "sleepy_s", direction, sub_meta("sleepy", 0)),  # tau=5>4
     }
     hub = FakeHub(state, {"step": 5}, pr_files)
+    (tmp_path / "LEADERBOARD-stage1.md").write_text("# old board\n")
 
     summary = run_tick(CFG, hub=hub, repo_root=str(tmp_path))
 
@@ -141,6 +142,8 @@ def test_tick_end_to_end(tmp_path):
         "merged": 0,
         "wall_secs": summary["wall_secs"],
     }
+    board = (tmp_path / "LEADERBOARD.md").read_text()
+    assert "## Past runs" in board and "(LEADERBOARD-stage1.md)" in board
 
     # outer Nesterov step: m = d_agg (zero momentum), theta -= lr * (mu*m + d_agg)
     clip = CFG["outer"]["max_norm"]
