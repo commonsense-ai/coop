@@ -3,16 +3,16 @@
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 3,
+      "submissions": 5,
       "tier": "gpu",
-      "tokens": 4558848
+      "tokens": 11415552
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about, and from a is more is, are to, you, of it to, is and the for and to of a is to they is a or that have, with and has can, and in, it. to, and can your, with in the a to be.\n.\n.\n.\n or has can, it from this\u2019, it is to to be you and is to.\n.\n- would.\nThe a in is, can.\n-, to have. The.\nIn it is\u2019 really, and a.\n- is are that",
-    "step": 3,
-    "val_loss": 7.7134
+    "sample": "The most important thing to understand about that the way to to to their and in the at that so a is of a on your, which.\n- are, the new are to to to to is one.\nThis, and you, and we and you to the is this for you.\nT you they have by you are as a do as that the, what\u2019 says.\n-- can to to get.\n-.\n2 of a can be in a we to the as an is to you is a.\nH of a\n- in you.\n.\n-\n-\nThe is",
+    "step": 4,
+    "val_loss": 7.2204
   },
-  "step": 3,
-  "updated": "2026-08-03T04:19:44+00:00"
+  "step": 4,
+  "updated": "2026-08-04T18:15:03+00:00"
 }

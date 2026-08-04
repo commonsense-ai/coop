@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **3** — updated 2026-08-03T04:19:44+00:00.
+Outer step **4** — updated 2026-08-04T18:15:03+00:00.
 
-Val loss at step 3: **7.7134** — sample:
+Val loss at step 4: **7.2204** — sample:
 
-> The most important thing to understand about, and from a is more is, are to, you, of it to, is and the for and to of a is to they is a or that have, with and has can, and in, it. to, and can your, with in the a to be. . . . or has can, it from this’, it is to to be you and is to. . - would. The a in is, can. -, to have. The. In it is’ really, and a. - is are that
+> The most important thing to understand about that the way to to to their and in the at that so a is of a on your, which. - are, the new are to to to to is one. This, and you, and we and you to the is this for you. T you they have by you are as a do as that the, what’ says. -- can to to get. -. 2 of a can be in a we to the as an is to you is a. H of a - in you. . - - The is
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,8 +12,4 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | naloxene | gpu | 3 | 4,558,848 | 1.000 | 4,558,848 |
-
-## Past runs
-
-- [stage1 — final board](LEADERBOARD-stage1.md)
+| 1 | naloxene | gpu | 5 | 11,415,552 | 1.000 | 11,415,552 |
