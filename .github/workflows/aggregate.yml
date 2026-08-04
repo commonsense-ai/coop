@@ -34,6 +34,9 @@ jobs:
       - run: uv run --no-dev python -m coop.aggregate --repo-root ledgerdata
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          # Keep revision caches and crash leftovers inside the runner-managed job temp.
+          HF_HOME: ${{ runner.temp }}/huggingface
+          TMPDIR: ${{ runner.temp }}
       - name: Commit ledger + leaderboard
         working-directory: ledgerdata
         run: |
