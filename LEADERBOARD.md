@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **4** — updated 2026-08-04T18:15:03+00:00.
+Outer step **5** — updated 2026-08-05T14:36:06+00:00.
 
-Val loss at step 4: **7.2204** — sample:
+Val loss at step 5: **6.9803** — sample:
 
-> The most important thing to understand about that the way to to to their and in the at that so a is of a on your, which. - are, the new are to to to to is one. This, and you, and we and you to the is this for you. T you they have by you are as a do as that the, what’ says. -- can to to get. -. 2 of a can be in a we to the as an is to you is a. H of a - in you. . - - The is
+> The most important thing to understand about their to to a--a. -A-2 with on them of on a- -D-1--T -1 In - - - - - - - - - - - - - 9 - - - | C - - - - - - - . - C - - - - The - - - - - - - - -
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,4 +12,5 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | naloxene | gpu | 5 | 11,415,552 | 1.000 | 11,415,552 |
+| 1 | ezshroom | gpu | 1 | 17,203,200 | 1.000 | 17,203,200 |
+| 2 | naloxene | gpu | 5 | 11,415,552 | 1.000 | 11,415,552 |

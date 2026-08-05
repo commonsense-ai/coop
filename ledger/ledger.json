@@ -1,5 +1,12 @@
 {
   "contributors": {
+    "ezshroom": {
+      "first_seen": 5,
+      "reputation": 1.0,
+      "submissions": 1,
+      "tier": "gpu",
+      "tokens": 17203200
+    },
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
@@ -9,10 +16,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about that the way to to to their and in the at that so a is of a on your, which.\n- are, the new are to to to to is one.\nThis, and you, and we and you to the is this for you.\nT you they have by you are as a do as that the, what\u2019 says.\n-- can to to get.\n-.\n2 of a can be in a we to the as an is to you is a.\nH of a\n- in you.\n.\n-\n-\nThe is",
-    "step": 4,
-    "val_loss": 7.2204
+    "sample": "The most important thing to understand about their to to a--a.\n-A-2 with on them of on a-\n-D-1--T\n-1\nIn\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n9\n-\n-\n-\n|\nC\n-\n-\n-\n-\n-\n-\n-\n.\n-\nC\n-\n-\n-\n-\nThe\n-\n-\n-\n-\n-\n-\n-\n-\n-\n",
+    "step": 5,
+    "val_loss": 6.9803
   },
-  "step": 4,
-  "updated": "2026-08-04T18:15:03+00:00"
+  "step": 5,
+  "updated": "2026-08-05T14:36:06+00:00"
 }
