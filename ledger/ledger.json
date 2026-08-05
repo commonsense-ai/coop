@@ -3,9 +3,9 @@
     "ezshroom": {
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 1,
+      "submissions": 2,
       "tier": "gpu",
-      "tokens": 17203200
+      "tokens": 40550400
     },
     "naloxene": {
       "first_seen": 1,
@@ -16,10 +16,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about their to to a--a.\n-A-2 with on them of on a-\n-D-1--T\n-1\nIn\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n9\n-\n-\n-\n|\nC\n-\n-\n-\n-\n-\n-\n-\n.\n-\nC\n-\n-\n-\n-\nThe\n-\n-\n-\n-\n-\n-\n-\n-\n-\n",
-    "step": 5,
-    "val_loss": 6.9803
+    "sample": "The most important thing to understand about a or to your health that.\nB, which is sure by a-the-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n(B.\n-\n-\n-\n-\n-\n-\n-\n- This\n-\n-\n-\n-\n-\n-\n-\n-\nAs\n-\n-\n-\nM:\n-\n-\nO\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-\n-",
+    "step": 6,
+    "val_loss": 6.7553
   },
-  "step": 5,
-  "updated": "2026-08-05T14:36:06+00:00"
+  "step": 6,
+  "updated": "2026-08-05T15:46:47+00:00"
 }
