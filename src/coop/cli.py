@@ -16,7 +16,7 @@ from pathlib import Path
 
 import yaml
 
-from coop import hubio
+from coop import hubio, submit
 from coop.join import DEFAULT_REPO, fetch_raw, pick_device
 from coop.status import FILENAME as STATUS_FILENAME
 from coop.status import read_status
@@ -245,6 +245,12 @@ def last_activity(path: Path) -> str:
     return next((ln for ln in reversed(lines) if TS.match(ln)), "")
 
 
+def pending_rounds() -> int:
+    """Finished rounds an outage left parked on disk; the worker resends them itself."""
+    d = HOME / "out" / submit.PENDING
+    return len(list(d.glob("*.json"))) if d.is_dir() else 0
+
+
 def ensure_token(explicit: str | None) -> str:
     from huggingface_hub import login
 
@@ -350,6 +356,11 @@ def farewell(a: argparse.Namespace, st: dict) -> None:
         print("all submitted to Hugging Face — they merge in at the next aggregation tick")
         if st.get("last_pr"):
             print(f"  {st['last_pr']}")
+    n = pending_rounds()
+    if n:
+        s = "s" if n != 1 else ""
+        print(f"\n{n} finished round{s} couldn't reach Hugging Face — saved on your machine.")
+        print("the next `coop start` sends them; nothing is lost.")
     try:
         md = fetch_raw(a.repo, "LEADERBOARD.md", HOME / "board.md", ref="ledger").read_text()
         rows = parse_board(md)
@@ -437,6 +448,10 @@ def cmd_status(a: argparse.Namespace) -> None:
         when = "this session" if running else "last session"
         toks = st.get("tokens_session", 0)
         print(f"session  {st['rounds_done']} rounds · {toks:,} tokens trained {when}")
+    n = pending_rounds()
+    if n:
+        how = "retrying every round" if running else "they go out on the next `coop start`"
+        print(f"pending  {n} finished round(s) saved locally after a failed upload — {how}")
 
     try:
         meta = json.loads(Path(hubio.download_file(model_repo, "meta.json")).read_text())

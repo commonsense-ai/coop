@@ -180,9 +180,9 @@ def run_worker(
         if status:
             status.update(phase="submitting")
         if accumulator is not None and not dry_run:
-            info = submit.submit_accumulated(cfg, accumulator, raw_delta, meta)
+            info = submit.submit_accumulated(cfg, accumulator, raw_delta, meta, out_dir=out)
         else:
-            info = submit.submit(cfg, str(delta_path), meta, dry_run=dry_run)
+            info = submit.submit(cfg, str(delta_path), meta, dry_run=dry_run, out_dir=out)
         url = getattr(info, "pr_url", None)
         if status and url:
             status.update(last_pr=str(url))
@@ -214,6 +214,7 @@ def main():
     rnd, h_next = 0, None
     while True:
         try:
+            submit.drain(cfg, a.out, skip=acc.pending if acc else None)
             run_worker(
                 cfg,
                 a.data,
