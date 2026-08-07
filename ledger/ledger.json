@@ -10,16 +10,16 @@
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 6,
+      "submissions": 7,
       "tier": "gpu",
-      "tokens": 14282752
+      "tokens": 17059840
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the day from the most to to a sense of the \u201cA- The other or other-the range of the city and the two-s are in their way to develop in the as how that would to the best to become the time by the time that the body.\n- You to a number of the more to have to the idea to be to a day, and the first way,000.\n-D- The health and more.\nThe country\u2019s as a computer, the is that the and the system, because the words in which is a sense of the day,",
-    "step": 7,
-    "val_loss": 6.6128
+    "sample": "The most important thing to understand about those, and their new or other problems.\nThe number of a time with what is their students, this is a child and is a matter and you to a way to the one is a lot\nThe first to know that the I can also.\n-\n-\n-\nIn a variety of the other times a child must not to a lot on a to the water and you should know, you are a child is the course, especially in the way to the one.\n-to- In this, you can can go:\n--\n-\n-3 to",
+    "step": 8,
+    "val_loss": 6.5147
   },
-  "step": 7,
-  "updated": "2026-08-07T23:10:29+00:00"
+  "step": 8,
+  "updated": "2026-08-07T23:27:10+00:00"
 }
