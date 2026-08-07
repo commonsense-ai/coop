@@ -3,7 +3,7 @@
 Help train a real language model with your computer.
 
 ```sh
-npx coop-ai start
+npx coop-ai start     # bun: bunx coop-ai start
 ```
 
 That's the whole thing. Your machine downloads the current community model
@@ -25,13 +25,16 @@ npx coop-ai logs -f   # watch the worker do its thing
 npx coop-ai stop      # submits work-in-progress, shows your impact, stops
 ```
 
+Using [Bun](https://bun.sh)? Swap `npx` for `bunx` — same commands, same
+launcher.
+
 `start --rounds 3` contributes a fixed number of rounds and stops by itself.
 Your GPU is used automatically when you have one (Apple Silicon and NVIDIA);
 plain CPUs work too.
 
 ## Requirements
 
-- Node 18+ (for this launcher)
+- Node 18+ or Bun 1.0+ (for this launcher)
 - [uv](https://docs.astral.sh/uv/) — the launcher runs the Python CLI through
   it, and prints install instructions if it's missing
 

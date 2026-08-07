@@ -16,3 +16,22 @@ jobs:
       - run: uv run ruff check .
       - run: uv run ruff format --check .
       - run: uv run pytest -q
+
+  # the npm/bun launcher is what most volunteers actually run; nothing above
+  # covers it
+  launcher:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        runtime: [node, bun]
+    steps:
+      - uses: actions/checkout@v4
+      # both legs: node is the declared floor, and npm packs the tarball
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - if: matrix.runtime == 'bun'
+        uses: oven-sh/setup-bun@v2
+      - run: sh npm/test/smoke.sh ${{ matrix.runtime }}

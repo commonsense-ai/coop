@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 // Thin launcher: the real CLI is the Python package `coop-ai`, run via uv.
+// Runs under node and bun alike — bun's spawnSync inherits the tty, so the
+// interactive first-run setup works through `bunx`.
 const { spawnSync } = require("node:child_process");
 
 const uvx = process.platform === "win32" ? "uvx.exe" : "uvx";

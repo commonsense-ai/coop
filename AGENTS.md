@@ -10,6 +10,7 @@ job aggregates them into outer steps on a public HF model repo.
 
 - setup: `uv sync`
 - test: `uv run pytest -q`
+- launcher smoke: `npm/test/smoke.sh node` / `npm/test/smoke.sh bun` (needs that runtime)
 - lint: `uv run ruff check .`
 - format: `uv run ruff format .`
 - worker round: `uv run python -m coop.trainer --data data/<shard>.bin`
