@@ -67,11 +67,11 @@ stage-1 leaderboard is archived as `LEADERBOARD-stage1.md` on the ledger branch.
 
 ## Donate compute
 
-One command if you have Node (it uses [uv](https://docs.astral.sh/uv/) under
-the hood and tells you how to get it):
+One command if you have Node or [Bun](https://bun.sh) (it uses
+[uv](https://docs.astral.sh/uv/) under the hood and tells you how to get it):
 
 ```sh
-npx coop-ai start
+npx coop-ai start     # bun: bunx coop-ai start
 ```
 
 Or install with uv directly:
