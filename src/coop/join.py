@@ -147,13 +147,17 @@ def main():
 
     seed_base = machine_seed(work)
     acc = submit.StepAccumulator() if cfg["inner"].get("accumulate_rounds") else None
+    out = work / "out"
     rnd, h_next, tokens_session = 0, None, 0
     while not stop.is_set():
         try:
+            # rounds an outage parked (this process or an earlier one) go out first; the
+            # accumulator's own parked copy is skipped because its next upload resends it
+            submit.drain(cfg, out, skip=acc.pending if acc else None)
             _, meta_path = run_worker(
                 cfg,
                 str(shard),
-                out_dir=str(work / "out"),
+                out_dir=str(out),
                 device=device,
                 seed=seed_base + rnd,
                 h_override=h_next,

@@ -38,7 +38,11 @@ def tokenize_file(tok: Tokenizer, text_path: str, out_bin: str) -> int:
         if doc:
             ids.extend(tok.encode(doc).ids)
             ids.append(eot_id)
-    np.asarray(ids, dtype=np.uint16).tofile(out_bin)
+    # write-then-rename: an interrupted write must not leave a truncated shard at the
+    # canonical path, where the "does it already exist?" check would reuse it forever
+    tmp = Path(str(out_bin) + ".tmp")
+    np.asarray(ids, dtype=np.uint16).tofile(str(tmp))
+    tmp.replace(out_bin)
     return len(ids)
 
 

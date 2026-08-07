@@ -86,6 +86,16 @@ def test_read_pid_handles_missing_and_garbage(tmp_path, monkeypatch):
     assert cli.read_pid() == 4242
 
 
+def test_pending_rounds_counts_parked_uploads(tmp_path, monkeypatch):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    assert cli.pending_rounds() == 0  # no pending dir yet
+    d = tmp_path / "out" / cli.submit.PENDING
+    d.mkdir(parents=True)
+    (d / "step5_abc.json").write_text("{}")
+    (d / "step5_abc.safetensors").write_bytes(b"w")
+    assert cli.pending_rounds() == 1  # the pair counts once
+
+
 def test_stop_cleans_stale_pidfile(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(cli, "PIDFILE", tmp_path / "worker.pid")
     cli.PIDFILE.write_text("99999999")

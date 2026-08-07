@@ -3,6 +3,7 @@
 import json
 import logging
 import uuid
+from pathlib import Path
 
 import torch
 from huggingface_hub import CommitOperationAdd
@@ -14,6 +15,9 @@ log = logging.getLogger(__name__)
 
 SCALE_SUFFIX = "::scale"
 NUMEL_SUFFIX = "::numel"
+
+PENDING = "pending"
+PENDING_MAX = 8  # ~75MB each at int4; a long outage must not fill a volunteer's disk
 
 
 def quantize_delta(delta: dict) -> dict:
@@ -77,6 +81,7 @@ class StepAccumulator:
         self.rounds = 0
         self.pr: int | None = None
         self.paths: tuple[str, str] | None = None
+        self.pending: Path | None = None
 
     def start_fresh(self, delta: dict, meta: dict) -> tuple[dict, dict]:
         self.step = meta["start_step"]
@@ -85,6 +90,9 @@ class StepAccumulator:
         self.rounds = 1
         self.pr = None
         self.paths = None
+        # only drop the reference: a parked payload holds rounds this state no longer
+        # carries, so it stays on disk for drain() instead of being superseded
+        self.pending = None
         return self.delta, self.merged_meta(meta)
 
     def add(self, delta: dict, meta: dict) -> tuple[dict, dict]:
@@ -110,7 +118,9 @@ class StepAccumulator:
         }
 
 
-def _payload_ops(cfg: dict, delta: dict, meta: dict, paths: tuple[str, str]) -> list:
+def _payload(cfg: dict, delta: dict, meta: dict) -> tuple[bytes, bytes]:
+    """The exact bytes an upload would send. Parked payloads keep these verbatim so a
+    retry never re-quantizes what is already quantized."""
     quant = cfg["inner"].get("quantize")
     if quant == "int8":
         delta, meta["quant"] = quantize_delta(delta), "int8"
@@ -118,10 +128,87 @@ def _payload_ops(cfg: dict, delta: dict, meta: dict, paths: tuple[str, str]) -> 
         delta, meta["quant"] = quantize_delta_int4(delta), "int4"
     else:
         meta["quant"] = "none"
-    return [
-        CommitOperationAdd(paths[0], st_save(delta)),
-        CommitOperationAdd(paths[1], json.dumps(meta, indent=2).encode()),
-    ]
+    return st_save(delta), json.dumps(meta, indent=2).encode()
+
+
+def _ops(paths: tuple[str, str], payload: tuple[bytes, bytes]) -> list:
+    return [CommitOperationAdd(p, b) for p, b in zip(paths, payload)]
+
+
+def _parts(base: Path) -> tuple[Path, Path]:
+    return base.with_suffix(".safetensors"), base.with_suffix(".json")
+
+
+def _write_atomic(path: Path, data: bytes) -> None:
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_bytes(data)
+    tmp.replace(path)
+
+
+def discard(base: Path) -> None:
+    for p in _parts(base):
+        p.unlink(missing_ok=True)
+
+
+def _trim(d: Path) -> None:
+    for js in sorted(d.glob("*.json"), key=lambda p: p.stat().st_mtime)[:-PENDING_MAX]:
+        log.warning("pending queue full — dropping the oldest parked round %s", js.stem)
+        discard(js.with_suffix(""))
+
+
+def stash(
+    out_dir, payload: tuple[bytes, bytes], meta: dict, supersedes: Path | None = None
+) -> Path:
+    """Park a payload the hub wouldn't take. The round is trained work and only the
+    upload failed, so it waits on disk instead of dying with the process."""
+    d = Path(out_dir) / PENDING
+    d.mkdir(parents=True, exist_ok=True)
+    base = d / f"step{meta['start_step']}_{uuid.uuid4().hex[:8]}"
+    blob, js = _parts(base)
+    _write_atomic(blob, payload[0])
+    _write_atomic(js, payload[1])  # the .json lands last: drain() treats it as the receipt
+    if supersedes is not None:
+        discard(supersedes)
+    _trim(d)
+    log.warning("upload failed — parked this round at %s; it retries later", blob)
+    return base
+
+
+def drain(cfg: dict, out_dir, skip: Path | None = None) -> int:
+    """Re-upload rounds parked by an earlier failure. Each never reached the inbox, so
+    each gets its own PR. `skip` is the payload a live accumulator will resend itself."""
+    d = Path(out_dir) / PENDING
+    if not d.is_dir():
+        return 0
+    sent = 0
+    for js in sorted(d.glob("*.json")):
+        base = js.with_suffix("")
+        if skip is not None and base.name == skip.name:
+            continue
+        blob = _parts(base)[0]
+        try:
+            payload = (blob.read_bytes(), js.read_bytes())
+            meta = json.loads(payload[1])
+            paths = submission_paths(meta)  # here, so a malformed meta drops rather than loops
+        except (OSError, ValueError, KeyError):
+            # unreadable on disk is unrecoverable; drop it rather than wedge the queue
+            log.warning("parked round %s can't be read — dropping it", base.name)
+            discard(base)
+            continue
+        try:
+            info = hubio.open_pr(
+                cfg["repos"]["dataset"],
+                _ops(paths, payload),
+                f"pseudo-gradient from {meta['username']} @ step {meta['start_step']}",
+            )
+        except Exception as e:
+            # still offline: stop here so the queue keeps its order and its disk budget
+            log.warning("parked round %s still won't upload (%s); leaving it queued", base.name, e)
+            break
+        log.info("resent parked round %s: %s", base.name, getattr(info, "pr_url", info))
+        discard(base)
+        sent += 1
+    return sent
 
 
 def _pr_num(info) -> int | None:
@@ -132,7 +219,7 @@ def _pr_num(info) -> int | None:
         return None
 
 
-def submit_accumulated(cfg: dict, acc: StepAccumulator, delta: dict, meta: dict):
+def submit_accumulated(cfg: dict, acc: StepAccumulator, delta: dict, meta: dict, out_dir=None):
     """Fold this round into the step's running average and create-or-refresh its PR."""
     merged_delta, merged_meta = acc.add(delta, meta)
     repo = cfg["repos"]["dataset"]
@@ -141,7 +228,7 @@ def submit_accumulated(cfg: dict, acc: StepAccumulator, delta: dict, meta: dict)
             hubio.update_pr(
                 repo,
                 acc.pr,
-                _payload_ops(cfg, merged_delta, dict(merged_meta), acc.paths),
+                _ops(acc.paths, _payload(cfg, merged_delta, dict(merged_meta))),
                 f"round {merged_meta['rounds']}: {merged_meta['tokens_total']} tokens "
                 f"@ step {merged_meta['start_step']}",
             )
@@ -159,28 +246,41 @@ def submit_accumulated(cfg: dict, acc: StepAccumulator, delta: dict, meta: dict)
             log.warning("PR #%d gone (%s); resubmitting the newest round", acc.pr, e)
             merged_delta, merged_meta = acc.start_fresh(delta, meta)
     acc.paths = submission_paths(merged_meta)
-    info = hubio.open_pr(
-        repo,
-        _payload_ops(cfg, merged_delta, dict(merged_meta), acc.paths),
-        f"pseudo-gradient from {merged_meta['username']} @ step {merged_meta['start_step']}",
-    )
+    payload = _payload(cfg, merged_delta, dict(merged_meta))
+    try:
+        info = hubio.open_pr(
+            repo,
+            _ops(acc.paths, payload),
+            f"pseudo-gradient from {merged_meta['username']} @ step {merged_meta['start_step']}",
+        )
+    except Exception:
+        if out_dir is not None:
+            acc.pending = stash(out_dir, payload, merged_meta, supersedes=acc.pending)
+        raise
     acc.pr = _pr_num(info)
+    if acc.pending is not None:
+        discard(acc.pending)  # this PR carries every round the parked copy held
+        acc.pending = None
     log.info("opened %s", getattr(info, "pr_url", info))
     return info
 
 
-def submit(cfg: dict, delta_path: str, meta: dict, dry_run: bool = False):
+def submit(cfg: dict, delta_path: str, meta: dict, dry_run: bool = False, out_dir=None):
     st_path, js_path = submission_paths(meta)
     repo = cfg["repos"]["dataset"]
     if dry_run:
         log.info("dry-run: would open a PR on %s adding %s and %s", repo, st_path, js_path)
         return None
-    ops = [
-        CommitOperationAdd(st_path, str(delta_path)),
-        CommitOperationAdd(js_path, json.dumps(meta, indent=2).encode()),
-    ]
-    info = hubio.open_pr(
-        repo, ops, f"pseudo-gradient from {meta['username']} @ step {meta['start_step']}"
-    )
+    js = json.dumps(meta, indent=2).encode()
+    ops = [CommitOperationAdd(st_path, str(delta_path)), CommitOperationAdd(js_path, js)]
+    try:
+        info = hubio.open_pr(
+            repo, ops, f"pseudo-gradient from {meta['username']} @ step {meta['start_step']}"
+        )
+    except Exception:
+        # the file on disk is already quantized, so park its bytes as-is
+        if out_dir is not None:
+            stash(out_dir, (Path(delta_path).read_bytes(), js), meta)
+        raise
     log.info("opened %s", getattr(info, "pr_url", info))
     return info

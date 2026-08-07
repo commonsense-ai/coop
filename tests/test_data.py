@@ -77,3 +77,26 @@ def test_tokenize_and_batches(tmp_path):
     assert x.shape == (4, 8) and y.shape == (4, 8)
     assert x.dtype == torch.int64
     assert torch.equal(y[:, :-1], x[:, 1:])  # y is x shifted by one
+
+
+def test_tokenize_file_leaves_no_truncated_shard(tmp_path, monkeypatch):
+    """A shard killed mid-write must not land at the canonical path: join.py reuses any
+    file that exists there, so a partial one would silently shrink every future round."""
+    corpus = tmp_path / "corpus.txt"
+    corpus.write_text(f"\n{EOT}\n".join(f"story {i} about a robot" for i in range(20)))
+    tok = train_tokenizer([str(corpus)], vocab_size=512, out_path=str(tmp_path / "tok.json"))
+    bin_path = tmp_path / "tokens.bin"
+
+    class Dying:
+        def tofile(self, path):
+            Path(path).write_bytes(b"\x00" * 8)  # partial write, then the machine dies
+            raise OSError("no space left on device")
+
+    monkeypatch.setattr(data.np, "asarray", lambda *a, **kw: Dying())
+    with pytest.raises(OSError):
+        tokenize_file(tok, str(corpus), str(bin_path))
+    assert not bin_path.exists()
+
+    monkeypatch.undo()
+    assert tokenize_file(tok, str(corpus), str(bin_path)) > 0
+    assert bin_path.exists() and not list(tmp_path.glob("*.tmp"))
