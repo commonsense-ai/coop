@@ -17,16 +17,16 @@
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 7,
-      "tier": "gpu",
-      "tokens": 17059840
+      "submissions": 8,
+      "tier": "cpu",
+      "tokens": 17879040
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the first.\nThe use a small, the best for the people with the following the most for the end of the only the researchers. As the past in the case of the amount of the end of the use the case, and the U.\nThe main as the time to the first side of the more.\nWe were the world, and the people, the study in the time a few years to a more for the world, the world, the case and the other, the people that it is a time, the other, the time, a new as the most more important to",
-    "step": 9,
-    "val_loss": 6.4954
+    "sample": "The most important thing to understand about a longer a small-free, they to make a one of the most other a healthy and it.\n-to the way.\n-day.\n-g.\n- A. The year, and the two-3. The \"C.\n1. These forms of the early a simple for the US.The use of the study\n- The University of the same one of the second in the most of a different more than a long- A feet in the amount of the best for the two or the number of the most for the way to the more than how the",
+    "step": 10,
+    "val_loss": 6.4947
   },
-  "step": 9,
-  "updated": "2026-08-07T23:49:48+00:00"
+  "step": 10,
+  "updated": "2026-08-07T23:57:07+00:00"
 }
