@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **23** — updated 2026-08-08T03:13:54+00:00.
+Outer step **24** — updated 2026-08-08T03:28:54+00:00.
 
-Val loss at step 23: **6.0472** — sample:
+Val loss at step 24: **5.99** — sample:
 
-> The most important thing to understand about the whole to be the right to reach a whole way, if the original technology, and to bring to the first, that the business, the environment in the concept of the world. -based business has already, the whole, we’s. However, the number of the business level in a specific needs to the U. The report in the school is an article, including the public security and the future, to the need to achieve, or in the following and in the world. The information is the concept of the community will show how to provide My business and we are
+> The most important thing to understand about why does like “f” to know how to work for others we love from the sense to be able to the nature and how we hope. “A new is the answer, I believe the other ways, I didn’t really get more than the universe is a thing, but if you can't really much like that they aren’t have to get us like the need to show that the only when people’t know so different that we eat the same picture to give us. However, I eat that, I have long way, I just, though the world, the world
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -18,7 +18,7 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | naloxene | gpu | 26 | 235,286,528 | 1.000 | 235,286,528 |
-| 2 | cjtsolutions | gpu | 14 | 195,747,840 | 1.000 | 195,747,840 |
-| 3 | ezshroom | gpu | 14 | 65,945,600 | 1.000 | 65,945,600 |
+| 1 | naloxene | gpu | 28 | 283,209,728 | 1.000 | 283,209,728 |
+| 2 | cjtsolutions | gpu | 16 | 248,995,840 | 1.000 | 248,995,840 |
+| 3 | ezshroom | gpu | 16 | 70,860,800 | 1.000 | 70,860,800 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
