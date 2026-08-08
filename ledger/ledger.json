@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 172851200,
+        "apple-gpu": 187187200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 160,
+      "submissions": 162,
       "tier": "gpu",
-      "tokens": 512012288
+      "tokens": 526348288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the way we perceive their actions.\nIt seems they might seem to have looked like they didn\u2019t appear on the road. What they saw? That was true when they were they from a distance away\u2014they didn\u2019t exist and they weren\u2019t interested in their actions as these couldn\u2019t. When they knew what they saw, they talked about what they saw or didn\u2019t, they knew\u2014they meant they were afraid? That being true doesn\u2019t exist on the road. Even if they didn\u2019t exist without knowing what they saw or knew what they knew. Again they",
-    "step": 104,
-    "val_loss": 4.628
+    "sample": "The most important thing to understand about the effects of exercise on overall performance. It helps maintain an understanding of the value of exercise in our daily routine and is on the way to that knowledge. It includes all the changes we need to achieve when we develop our physical and physical health. However, it allows us to understand the specific changes we have about exercise on our mental health. It occurs when we reach the age of 22 or older. It is our most obvious change when we reach it every hour. It is important to remember this before we go to that day\u2019s most beneficial. It helps us understand the changes we make in our",
+    "step": 105,
+    "val_loss": 4.6254
   },
-  "step": 104,
-  "updated": "2026-08-08T20:40:01+00:00"
+  "step": 105,
+  "updated": "2026-08-08T21:06:58+00:00"
 }
