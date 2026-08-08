@@ -117,6 +117,38 @@ def test_start_is_a_noop_when_already_running(tmp_path, monkeypatch, capsys):
     assert "already contributing" in capsys.readouterr().out
 
 
+def test_start_latest_skips_the_picker_and_the_remembered_run(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "SETTINGS", tmp_path / "settings.json")
+    monkeypatch.setattr(cli, "PIDFILE", tmp_path / "worker.pid")
+    monkeypatch.setattr(cli, "LOGFILE", tmp_path / "worker.log")
+    cli.write_settings(run_config="config/stage1.yaml")  # an older remembered run
+    monkeypatch.setattr(cli, "load_runs", lambda repo: RUNS)
+    monkeypatch.setattr(cli, "load_run_config", lambda repo, path=None: CFG)
+    monkeypatch.setattr(cli, "ensure_token", lambda tok: "tester")
+    monkeypatch.setattr(cli, "pick", lambda *a: pytest.fail("--latest must not open a menu"))
+    monkeypatch.setattr(cli.sys.stdin, "isatty", lambda: True)  # a real terminal, still no prompt
+    monkeypatch.setattr(cli, "alive", lambda pid: True)
+    monkeypatch.setattr(cli.time, "sleep", lambda s: None)
+
+    spawned = {}
+
+    def fake_popen(cmd, **kw):
+        spawned["cmd"] = cmd
+        return argparse.Namespace(pid=42)
+
+    monkeypatch.setattr(cli.subprocess, "Popen", fake_popen)
+    a = argparse.Namespace(
+        repo="x/y", model=None, hf_token=None, device=None, choose=False, latest=True, rounds=0
+    )
+    cli.cmd_start(a)
+
+    cmd = spawned["cmd"]
+    assert cmd[cmd.index("--run-config") + 1] == "config/run.yaml"  # the live run, not the stored
+    assert cli.read_settings()["run_name"] == "fineweb-150m"
+    assert "training" in capsys.readouterr().out
+
+
 def test_tail(tmp_path):
     p = tmp_path / "log"
     assert cli.tail(p, 5) == ""
