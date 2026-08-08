@@ -10,9 +10,9 @@
     "ezshroom": {
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 24,
+      "submissions": 26,
       "tier": "gpu",
-      "tokens": 95846400
+      "tokens": 100761600
     },
     "miacx": {
       "first_seen": 12,
@@ -24,16 +24,16 @@
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 37,
+      "submissions": 39,
       "tier": "gpu",
-      "tokens": 486371328
+      "tokens": 501526528
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the world, the largest largest and three hundred-year-year-old people don't know to know that the lives are the first world.\n\u201cIf you see a huge amount of change and that you want to get together, then we did not know it. Now, I know if the idea are the problem. But if you may not keep, then we will look off, according to the world to a future for the way. But if there are no money to the past of money, there is no one that, because we know that we need to explain the lives of us.\"",
-    "step": 29,
-    "val_loss": 5.6346
+    "sample": "The most important thing to understand about the level of the population and how the soil is, where we want more a large amount of climate change is less able to find a higher amount of people from those days.\nHowever, the climate change from the past 50,000 million per cent per million people were exposed to the past decade, we got these findings on its way of the climate crisis:\n- Many of the climate change were at the end up and average level, but the greatest rate of the growth rate of climate change had never been associated with a strong risk than the population, and the average is now more likely to be",
+    "step": 30,
+    "val_loss": 5.5905
   },
-  "step": 29,
-  "updated": "2026-08-08T04:27:57+00:00"
+  "step": 30,
+  "updated": "2026-08-08T04:43:03+00:00"
 }
