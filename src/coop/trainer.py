@@ -13,7 +13,7 @@ from safetensors.torch import save_file
 
 from coop import hubio, load_config, setup_logging, submit
 from coop.data import iter_batches
-from coop.device import pick_device
+from coop.device import cpu_fallback, kernel_missing, pick_device
 from coop.model import GPT, GPTConfig, load_canonical_state
 
 log = logging.getLogger(__name__)
@@ -231,6 +231,9 @@ def main():
             # transient network/HF hiccups must not kill an unattended loop
             if not a.loop:
                 raise
+            if a.device.startswith("cuda") and kernel_missing(e):
+                a.device = cpu_fallback()  # permanent: every retry fails identically
+                continue
             log.warning("round failed (%s); retrying after pause", e)
             time.sleep(a.pause)
         rnd += 1
