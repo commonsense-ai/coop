@@ -2,13 +2,14 @@ import contextlib
 import json
 
 import numpy as np
+import pytest
 import torch
 from safetensors.torch import load_file
 
 from coop import hubio
 from coop.model import GPT, GPTConfig, canonical_state
 from coop.submit import dequantize_delta
-from coop.trainer import autocast_ctx, make_adamw, pick_device, run_worker
+from coop.trainer import autocast_ctx, clip_grads, make_adamw, pick_device, run_worker
 
 CFG = {
     "repos": {"model": "x/model", "dataset": "x/inbox"},
@@ -139,3 +140,54 @@ def test_delta_keys_survive_compile_wrapping(tmp_path, monkeypatch):
     )
     delta = dequantize_delta(load_file(str(delta_path)))
     assert set(delta.keys()) == set(state.keys())
+
+
+def grads_like(seed: int, scale: float) -> list[torch.Tensor]:
+    """Stand-ins for a real round's gradients: mixed shapes, one much larger."""
+    g = torch.Generator().manual_seed(seed)
+    shapes = [(64, 32), (32,), (8, 4, 4), (1,), (256, 16)]
+    ps = [torch.zeros(s) for s in shapes]
+    for p in ps:
+        p.grad = torch.randn(p.shape, generator=g) * scale
+    return ps
+
+
+@pytest.mark.parametrize("scale", [10.0, 1e-4])  # norm well over the limit, and well under
+def test_clip_matches_torchs_own(scale):
+    """The fast path has to be the same clip, not merely a similar one: it decides what
+    every submitted pseudo-gradient contains."""
+    mine, theirs = grads_like(0, scale), grads_like(0, scale)
+    clip_grads(mine, 1.0, "cpu")
+    torch.nn.utils.clip_grad_norm_(theirs, 1.0)
+    for a, b in zip(mine, theirs):
+        assert torch.allclose(a.grad, b.grad, rtol=1e-6, atol=1e-8)
+
+
+def test_clip_leaves_small_gradients_alone():
+    ps = grads_like(1, 1e-4)
+    before = [p.grad.clone() for p in ps]
+    clip_grads(ps, 1.0, "cpu")
+    for p, b in zip(ps, before):
+        assert torch.equal(p.grad, b)  # under the limit the scale is exactly 1.0
+
+
+def test_clip_on_cuda_keeps_torchs_fused_path(monkeypatch):
+    """No NVIDIA hardware here to prove a hand-rolled reduction faster or safe, and
+    torch's own is one fused multi-tensor kernel there — so cuda must still reach it."""
+    called = []
+    monkeypatch.setattr(
+        torch.nn.utils, "clip_grad_norm_", lambda p, n, **kw: called.append(n) or torch.tensor(0.0)
+    )
+    clip_grads(grads_like(2, 10.0), 1.0, "cuda:0")
+    assert called == [1.0]
+
+
+def test_clip_survives_a_parameter_that_never_got_a_gradient():
+    ps = grads_like(3, 10.0)
+    ps.append(torch.zeros(4))  # frozen or unused: .grad is None
+    clip_grads(ps, 1.0, "cpu")
+    assert ps[-1].grad is None
+
+
+def test_clip_with_nothing_to_clip_is_not_an_error():
+    clip_grads([torch.zeros(2)], 1.0, "cpu")
