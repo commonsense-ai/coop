@@ -3,23 +3,24 @@
     "cjtsolutions": {
       "devices": {
         "gpu": 56717312,
-        "nvidia-gpu": 172032000
+        "nvidia-gpu": 210944000
       },
       "first_seen": 9,
-      "reputation": 0.9521703100000001,
-      "submissions": 29,
+      "reputation": 0.9612579511,
+      "submissions": 31,
       "tier": "gpu",
-      "tokens": 584241152
+      "tokens": 623153152
     },
     "ezshroom": {
       "devices": {
-        "gpu": 237568000
+        "apple-gpu": 2867200,
+        "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 113,
+      "submissions": 115,
       "tier": "gpu",
-      "tokens": 338329600
+      "tokens": 342028288
     },
     "miacx": {
       "first_seen": 12,
@@ -40,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about their behavior. Indeed, most people say that their personality is being exposed to a higher level of emotional function than adults. Therefore, mental development, which leads to more self-esteem, the higher the more the self-being of individuals with a higher levels of depression than those who believe they receive higher levels of stress. Although social psychology involves significant damage to depression and depression, there is good evidence that this theory will prove that social development seems to improve mental health outcomes.\nSo what this means, and why, if you expect a more positive outlook than just one of them, it seems that the",
-    "step": 77,
-    "val_loss": 4.9283
+    "sample": "The most important thing to understand about mental health and their health issues.\nYour child\u2019s daily schedule is at an early age, or if it doesn\u2019t require a mental health concerns. This would suggest your child doesn\u2019t want to spend less time than he can do. Your child may need a lot more time into their daily routine. Keep a journey while you need a few different strategies to ensure the best.\nYour child may need a simple exercise. Get them with your child and the child may want to stay healthy. If you happen, your child may need a soft schedule or a daily schedule.\nYou should",
+    "step": 78,
+    "val_loss": 4.9028
   },
-  "step": 77,
-  "updated": "2026-08-08T14:29:31+00:00"
+  "step": 78,
+  "updated": "2026-08-08T14:40:32+00:00"
 }
