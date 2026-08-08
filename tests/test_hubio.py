@@ -31,6 +31,7 @@ def test_upload_checkpoint_is_one_commit(monkeypatch):
     kwargs = mock.create_commit.call_args.kwargs
     assert kwargs["repo_id"] == "x/model"
     assert kwargs["commit_message"] == "step 3"
+    assert kwargs["num_threads"] == 1
     assert [op.path_in_repo for op in kwargs["operations"]] == [
         hubio.CKPT_FILE,
         hubio.OPT_FILE,
