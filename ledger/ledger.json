@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 4915200
+        "gpu": 7782400
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 28,
+      "submissions": 30,
       "tier": "gpu",
-      "tokens": 105676800
+      "tokens": 108544000
     },
     "miacx": {
       "first_seen": 12,
@@ -33,10 +33,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the same thing. For example, in the next decade, we know the things we get to learn.\nWhen, we know that, even say that the two-dimensional words, since the same place, not to make the only ones that is, that\u2019s like the more common, so, that\u2019s so many things that\u2019s an average and more popular, and that\u2019s still a lot of a bit is a good, for many parts of these things in the world, so that\u2019s the next to get on, the time of us as we can\u2019t understand",
-    "step": 31,
-    "val_loss": 5.5596
+    "sample": "The most important thing to understand about the level of the ability of this. While, the most often the ability to help to develop in the way.\nFirst, in the next two ways that a child who knows that the child will.\nWhile the child who are very important, it takes advantage to share all of their children and then be extremely challenging. And it comes to it, as much as a child and they take care for their children. With them, children who work on their children, children and children. But children should continue to provide children to go up with them from them. They should also find they who need",
+    "step": 32,
+    "val_loss": 5.5251
   },
-  "step": 31,
-  "updated": "2026-08-08T04:58:03+00:00"
+  "step": 32,
+  "updated": "2026-08-08T05:05:02+00:00"
 }

@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **31** — updated 2026-08-08T04:58:03+00:00.
+Outer step **32** — updated 2026-08-08T05:05:02+00:00.
 
-Val loss at step 31: **5.5596** — sample:
+Val loss at step 32: **5.5251** — sample:
 
-> The most important thing to understand about the same thing. For example, in the next decade, we know the things we get to learn. When, we know that, even say that the two-dimensional words, since the same place, not to make the only ones that is, that’s like the more common, so, that’s so many things that’s an average and more popular, and that’s still a lot of a bit is a good, for many parts of these things in the world, so that’s the next to get on, the time of us as we can’t understand
+> The most important thing to understand about the level of the ability of this. While, the most often the ability to help to develop in the way. First, in the next two ways that a child who knows that the child will. While the child who are very important, it takes advantage to share all of their children and then be extremely challenging. And it comes to it, as much as a child and they take care for their children. With them, children who work on their children, children and children. But children should continue to provide children to go up with them from them. They should also find they who need
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -21,5 +21,5 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | naloxene | gpu | 39 | 501,526,528 | 1.000 | 501,526,528 |
 | 2 | cjtsolutions | gpu | 20 | 355,491,840 | 1.000 | 355,491,840 |
-| 3 | ezshroom | gpu | 28 | 105,676,800 | 1.000 | 105,676,800 |
+| 3 | ezshroom | gpu | 30 | 108,544,000 | 1.000 | 108,544,000 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
