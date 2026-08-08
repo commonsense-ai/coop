@@ -13,17 +13,10 @@ from safetensors.torch import save_file
 
 from coop import hubio, load_config, setup_logging, submit
 from coop.data import iter_batches
+from coop.device import pick_device
 from coop.model import GPT, GPTConfig, load_canonical_state
 
 log = logging.getLogger(__name__)
-
-
-def pick_device() -> str:
-    if torch.cuda.is_available():
-        return "cuda"
-    if torch.backends.mps.is_available():
-        return "mps"
-    return "cpu"
 
 
 @functools.cache
