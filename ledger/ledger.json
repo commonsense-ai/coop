@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 162201600
+        "gpu": 167116800
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 86,
+      "submissions": 88,
       "tier": "gpu",
-      "tokens": 262963200
+      "tokens": 267878400
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the human body and its implications. At the start, it seems that without any negative emotions, we can see them. So, knowing that we must speak, and explain some basic concerns.\n- Take a clear example of your heart. We must know that we should ask ourselves what causes.\n- Check a video to discover that you is important if you are not safe and dangerous to preserve your bodies.\n- Let your body speak out for the pain and you must know what you are doing.\n- Get a long course of being happy to help them keep them, and stay up in",
-    "step": 62,
-    "val_loss": 5.1176
+    "sample": "The most important thing to understand about health care.\n- Celebrurally and only do not allow patients to avoid it.\n- Take all medical care and good care.\nIf you are taking care of your patients, you might try to help you and your health.\nThere are many common health risks you can see, which will make you feel free even if you are trying to identify it.Last Updated: April 24, 2019\nOriginally published on May 23, 2012\nNew articles in the English language.\n- I'll discuss the benefits of the article.\n- I think that would be possible, or",
+    "step": 63,
+    "val_loss": 5.1482
   },
-  "step": 62,
-  "updated": "2026-08-08T11:13:53+00:00"
+  "step": 63,
+  "updated": "2026-08-08T11:28:50+00:00"
 }
