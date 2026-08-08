@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **17** — updated 2026-08-08T01:57:26+00:00.
+Outer step **18** — updated 2026-08-08T02:13:12+00:00.
 
-Val loss at step 17: **6.1296** — sample:
+Val loss at step 18: **6.0947** — sample:
 
-> The most important thing to understand about what we know when they have to talk about how they say. What does you see they think we must read what we know what we can use the students and do this? -to know, we know how you must have the idea. -m- How do to know how we're talking that means the person!What do you to see you are not just don't mean what's why they don't know what does let us to learn a thing. - How do you think more common when we learn the person. -I dons think is a person.
+> The most important thing to understand about the game, as that they had an application. I am able by the term, I could also, a man, my hands is the way of the person seems to be the story of a few months of the mind to understand his needs to go out to get the house. The people’s work. When I’s the whole-known with the house, the idea in the universe. I believe that he decided to understand what I wanted us to see what he gave him he said, I’s house, he did not say, the same, to a story I
 
 Score = tokens contributed × reputation. Reputation is an EMA of acceptance
 (alpha=0.1): rejected submissions lower it, accepted ones restore it.
@@ -12,7 +12,7 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | cjtsolutions | gpu | 4 | 77,783,040 | 1.000 | 77,783,040 |
-| 2 | naloxene | gpu | 14 | 51,089,408 | 1.000 | 51,089,408 |
-| 3 | ezshroom | gpu | 3 | 41,369,600 | 1.000 | 41,369,600 |
+| 1 | cjtsolutions | gpu | 6 | 103,178,240 | 1.000 | 103,178,240 |
+| 2 | naloxene | gpu | 16 | 53,956,608 | 1.000 | 53,956,608 |
+| 3 | ezshroom | gpu | 4 | 43,417,600 | 1.000 | 43,417,600 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
