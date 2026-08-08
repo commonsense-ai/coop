@@ -692,7 +692,7 @@ def main() -> None:
     st.add_argument(
         "--latest", action="store_true", help="no picker, no questions: join the current run"
     )
-    st.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
+    st.add_argument("--device", default=None, help="cuda | mps | tpu | cpu (default: auto)")
     st.add_argument(
         "--rounds", type=int, default=0, help="stop after N rounds (default: run until coop stop)"
     )
@@ -703,7 +703,7 @@ def main() -> None:
     rn.add_argument("--tokens", type=int, default=200, help="how much to generate (default 200)")
     rn.add_argument("--temperature", type=float, default=0.8, help="higher = wilder")
     rn.add_argument("--top-k", type=int, default=50)
-    rn.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
+    rn.add_argument("--device", default=None, help="cuda | mps | tpu | cpu (default: auto)")
     rn.add_argument("--revision", default="main", help="pin a checkpoint revision")
 
     sub.add_parser("stop", help="stop contributing")

@@ -21,7 +21,15 @@ from pathlib import Path
 import yaml
 
 from coop import update
-from coop.device import arch_gap, cpu_fallback, describe, kernel_missing, pick_device
+from coop.device import (
+    arch_gap,
+    cpu_fallback,
+    describe,
+    kernel_missing,
+    pick_device,
+    resolve,
+    unusable,
+)
 from coop.status import FILENAME as STATUS_FILENAME
 from coop.status import StatusFile
 
@@ -218,7 +226,7 @@ def main():
     ap.add_argument("--run-config", default="config/run.yaml", help="which run to train")
     ap.add_argument("--workdir", default="~/.coop")
     ap.add_argument("--docs", type=int, default=20000, help="TinyStories docs in your shard")
-    ap.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
+    ap.add_argument("--device", default=None, help="cuda | mps | tpu | cpu (default: auto)")
     ap.add_argument("--once", action="store_true", help="run a single round instead of looping")
     ap.add_argument("--rounds", type=int, default=0, help="stop after N rounds (0 = endless)")
     ap.add_argument("--pause", type=int, default=60, help="retry delay after a failed round")
@@ -266,7 +274,9 @@ def main():
             progress=shard_progress(status, "tokenizing", "bytes"),
         )
 
-    device = a.device or pick_device()
+    device = resolve(a.device) if a.device else pick_device()
+    if why := unusable(device):
+        raise SystemExit(why)
     # pick_device already skips a card this torch can't launch on; an explicit
     # --device cuda would otherwise crash-loop a whole session away
     if device.startswith("cuda") and (gap := arch_gap()):
