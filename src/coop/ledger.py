@@ -8,6 +8,18 @@ from pathlib import Path
 # toward 1.0. Score scales with reputation so griefers cannot farm tokens.
 REP_ALPHA = 0.1
 
+# Self-updating arrived in 0.3.0, so it cannot reach an install older than itself —
+# and coop has no other way to speak to a machine already running. This board does:
+# the aggregator rewrites it every tick and it is the page volunteers actually open.
+# Transitional; delete it once the old installs have turned over.
+UPDATE_NOTICE = [
+    "**Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,",
+    "your copy predates it. Reinstall once —",
+    "`uv tool install --force git+https://github.com/commonsense-ai/coop` — or use",
+    "`npx coop-ai`, which always runs the current code. After that coop keeps itself",
+    "current, and `coop update --auto on` lets it do so between rounds.",
+]
+
 
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -76,6 +88,7 @@ def render_leaderboard(ledger: dict, archives: list[str] = ()) -> str:
             "> " + " ".join(str(ev.get("sample", "")).split()),
             "",
         ]
+    lines += UPDATE_NOTICE + [""]
     lines += [
         "Score = tokens contributed × reputation. Reputation is an EMA of acceptance",
         f"(alpha={REP_ALPHA}): rejected submissions lower it, accepted ones restore it.",
