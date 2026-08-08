@@ -1,4 +1,8 @@
+import os
+import sys
 import urllib.request
+
+import pytest
 
 import coop.join as join
 from coop.status import StatusFile, read_status
@@ -89,3 +93,34 @@ def test_config_changed_detects_new_run_but_not_blips(monkeypatch, tmp_path):
     monkeypatch.setattr(join, "fetch_raw", boom)
     # a network blip must never restart the worker
     assert not join.config_changed("o/r", tmp_path, "repos: {model: old/run}")
+
+
+def test_should_restart_needs_a_streak_and_stops_after_a_few(monkeypatch):
+    monkeypatch.delenv(join.RESTARTS_ENV, raising=False)
+    assert not join.should_restart(join.FAILS_BEFORE_RESTART - 1)  # one blip is not a wedge
+    assert join.should_restart(join.FAILS_BEFORE_RESTART)
+    # fresh processes failing identically means the outage is not ours to restart out of
+    monkeypatch.setenv(join.RESTARTS_ENV, str(join.MAX_RESTARTS))
+    assert not join.should_restart(join.FAILS_BEFORE_RESTART * 10)
+    monkeypatch.setenv(join.RESTARTS_ENV, "junk")  # an unreadable counter must not wedge it
+    assert join.should_restart(join.FAILS_BEFORE_RESTART)
+
+
+def test_restart_worker_reexecs_this_worker_and_carries_the_streak(monkeypatch, tmp_path):
+    # regression: a 403 on a closed PR poisoned the hub client, and every later round
+    # failed on the cached error — including rounds that never reached an upload
+    seen = {}
+
+    def fake_execv(exe, argv):
+        seen["argv"] = argv
+        raise SystemExit  # execv never returns
+
+    monkeypatch.setattr(os, "execv", fake_execv)
+    monkeypatch.setattr(sys, "argv", ["coop-join", "--pause", "60"])
+    monkeypatch.setenv(join.RESTARTS_ENV, "1")
+    path = tmp_path / "status.json"
+    with pytest.raises(SystemExit):
+        join.restart_worker(StatusFile(path), join.FAILS_BEFORE_RESTART)
+    assert seen["argv"][1:] == ["-m", "coop.join", "--pause", "60"]
+    assert os.environ[join.RESTARTS_ENV] == "2"  # the child is told it is a restart
+    assert "restarting" in read_status(path)["phase"]
