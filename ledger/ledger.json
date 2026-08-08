@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 17612800
+        "gpu": 24576000
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 34,
+      "submissions": 36,
       "tier": "gpu",
-      "tokens": 118374400
+      "tokens": 125337600
     },
     "miacx": {
       "first_seen": 12,
@@ -33,10 +33,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the same time, and that are the most good, the less than the more popular and the more than the time. But the people are at the time, the higher they spend to get a sense, and all the children\u2019s love to keep their lives.\nThe \u2018new\u2019 is the term \u2018What\u2019 is the \u2018Srong\u2019 \u2018The \u2018Gist\u2019 is \u2018In \u2018A\u2019, \u2018F\u2019, and \u2018B\u2019 \u2018Rock\u2019. (A&A).\nWhile most of the \u2018D\u2019 is \u2018The \u2018Sure\u2019 [S] \u2018L\u2019 (",
-    "step": 34,
-    "val_loss": 5.4969
+    "sample": "The most important thing to understand about them.\n\u201cIt\u2019s time to be sure,\u201d \u201cGod must become the best. God is God and God.\u201d (The Jews are told they are) and the God is not the same.\nBut the earth\u2019s Earth, which is, the earth who are, is true, it becomes some kind of life. They are quite, the Sun which he is the Earth of God and their planet, and they would suffer from the power of God.\nThe Earth is the Earth, the sky, which said the Earth of God as the earth, and the earth is said to",
+    "step": 35,
+    "val_loss": 5.4907
   },
-  "step": 34,
-  "updated": "2026-08-08T05:28:10+00:00"
+  "step": 35,
+  "updated": "2026-08-08T05:42:58+00:00"
 }
