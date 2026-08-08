@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 53248000
+        "gpu": 56115200
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 46,
+      "submissions": 48,
       "tier": "gpu",
-      "tokens": 154009600
+      "tokens": 156876800
     },
     "miacx": {
       "first_seen": 12,
@@ -26,20 +26,20 @@
     },
     "naloxene": {
       "devices": {
-        "nvidia-gpu": 70451200
+        "nvidia-gpu": 92979200
       },
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 42,
+      "submissions": 44,
       "tier": "gpu",
-      "tokens": 571977728
+      "tokens": 594505728
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the situation. For instance, whether we don\u2019t read the way, what kind of language is to do? Many are in the classroom that can do if they were in a particular thing they could find out of the student.- In the early stages, the idea that the media uses the computer to help the internet. The internet can be a means of a computer learning environment. The person can do it be the word for us to produce technology. That doesn\u2019t mean what it works.\n- The computer learning is the world\u2019s largest internet.\n- The hardware is created",
-    "step": 40,
-    "val_loss": 5.3852
+    "sample": "The most important thing to understand about the importance of things and feelings.\nHere is a lot of ways.\nThe reason for the future of reading comes with it, then it comes to be true, and so it comes to us to make sense of and explore the topic of the people and the people make us feel new.\nBut what is the same thing into your own.\nIf you mean to start your question, try them, but keep them feel confident and we do not know what I\u2019m thinking!\nSo, do you say, the difference between the whole language and the language, your answer is not,",
+    "step": 41,
+    "val_loss": 5.3429
   },
-  "step": 40,
-  "updated": "2026-08-08T06:52:11+00:00"
+  "step": 41,
+  "updated": "2026-08-08T06:58:25+00:00"
 }
