@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **81** — updated 2026-08-08T15:06:24+00:00.
+Outer step **82** — updated 2026-08-08T15:14:35+00:00.
 
-Val loss at step 81: **4.8519** — sample:
+Val loss at step 82: **4.8392** — sample:
 
-> The most important thing to understand about the causes of global warming? There are many people whose parents who believe that when children are forced to see the impact of their children. For example, although some children who are born as their parents tend to see their children while others are more likely to see the cause of this kind of depression and therefore they may feel their children get sick. Similarly, older adults are most likely to believe that those who believe that their children are getting sick or sleep-free by their parents. Though some schools don't want to get sleep-free, they will need to be confused with a sleep disorder and
+> The most important thing to understand about climate change and to ensure that global warming may have a significant impact on climate change. That might be helpful in improving our commitment towards climate change and to ensure that we cannot have a sense of critical social responsibility and that climate change.Under the end of the year 2015 and 2012, the UK has been running from its goal of managing climate change, including the spread of climate change and the effects of climate change. But this blog post contains the main goals for environmental change and climate change in recent years. However, the goal of the global climate change to address this issue is to promote environmental
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -20,6 +20,6 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 | # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | naloxene | nvidia-gpu | 54 | 825,929,728 | 1.000 | 825,929,728 |
-| 2 | cjtsolutions | nvidia-gpu | 37 | 713,265,152 | 0.979 | 698,579,655 |
-| 3 | ezshroom | apple-gpu | 119 | 354,316,288 | 1.000 | 354,316,288 |
+| 2 | cjtsolutions | nvidia-gpu | 39 | 743,985,152 | 0.983 | 731,577,576 |
+| 3 | ezshroom | apple-gpu | 121 | 358,412,288 | 1.000 | 358,412,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
