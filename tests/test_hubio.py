@@ -2,8 +2,9 @@ import json
 from types import SimpleNamespace
 from unittest.mock import MagicMock
 
+import pytest
 import torch
-from huggingface_hub.utils import EntryNotFoundError
+from huggingface_hub.utils import EntryNotFoundError, _xet
 from safetensors.torch import save_file
 
 from coop import hubio
@@ -13,6 +14,12 @@ def fake_api(monkeypatch):
     mock = MagicMock()
     monkeypatch.setattr(hubio, "HfApi", lambda token=None: mock)
     return mock
+
+
+def xet_resets(monkeypatch) -> list:
+    resets = []
+    monkeypatch.setattr(_xet, "abort_xet_session", lambda: resets.append(1))
+    return resets
 
 
 def test_upload_checkpoint_is_one_commit(monkeypatch):
@@ -109,3 +116,48 @@ def test_open_pr_creates_pr(monkeypatch):
     mock = fake_api(monkeypatch)
     hubio.open_pr("x/inbox", [], "msg")
     assert mock.create_commit.call_args.kwargs["create_pr"] is True
+
+
+def test_a_failed_upload_resets_the_xet_session(monkeypatch):
+    """The aggregator closing our PR mid-round 403s the write. Left alone, that error
+    latches on the shared XetSession and every later transfer in the process replays it —
+    so the retry that should open a fresh PR fails on the dead PR's error instead."""
+    resets = xet_resets(monkeypatch)
+    mock = fake_api(monkeypatch)
+    mock.create_commit.side_effect = RuntimeError("403 Forbidden")
+    with pytest.raises(RuntimeError):
+        hubio.update_pr("x/inbox", 36, [], "msg")
+    assert resets == [1]
+
+
+def test_a_failed_download_resets_the_xet_session(monkeypatch):
+    resets = xet_resets(monkeypatch)
+
+    def raise_(*a, **kw):
+        raise RuntimeError("Previous task error")
+
+    monkeypatch.setattr(hubio, "hf_hub_download", raise_)
+    with pytest.raises(RuntimeError):
+        hubio.download_file("x/model", "val.bin")
+    assert resets == [1]
+
+
+def test_a_working_transfer_leaves_the_session_alone(monkeypatch):
+    resets = xet_resets(monkeypatch)
+    fake_api(monkeypatch)
+    hubio.open_pr("x/inbox", [], "msg")
+    monkeypatch.setattr(hubio, "hf_hub_download", lambda *a, **kw: "/local/f")
+    hubio.download_file("x/model", "val.bin")
+    assert resets == []
+
+
+def test_a_missing_optimizer_is_not_a_failed_transfer(monkeypatch):
+    """Step 0 has no optimizer file; that is a normal read, not a poisoned session."""
+    resets = xet_resets(monkeypatch)
+
+    def raise_(*a, **kw):
+        raise EntryNotFoundError("missing")
+
+    monkeypatch.setattr(hubio, "hf_hub_download", raise_)
+    assert hubio.download_optimizer("x/model") is None
+    assert resets == []

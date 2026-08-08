@@ -1,5 +1,6 @@
 """Thin huggingface_hub wrappers. Every network call the project makes lives here."""
 
+import functools
 import json
 import os
 import tempfile
@@ -12,6 +13,34 @@ from safetensors.torch import load_file, save_file
 CKPT_FILE = "checkpoint.safetensors"
 OPT_FILE = "optimizer.safetensors"
 META_FILE = "meta.json"
+
+
+def _reset_xet_session() -> None:
+    """A failed transfer latches its error onto huggingface_hub's process-global
+    XetSession: every later transfer replays it ("Previous task error: ..."), uploads and
+    downloads alike, and the latch never clears on its own. hub resets the session on only
+    some failure paths, so one 403 — the aggregator closing our PR mid-round is enough —
+    can strand an unattended worker for rounds, retrying a stale error it can't outlive."""
+    try:
+        from huggingface_hub.utils._xet import abort_xet_session
+
+        abort_xet_session()
+    except Exception:
+        pass  # nothing to reset (no xet session, or a hub without one)
+
+
+def _transfer(fn):
+    """Wraps the calls that move file bytes: a failure must hand the next one a live hub."""
+
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except BaseException:
+            _reset_xet_session()
+            raise
+
+    return wrapper
 
 
 def token() -> str | None:
@@ -49,6 +78,7 @@ def resolve_revision(repo_id: str, revision: str = "main", repo_type: str = "mod
     return api().repo_info(repo_id, revision=revision, repo_type=repo_type).sha
 
 
+@_transfer
 def download_checkpoint(model_repo: str, revision: str = "main") -> tuple[dict, dict]:
     if revision == "main":
         revision = resolve_revision(model_repo)
@@ -57,18 +87,21 @@ def download_checkpoint(model_repo: str, revision: str = "main") -> tuple[dict, 
     return load_file(ckpt), json.loads(Path(meta).read_text())
 
 
+@_transfer
 def get_step(model_repo: str, revision: str = "main") -> int:
     """Current outer step without pulling the 59MB checkpoint — meta.json only."""
     path = hf_hub_download(model_repo, META_FILE, revision=revision, token=token())
     return json.loads(Path(path).read_text())["step"]
 
 
+@_transfer
 def download_file(
     repo_id: str, filename: str, repo_type: str = "model", revision: str = "main"
 ) -> str:
     return hf_hub_download(repo_id, filename, repo_type=repo_type, revision=revision, token=token())
 
 
+@_transfer
 def download_optimizer(model_repo: str, revision: str = "main") -> dict | None:
     try:
         path = hf_hub_download(model_repo, OPT_FILE, revision=revision, token=token())
@@ -77,6 +110,7 @@ def download_optimizer(model_repo: str, revision: str = "main") -> dict | None:
     return load_file(path)
 
 
+@_transfer
 def upload_checkpoint(model_repo: str, state_dict: dict, meta: dict, opt_state=None) -> None:
     # One commit for all files: a tick costs a single write call, not one per file.
     with tempfile.TemporaryDirectory() as td:
@@ -109,6 +143,7 @@ def list_repo_files(repo_id: str, repo_type: str = "dataset", revision: str = "m
     return api().list_repo_files(repo_id, repo_type=repo_type, revision=revision)
 
 
+@_transfer
 def download_pr_files(
     dataset_repo: str, pr_num: int, base_files: set[str] | None = None
 ) -> dict[str, str]:
@@ -123,6 +158,7 @@ def download_pr_files(
     }
 
 
+@_transfer
 def open_pr(dataset_repo: str, operations: list[CommitOperationAdd], message: str):
     return api().create_commit(
         repo_id=dataset_repo,
@@ -133,6 +169,7 @@ def open_pr(dataset_repo: str, operations: list[CommitOperationAdd], message: st
     )
 
 
+@_transfer
 def update_pr(dataset_repo: str, pr_num: int, operations: list[CommitOperationAdd], message: str):
     """Replace files on an existing open PR (raises if the PR was closed meanwhile)."""
     return api().create_commit(
