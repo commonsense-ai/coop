@@ -137,6 +137,19 @@ mid-round, so a restart can't cost you trained work — and picks its training b
 where it left off. Off by default: nothing on your machine changes unless you ask.
 A clone is left alone either way; there, `git pull` is the update.
 
+Self-updating only works from 0.3.0 on, so an install older than that can't reach it:
+
+```
+coop: error: argument cmd: invalid choice: 'update'
+```
+
+That means the `coop` on your PATH predates the command. Reinstall it once —
+`uv tool install --force git+https://github.com/commonsense-ai/coop`, or just use
+`npx coop-ai`, which always resolves the current code — and it keeps itself current
+from then on. `uv tool list` is worth a look if you installed early: the package was
+once named `coop` rather than `coop-ai`, and a leftover of the old name claims the
+same `coop` executable.
+
 Prefer a foreground one-off? `uvx --from git+https://github.com/commonsense-ai/coop
 coop-join --hf-token hf_...` runs rounds until ctrl-c (`--once` for a single round,
 `--device cuda|mps|cpu` to override).
