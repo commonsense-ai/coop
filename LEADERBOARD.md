@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **83** — updated 2026-08-08T15:29:36+00:00.
+Outer step **84** — updated 2026-08-08T15:44:24+00:00.
 
-Val loss at step 83: **4.8278** — sample:
+Val loss at step 84: **4.8141** — sample:
 
-> The most important thing to understand about these principles that all the people need to live in accordance with their actions or responsibility (2) that requires them to join them (3) as well as those who need to be involved in their own lives (4) when such a team do so. This means that the people do not receive food because no such thing as those who cannot get enough to enjoy their living on the street, and that the person wants to make sure that they cannot not get enough food until the job applies. There are many ways when dealing with the environment and the organization seems to emerge as a team decision and this allows
+> The most important thing to understand about how we should go for our country. I think this really helps us solve a lot about the many examples of questions which have come to us as a whole. So what can I do to make sure we think that something is right?What I'm here? If I'm trying to get them into this lesson? So what about this lesson? What I'm trying to ask? So let me know what I'm trying to get my students to learn? Now we've come to know about what I'm reading! But what I'm doing is this video! We're still listening
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -19,7 +19,7 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 
 | # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
 |---|-------------|----------|----------|--------|------------|-------|
-| 1 | naloxene | nvidia-gpu | 54 | 825,929,728 | 1.000 | 825,929,728 |
-| 2 | cjtsolutions | nvidia-gpu | 41 | 801,329,152 | 0.986 | 790,504,383 |
-| 3 | ezshroom | apple-gpu | 123 | 366,604,288 | 1.000 | 366,604,288 |
+| 1 | cjtsolutions | nvidia-gpu | 43 | 856,625,152 | 0.989 | 847,252,046 |
+| 2 | naloxene | nvidia-gpu | 54 | 825,929,728 | 1.000 | 825,929,728 |
+| 3 | ezshroom | apple-gpu | 125 | 374,796,288 | 1.000 | 374,796,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
