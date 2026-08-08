@@ -16,6 +16,8 @@ import torch
 log = logging.getLogger(__name__)
 
 PLAIN = {"cuda": "NVIDIA GPU", "mps": "Apple GPU", "cpu": "CPU"}
+# leaderboard spelling; xla is here so a TPU round labels itself the day TPUs land
+KIND = {"cuda": "nvidia-gpu", "mps": "apple-gpu", "xla": "google-tpu", "cpu": "cpu"}
 CUDA_FIX = "install a CUDA torch: `uv pip install --torch-backend auto torch`"
 NEWER_FIX = "update your NVIDIA driver, then: `uv pip install -U --torch-backend auto torch`"
 OLD_CARD = "only an older torch still ships kernels for this card"
@@ -36,6 +38,14 @@ def pick_device() -> str:
     if torch.backends.mps.is_available():
         return "mps"
     return "cpu"
+
+
+def kind(device: str) -> str:
+    """What the leaderboard calls this machine. Finer than gpu/cpu — a board people read
+    to decide what to donate should say whose silicon did the work. No spaces: coop
+    clients on 0.3.0 and earlier match this cell with `\\S+`, and a space there blanks their
+    `coop status` totals."""
+    return KIND.get(device.partition(":")[0], "cpu")
 
 
 def describe(device: str) -> str:

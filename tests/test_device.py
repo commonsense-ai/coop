@@ -291,3 +291,16 @@ def test_no_warning_when_already_on_cuda(monkeypatch, capsys):
     monkeypatch.setattr(cli, "cuda_gap", lambda: dev.Gap("never consulted", None))
     cli.warn_cuda_gap("cuda:0")
     assert capsys.readouterr().out == ""
+
+
+def test_kind_names_the_silicon_not_just_gpu_or_cpu():
+    assert dev.kind("cuda") == dev.kind("cuda:1") == "nvidia-gpu"
+    assert dev.kind("mps") == "apple-gpu"
+    assert dev.kind("xla") == dev.kind("xla:0") == "google-tpu"  # ready for TPU rounds
+    assert dev.kind("cpu") == "cpu"
+    assert dev.kind("something-new") == "cpu"  # a board cell is never blank
+
+
+def test_kind_is_safe_to_put_in_a_board_cell():
+    # 0.3.0 and earlier match that cell with `\S+`; a space there breaks their totals
+    assert not any(" " in dev.kind(d) for d in ("cuda", "mps", "xla", "cpu"))

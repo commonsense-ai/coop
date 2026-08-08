@@ -169,10 +169,16 @@ def test_fmt_eta():
 
 
 BOARD_MD = """# Leaderboard
+| # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
+|---|-------------|----------|----------|--------|------------|-------|
+| 1 | naloxene | cpu | 16 | 8,806,400 | 1.000 | 8,806,400 |
+| 2 | mia-riezebos | nvidia-gpu·cpu | 3 | 2,457,600 | 0.900 | 2,211,840 |
+"""
+
+OLD_BOARD_MD = """# Leaderboard
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
 | 1 | naloxene | cpu | 16 | 8,806,400 | 1.000 | 8,806,400 |
-| 2 | mia-riezebos | gpu | 3 | 2,457,600 | 0.900 | 2,211,840 |
 """
 
 
@@ -181,6 +187,11 @@ def test_parse_board():
     assert [r["user"] for r in rows] == ["naloxene", "mia-riezebos"]
     assert rows[0]["tokens"] == 8806400
     assert rows[1]["rank"] == 2
+
+
+def test_parse_board_reads_archived_boards_too():
+    """Past runs' boards keep the Tier column they were written with."""
+    assert cli.parse_board(OLD_BOARD_MD)[0]["tokens"] == 8806400
 
 
 def test_now_line_training_has_progress_and_eta():

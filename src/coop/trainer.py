@@ -13,7 +13,7 @@ from safetensors.torch import save_file
 
 from coop import hubio, load_config, setup_logging, submit
 from coop.data import iter_batches
-from coop.device import cpu_fallback, kernel_missing, pick_device
+from coop.device import cpu_fallback, kernel_missing, kind, pick_device
 from coop.model import GPT, GPTConfig, load_canonical_state
 
 log = logging.getLogger(__name__)
@@ -145,6 +145,7 @@ def run_worker(
         "wall_secs": round(wall, 2),
         "tokens": steps_done * inner["batch_size"] * cfg["model"]["block_size"],
         "tier": "cpu" if device == "cpu" else "gpu",
+        "device": kind(device),  # what the board shows; `tier` stays for archived ledgers
         "quant": "none",
     }
     quant = inner.get("quantize")
