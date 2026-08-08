@@ -128,6 +128,27 @@ def test_fetch_docs_raises_past_a_parquet_corpus_end(tmp_path, monkeypatch):
         data.fetch_docs(str(tmp_path / "s.txt"), 5, skip=50, dataset="org/corpus")
 
 
+def test_fetch_docs_never_falls_back_once_docs_are_written(tmp_path, monkeypatch):
+    """The fallback restarts the slice from the top: taking it after a partial write
+    would put the first docs in the shard twice. Fail the round instead — it retries."""
+    p = tmp_path / "part.parquet"
+    write_parquet(p, [f"doc {i}" for i in range(20)], rows_per_group=5)
+    monkeypatch.setattr(data, "data_files", lambda *a: [str(p)])
+    monkeypatch.setattr(data, "CHUNK_ROWS", 5)
+    real = data._read
+
+    def flaky(task, field):
+        if flaky.calls:
+            raise NoRandomAccess("lost the filesystem mid-slice")
+        flaky.calls += 1
+        return real(task, field)
+
+    flaky.calls = 0
+    monkeypatch.setattr(data, "_read", flaky)
+    with pytest.raises(NoRandomAccess):
+        data.fetch_docs(str(tmp_path / "s.txt"), 20, dataset="org/corpus")
+
+
 class FakeBuilder:
     def __init__(self, files):
         self.config = type("C", (), {"data_files": {"train": files}})()

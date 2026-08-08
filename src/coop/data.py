@@ -164,7 +164,11 @@ def _open(url: str):
     if url.startswith("hf://"):
         from coop import hubio
 
-        return hubio.dataset_fs().open(url, "rb")
+        try:
+            fs = hubio.dataset_fs()
+        except ImportError as e:  # huggingface_hub without fsspec: stream instead of dying
+            raise NoRandomAccess(str(e)) from e
+        return fs.open(url, "rb")
     return open(url, "rb")
 
 
@@ -288,6 +292,8 @@ def fetch_docs(
         try:
             _parquet_docs(dataset, config, split, skip, n_docs, text_field, emit)
         except NoRandomAccess as why:
+            if written:  # restarting the slice now would write the docs already emitted twice
+                raise
             log.info("%s — streaming to doc %d instead; this part is slow", why, skip)
             _stream_docs(dataset, config, split, skip, n_docs, text_field, emit)
     if written == 0:
