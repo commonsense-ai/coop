@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 7782400
+        "gpu": 10649600
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 30,
+      "submissions": 32,
       "tier": "gpu",
-      "tokens": 108544000
+      "tokens": 111411200
     },
     "miacx": {
       "first_seen": 12,
@@ -33,10 +33,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the level of the ability of this. While, the most often the ability to help to develop in the way.\nFirst, in the next two ways that a child who knows that the child will.\nWhile the child who are very important, it takes advantage to share all of their children and then be extremely challenging. And it comes to it, as much as a child and they take care for their children. With them, children who work on their children, children and children. But children should continue to provide children to go up with them from them. They should also find they who need",
-    "step": 32,
-    "val_loss": 5.5251
+    "sample": "The most important thing to understand about what it\u2019s going to get too much money by doing the more of the more than the more likely than it.\nHow to write a more than just a great and effective thing. That means to go to anything else, but also two different aspects of the needs to make up in the future. So, it\u2019s a lot of ways to get, especially if any man knows a bit of things, but what would be it hard to do, but there is the first thing. It\u2019s a part of the things that comes to them all the people is being able to do,",
+    "step": 33,
+    "val_loss": 5.5036
   },
-  "step": 32,
-  "updated": "2026-08-08T05:05:02+00:00"
+  "step": 33,
+  "updated": "2026-08-08T05:12:58+00:00"
 }
