@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 167116800
+        "gpu": 169984000
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 88,
+      "submissions": 90,
       "tier": "gpu",
-      "tokens": 267878400
+      "tokens": 270745600
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about health care.\n- Celebrurally and only do not allow patients to avoid it.\n- Take all medical care and good care.\nIf you are taking care of your patients, you might try to help you and your health.\nThere are many common health risks you can see, which will make you feel free even if you are trying to identify it.Last Updated: April 24, 2019\nOriginally published on May 23, 2012\nNew articles in the English language.\n- I'll discuss the benefits of the article.\n- I think that would be possible, or",
-    "step": 63,
-    "val_loss": 5.1482
+    "sample": "The most important thing to understand about the nature of the rights of the past. As for those who have been elected by the time it is a political party where the court is supposed to offer. Similarly, with the Constitution and the Constitution itself, the Constitution makes the court a crucial role in determining the role of the law in the Constitution. Thus, the constitution is also referred to as the Constitution. Thus, the constitution of justice, which gives the Constitution the authority to remain with only a peaceful party, but it is also the constitution of a political party. Thus, in contrast, the Constitution, as mentioned by the Constitution, is",
+    "step": 64,
+    "val_loss": 5.1704
   },
-  "step": 63,
-  "updated": "2026-08-08T11:28:50+00:00"
+  "step": 64,
+  "updated": "2026-08-08T11:40:51+00:00"
 }
