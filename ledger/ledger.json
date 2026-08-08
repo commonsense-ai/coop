@@ -24,16 +24,16 @@
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 12,
+      "submissions": 13,
       "tier": "gpu",
-      "tokens": 22974464
+      "tokens": 23646208
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the following in the world, the world and the role of the country. The country.\nThe British State of the two years, one time, there is the world to the same time.\nYou can take the same way, the world is a new and the same time, there is a few days a particular. A lot of the world. As a different more.\nThis can provide a great time.\nIt is also a result. In some of the same time, the long- You might need of the same way to a number of the one one of the time is a",
-    "step": 12,
-    "val_loss": 6.4511
+    "sample": "The most important thing to understand about the other areas and social research in the country\u2019s the life in its new economic resources, the country in the political country, was the United States to the fact of the first of the most different and the country, the early, the future problems, the world, in the world, it, and social skills. The other factors are now, the future of their own and then, a few years of God, this question. They had the state of life in the world.\nWhile the population and the first more popular life and a great in the human communities, and the society, the",
+    "step": 13,
+    "val_loss": 6.3833
   },
-  "step": 12,
-  "updated": "2026-08-08T00:37:51+00:00"
+  "step": 13,
+  "updated": "2026-08-08T00:57:32+00:00"
 }
