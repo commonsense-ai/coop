@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **85** — updated 2026-08-08T15:59:42+00:00.
+Outer step **86** — updated 2026-08-08T16:13:40+00:00.
 
-Val loss at step 85: **4.7968** — sample:
+Val loss at step 86: **4.7772** — sample:
 
-> The most important thing to understand about such challenges that might require them to recognize new challenges. Not only do they understand why their actions are clearly understood through their actions, but also because of their beliefs concerning them is wrong. But because of our beliefs towards human beings, this is where social relations were created by our belief that both beings have the confidence that God does not recognize their faith as though the law goes back to a different point that God exists within themselves. But here, we need to think that these issues exist so that after Christ’s failure in our society. We need to consider these problems because we don’t believe
+> The most important thing to understand about our planet, it's the same way that we are using our planet to ensure our planet doesn't take full time to measure our solar system. Because this doesn't mean our planet's only planet, our planet's primary mission will still require many years. That's why the Earth is going to create a real-world site of our solar system - what makes our planet stronger and what's going on here!Dr Martin Sainki in Scotland By Robert Sainki | "Leace Hill" - November 7, 2008 The title is composed of the famous name from the ancient
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -19,7 +19,7 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 
 | # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
 |---|-------------|----------|----------|--------|------------|-------|
-| 1 | cjtsolutions | nvidia-gpu | 45 | 909,873,152 | 0.991 | 901,809,003 |
+| 1 | cjtsolutions | nvidia-gpu | 47 | 963,121,152 | 0.993 | 956,206,925 |
 | 2 | naloxene | nvidia-gpu | 54 | 825,929,728 | 1.000 | 825,929,728 |
-| 3 | ezshroom | apple-gpu | 127 | 382,988,288 | 1.000 | 382,988,288 |
+| 3 | ezshroom | apple-gpu | 129 | 389,132,288 | 1.000 | 389,132,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
