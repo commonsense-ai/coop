@@ -77,6 +77,17 @@ def test_install_kind_recognises_a_git_checkout():
     assert update.install_kind() == update.GIT  # the tests run from one
 
 
+def test_install_kind_recognises_a_git_worktree(tmp_path, monkeypatch):
+    # a worktree's .git is a file pointing at the real one, not a directory; reading
+    # that as a pip install would pip-upgrade straight over someone's checkout
+    root = tmp_path / "wt"
+    (root / "src" / "coop").mkdir(parents=True)
+    (root / "pyproject.toml").write_text("")
+    (root / ".git").write_text("gitdir: /elsewhere/.git/worktrees/wt\n")
+    monkeypatch.setattr(update, "__file__", str(root / "src" / "coop" / "update.py"))
+    assert update.install_kind() == update.GIT
+
+
 def as_install(monkeypatch, tmp_path, prefix):
     monkeypatch.setattr(update, "__file__", str(tmp_path / "site-packages" / "coop" / "update.py"))
     monkeypatch.setattr(update.sys, "prefix", prefix)
