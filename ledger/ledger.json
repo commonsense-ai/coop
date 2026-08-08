@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 152371200,
+        "apple-gpu": 172851200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 158,
+      "submissions": 160,
       "tier": "gpu",
-      "tokens": 491532288
+      "tokens": 512012288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about them because they live in a different world where they live today. There are many things that we have in each of these environments; the ones that are not like a person; we are unable to obtain something from a different perspective. So although we might ask ourselves, the other person may ask ourselves. If we live the same person, we may ask ourselves whether we should live there and at any point in life without the need to seek, we may ask ourselves; but we cannot explain it, but here we offer some information about what we can do to help our children.\nLet us discuss our",
-    "step": 103,
-    "val_loss": 4.6272
+    "sample": "The most important thing to understand about the way we perceive their actions.\nIt seems they might seem to have looked like they didn\u2019t appear on the road. What they saw? That was true when they were they from a distance away\u2014they didn\u2019t exist and they weren\u2019t interested in their actions as these couldn\u2019t. When they knew what they saw, they talked about what they saw or didn\u2019t, they knew\u2014they meant they were afraid? That being true doesn\u2019t exist on the road. Even if they didn\u2019t exist without knowing what they saw or knew what they knew. Again they",
+    "step": 104,
+    "val_loss": 4.628
   },
-  "step": 103,
-  "updated": "2026-08-08T19:57:49+00:00"
+  "step": 104,
+  "updated": "2026-08-08T20:40:01+00:00"
 }

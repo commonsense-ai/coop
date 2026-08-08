@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **103** — updated 2026-08-08T19:57:49+00:00.
+Outer step **104** — updated 2026-08-08T20:40:01+00:00.
 
-Val loss at step 103: **4.6272** — sample:
+Val loss at step 104: **4.628** — sample:
 
-> The most important thing to understand about them because they live in a different world where they live today. There are many things that we have in each of these environments; the ones that are not like a person; we are unable to obtain something from a different perspective. So although we might ask ourselves, the other person may ask ourselves. If we live the same person, we may ask ourselves whether we should live there and at any point in life without the need to seek, we may ask ourselves; but we cannot explain it, but here we offer some information about what we can do to help our children. Let us discuss our
+> The most important thing to understand about the way we perceive their actions. It seems they might seem to have looked like they didn’t appear on the road. What they saw? That was true when they were they from a distance away—they didn’t exist and they weren’t interested in their actions as these couldn’t. When they knew what they saw, they talked about what they saw or didn’t, they knew—they meant they were afraid? That being true doesn’t exist on the road. Even if they didn’t exist without knowing what they saw or knew what they knew. Again they
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -21,5 +21,5 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | cjtsolutions | nvidia-gpu | 70 | 1,411,633,152 | 0.999 | 1,410,734,974 |
 | 2 | naloxene | nvidia-gpu | 61 | 1,027,452,928 | 1.000 | 1,027,452,928 |
-| 3 | ezshroom | apple-gpu | 158 | 491,532,288 | 1.000 | 491,532,288 |
+| 3 | ezshroom | apple-gpu | 160 | 512,012,288 | 1.000 | 512,012,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
