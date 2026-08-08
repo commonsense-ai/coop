@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 209715200,
+        "apple-gpu": 217907200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 165,
+      "submissions": 167,
       "tier": "gpu",
-      "tokens": 548876288
+      "tokens": 557068288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about when we want something to happen. There are three main ways to solve the problem of interest when we want to happen. First, it creates some skill that we didn\u2019t understand exactly how we are around the line because we are very familiar with someone else. What we\u2019d like to hear is when we want the actions we make when we want someone else to continue talking about what to expect them. Secondly, we don\u2019t understand what to expect when we want someone else to expect someone else to achieve something without losing anything else to survive anything else without having something else to wait until we want",
-    "step": 107,
-    "val_loss": 4.6326
+    "sample": "The most important thing to understand about it - or simply it should recognize how an individual sees an individual's thoughts through them?The importance of human behaviour and how we engage nature. From natural processes to natural environments and communities \u2013 the moral values of individuals, the moral values, concepts and models of society \u2013 are discussed below. It is an excellent tool we can evaluate for each individual in every context of life: to achieve social goals and interests in society and society while promoting social justice and equality.\nThe concept of human behavior: the concept of nature, how we relate to another and the concepts we perceive as social behaviors. How",
+    "step": 108,
+    "val_loss": 4.641
   },
-  "step": 107,
-  "updated": "2026-08-08T21:52:03+00:00"
+  "step": 108,
+  "updated": "2026-08-08T22:07:17+00:00"
 }

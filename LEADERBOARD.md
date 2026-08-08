@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **107** — updated 2026-08-08T21:52:03+00:00.
+Outer step **108** — updated 2026-08-08T22:07:17+00:00.
 
-Val loss at step 107: **4.6326** — sample:
+Val loss at step 108: **4.641** — sample:
 
-> The most important thing to understand about when we want something to happen. There are three main ways to solve the problem of interest when we want to happen. First, it creates some skill that we didn’t understand exactly how we are around the line because we are very familiar with someone else. What we’d like to hear is when we want the actions we make when we want someone else to continue talking about what to expect them. Secondly, we don’t understand what to expect when we want someone else to expect someone else to achieve something without losing anything else to survive anything else without having something else to wait until we want
+> The most important thing to understand about it - or simply it should recognize how an individual sees an individual's thoughts through them?The importance of human behaviour and how we engage nature. From natural processes to natural environments and communities – the moral values of individuals, the moral values, concepts and models of society – are discussed below. It is an excellent tool we can evaluate for each individual in every context of life: to achieve social goals and interests in society and society while promoting social justice and equality. The concept of human behavior: the concept of nature, how we relate to another and the concepts we perceive as social behaviors. How
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -21,5 +21,5 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | cjtsolutions | nvidia-gpu | 70 | 1,411,633,152 | 0.999 | 1,410,734,974 |
 | 2 | naloxene | nvidia-gpu | 61 | 1,027,452,928 | 1.000 | 1,027,452,928 |
-| 3 | ezshroom | apple-gpu | 165 | 548,876,288 | 1.000 | 548,876,288 |
+| 3 | ezshroom | apple-gpu | 167 | 557,068,288 | 1.000 | 557,068,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
