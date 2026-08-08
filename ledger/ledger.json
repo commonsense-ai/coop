@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 146227200,
+        "apple-gpu": 152371200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 156,
+      "submissions": 158,
       "tier": "gpu",
-      "tokens": 485388288
+      "tokens": 491532288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the process and achieve more of this article. It is a whole lot of work. It includes everything but includes something that can be a big thing \u2013 what you're doing and what you're doing? That's all about reading! It's actually about working with all things that that we've learned with, and what you've learned here about it. However, it isn't that big thing we've learned around and it doesn't mean we're going to say we're doing it at all until we're going to go back to work on this topic. This will help us develop many important things that",
-    "step": 102,
-    "val_loss": 4.6324
+    "sample": "The most important thing to understand about them because they live in a different world where they live today. There are many things that we have in each of these environments; the ones that are not like a person; we are unable to obtain something from a different perspective. So although we might ask ourselves, the other person may ask ourselves. If we live the same person, we may ask ourselves whether we should live there and at any point in life without the need to seek, we may ask ourselves; but we cannot explain it, but here we offer some information about what we can do to help our children.\nLet us discuss our",
+    "step": 103,
+    "val_loss": 4.6272
   },
-  "step": 102,
-  "updated": "2026-08-08T19:48:26+00:00"
+  "step": 103,
+  "updated": "2026-08-08T19:57:49+00:00"
 }
