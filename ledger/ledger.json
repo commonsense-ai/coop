@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 187187200,
+        "apple-gpu": 207667200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 162,
+      "submissions": 164,
       "tier": "gpu",
-      "tokens": 526348288
+      "tokens": 546828288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the effects of exercise on overall performance. It helps maintain an understanding of the value of exercise in our daily routine and is on the way to that knowledge. It includes all the changes we need to achieve when we develop our physical and physical health. However, it allows us to understand the specific changes we have about exercise on our mental health. It occurs when we reach the age of 22 or older. It is our most obvious change when we reach it every hour. It is important to remember this before we go to that day\u2019s most beneficial. It helps us understand the changes we make in our",
-    "step": 105,
-    "val_loss": 4.6254
+    "sample": "The most important thing to understand about it or that you should never remember it again, but they\u2019re a good idea to spend time helping you learn. Well, to learn to stay in mind, you\u2019re going to learn how to solve it, and you\u2019re going to expect yourself to learn how it you need to learn something about it and how to solve it again?\nThe answer goes beyond this point, because you probably don\u2019t understand what it means. While it\u2019s a simple way to teach it, there are ways you can accomplish it and that you will grow and become more comfortable if you feel it",
+    "step": 106,
+    "val_loss": 4.6211
   },
-  "step": 105,
-  "updated": "2026-08-08T21:06:58+00:00"
+  "step": 106,
+  "updated": "2026-08-08T21:45:14+00:00"
 }
