@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **106** — updated 2026-08-08T21:45:14+00:00.
+Outer step **107** — updated 2026-08-08T21:52:03+00:00.
 
-Val loss at step 106: **4.6211** — sample:
+Val loss at step 107: **4.6326** — sample:
 
-> The most important thing to understand about it or that you should never remember it again, but they’re a good idea to spend time helping you learn. Well, to learn to stay in mind, you’re going to learn how to solve it, and you’re going to expect yourself to learn how it you need to learn something about it and how to solve it again? The answer goes beyond this point, because you probably don’t understand what it means. While it’s a simple way to teach it, there are ways you can accomplish it and that you will grow and become more comfortable if you feel it
+> The most important thing to understand about when we want something to happen. There are three main ways to solve the problem of interest when we want to happen. First, it creates some skill that we didn’t understand exactly how we are around the line because we are very familiar with someone else. What we’d like to hear is when we want the actions we make when we want someone else to continue talking about what to expect them. Secondly, we don’t understand what to expect when we want someone else to expect someone else to achieve something without losing anything else to survive anything else without having something else to wait until we want
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -21,5 +21,5 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | cjtsolutions | nvidia-gpu | 70 | 1,411,633,152 | 0.999 | 1,410,734,974 |
 | 2 | naloxene | nvidia-gpu | 61 | 1,027,452,928 | 1.000 | 1,027,452,928 |
-| 3 | ezshroom | apple-gpu | 164 | 546,828,288 | 1.000 | 546,828,288 |
+| 3 | ezshroom | apple-gpu | 165 | 548,876,288 | 1.000 | 548,876,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |

@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 207667200,
+        "apple-gpu": 209715200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 164,
+      "submissions": 165,
       "tier": "gpu",
-      "tokens": 546828288
+      "tokens": 548876288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about it or that you should never remember it again, but they\u2019re a good idea to spend time helping you learn. Well, to learn to stay in mind, you\u2019re going to learn how to solve it, and you\u2019re going to expect yourself to learn how it you need to learn something about it and how to solve it again?\nThe answer goes beyond this point, because you probably don\u2019t understand what it means. While it\u2019s a simple way to teach it, there are ways you can accomplish it and that you will grow and become more comfortable if you feel it",
-    "step": 106,
-    "val_loss": 4.6211
+    "sample": "The most important thing to understand about when we want something to happen. There are three main ways to solve the problem of interest when we want to happen. First, it creates some skill that we didn\u2019t understand exactly how we are around the line because we are very familiar with someone else. What we\u2019d like to hear is when we want the actions we make when we want someone else to continue talking about what to expect them. Secondly, we don\u2019t understand what to expect when we want someone else to expect someone else to achieve something without losing anything else to survive anything else without having something else to wait until we want",
+    "step": 107,
+    "val_loss": 4.6326
   },
-  "step": 106,
-  "updated": "2026-08-08T21:45:14+00:00"
+  "step": 107,
+  "updated": "2026-08-08T21:52:03+00:00"
 }
