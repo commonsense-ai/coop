@@ -20,7 +20,7 @@ that it's zero-setup.
 
 ```sh
 npx coop-ai start       # begin contributing (runs in the background)
-npx coop-ai status      # live progress + ETA, your rank, who else is training
+npx coop-ai status      # live progress + ETA, your rank, which GPU is working
 npx coop-ai logs -f     # watch the worker do its thing
 npx coop-ai stop        # submits work-in-progress, shows your impact, stops
 npx coop-ai run latest  # talk to the model trained so far — no account needed

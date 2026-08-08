@@ -113,7 +113,7 @@ shard (a slice derived from your username so volunteers don't overlap), then tra
 and submits rounds until you say otherwise.
 
 ```sh
-coop status    # live progress + ETA, your rank, who else is training
+coop status    # live progress + ETA, your rank, which GPU is doing the work
 coop logs -f   # watch it work
 coop stop      # stop contributing; `coop start` resumes any time
 ```

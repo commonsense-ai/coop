@@ -18,10 +18,10 @@ import urllib.request
 import uuid
 from pathlib import Path
 
-import torch
 import yaml
 
 from coop import update
+from coop.device import describe, pick_device
 from coop.status import FILENAME as STATUS_FILENAME
 from coop.status import StatusFile
 
@@ -101,14 +101,6 @@ def derive_skip(username: str, docs: int = 20000, total_docs: int = TRAIN_DOCS) 
     return (h % slots) * docs
 
 
-def pick_device() -> str:
-    if torch.cuda.is_available():
-        return "cuda"
-    if torch.backends.mps.is_available():
-        return "mps"
-    return "cpu"
-
-
 def main():
     from coop import setup_logging
 
@@ -164,8 +156,11 @@ def main():
         tokenize_file(load_tokenizer(str(tok_path)), txt, str(shard))
 
     device = a.device or pick_device()
-    log.info("joined as %s on %s; ctrl-c to stop", user, device)
-    status.update(device=device)
+    label = describe(device)
+    log.info("joined as %s on %s; ctrl-c to stop", user, label)
+    # the label too: `coop status` reports what the worker actually got, and only
+    # the worker knows whether an explicit --device overrode detection
+    status.update(device=device, device_label=label)
 
     # coop stop sends SIGTERM: finish packaging + submitting the current round, then exit
     stop = threading.Event()

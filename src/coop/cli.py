@@ -17,7 +17,8 @@ from pathlib import Path
 import yaml
 
 from coop import __version__, hubio, settings, submit, update
-from coop.join import DEFAULT_REPO, fetch_raw, pick_device
+from coop.device import CUDA_FIX, cuda_gap, describe, pick_device
+from coop.join import DEFAULT_REPO, fetch_raw
 from coop.status import FILENAME as STATUS_FILENAME
 from coop.status import read_status
 
@@ -55,7 +56,16 @@ one-time setup — coop needs a free Hugging Face account:
   3. paste the token below (input stays hidden)
 """
 
-DEVICE_NAMES = {"mps": "Apple GPU", "cuda": "NVIDIA GPU", "cpu": "CPU"}
+
+def warn_cuda_gap(device: str) -> None:
+    """An NVIDIA owner training on CPU is losing most of their machine and has no
+    way to know: torch reports no CUDA and nothing else says a word."""
+    if device != "cpu":  # cuda already has it; Apple hardware never will
+        return
+    gap = cuda_gap()
+    if gap:
+        print(f"heads up: you have an NVIDIA GPU but coop is on your CPU — {gap}")
+        print(f"          {CUDA_FIX}")
 
 
 def read_settings() -> dict:
@@ -322,6 +332,8 @@ def cmd_start(a: argparse.Namespace) -> None:
         cmd += ["--device", a.device]
     if a.rounds:
         cmd += ["--rounds", str(a.rounds)]
+    device = a.device or pick_device()
+    warn_cuda_gap(device)  # before the worker starts: an idle GPU is worth fixing first
     with LOGFILE.open("ab") as log:
         p = subprocess.Popen(
             cmd,
@@ -336,9 +348,7 @@ def cmd_start(a: argparse.Namespace) -> None:
     if not alive(p.pid):
         print(tail(LOGFILE, 15))
         raise SystemExit(f"the worker exited immediately — log above, full log: {LOGFILE}")
-    device = a.device or pick_device()
-    hw = DEVICE_NAMES.get(device, device)
-    print(f"training {model_repo} as {user} on your {hw} (pid {p.pid})")
+    print(f"training {model_repo} as {user} on your {describe(device)} (pid {p.pid})")
     print("(switch models any time: coop stop, then coop start --choose)")
     if a.rounds:
         print(f"will stop by itself after {a.rounds} round{'s' if a.rounds > 1 else ''}")
@@ -454,9 +464,20 @@ def cmd_status(a: argparse.Namespace) -> None:
             print(f"now      {line}{stale}")
     else:
         print("worker   not running — `coop start` to contribute")
+    # a background worker is invisible: without this line nobody can tell whether
+    # the GPU they donated is the thing doing the work
+    if running and st.get("device"):
+        device = st["device"]
+        print(f"device   {st.get('device_label') or describe(device)}")
+    else:
+        device = pick_device()
+        print(f"device   {describe(device)} — what `coop start` would use")
+    warn_cuda_gap(device)
     note = update_line(a.repo)
     if note:
         print(f"update   {note}")
+
+
     if st.get("rounds_done"):
         when = "this session" if running else "last session"
         toks = st.get("tokens_session", 0)
@@ -541,7 +562,8 @@ def cmd_run(a: argparse.Namespace) -> None:
     val = meta.get("eval", {}).get("val_loss")
     line = f"{name} · outer step {meta['step']}"
     line += f" · val loss {val}" if val is not None else ""
-    print(f"{line} · running on your {DEVICE_NAMES.get(device, device)}")
+    print(f"{line} · running on your {describe(device)}")
+    warn_cuda_gap(device)
 
     def emit(prompt: str) -> None:
         for piece in play.stream(
