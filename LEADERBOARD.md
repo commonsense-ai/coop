@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **113** — updated 2026-08-08T22:52:23+00:00.
+Outer step **114** — updated 2026-08-08T23:07:28+00:00.
 
-Val loss at step 113: **4.6002** — sample:
+Val loss at step 114: **4.5701** — sample:
 
-> The most important thing to understand about women’s impact on society and how they are at a young age. If you haven’t understood how to engage a diverse range of girls in a diverse context, including women’s who are also in the same room, you should know why women don’t understand how far we want to survive in the future if they are in this room. According to a study published in the June 2009 issue of the International Society for the Assessment of Child Development (NAPAOM), the UN’s main objective was to promote their participation in school improvement projects with a variety of organizations including those that
+> The most important thing to understand about science or science. If you're interested in science research, you'll need to hire a few people who are interested in science science fields, science and science fields. Take a look at your current scientific knowledge base. You'll find two career paths: the science and science fields you're interested in. What you're interested in science research and science? Are you interested in science studies? If you're interested in science research, you'll find great opportunities for research-based, in some cases. If you're interested in science research, you'll find life-saving options for studying chemistry while in
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -19,7 +19,7 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 
 | # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
 |---|-------------|----------|----------|--------|------------|-------|
-| 1 | cjtsolutions | nvidia-gpu | 74 | 1,484,132,352 | 1.000 | 1,483,512,792 |
+| 1 | cjtsolutions | nvidia-gpu | 76 | 1,564,004,352 | 1.000 | 1,563,475,501 |
 | 2 | naloxene | nvidia-gpu | 61 | 1,027,452,928 | 1.000 | 1,027,452,928 |
-| 3 | ezshroom | apple-gpu | 174 | 575,500,288 | 1.000 | 575,500,288 |
+| 3 | ezshroom | apple-gpu | 176 | 583,692,288 | 1.000 | 583,692,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
