@@ -3,16 +3,16 @@
     "cjtsolutions": {
       "first_seen": 9,
       "reputation": 1.0,
-      "submissions": 16,
+      "submissions": 18,
       "tier": "gpu",
-      "tokens": 248995840
+      "tokens": 302243840
     },
     "ezshroom": {
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 16,
+      "submissions": 18,
       "tier": "gpu",
-      "tokens": 70860800
+      "tokens": 75776000
     },
     "miacx": {
       "first_seen": 12,
@@ -24,16 +24,16 @@
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 28,
+      "submissions": 30,
       "tier": "gpu",
-      "tokens": 283209728
+      "tokens": 331132928
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about why does like \u201cf\u201d to know how to work for others we love from the sense to be able to the nature and how we hope.\n\u201cA new is the answer, I believe the other ways, I didn\u2019t really get more than the universe is a thing, but if you can't really much like that they aren\u2019t have to get us like the need to show that the only when people\u2019t know so different that we eat the same picture to give us.\nHowever, I eat that, I have long way, I just, though the world, the world",
-    "step": 24,
-    "val_loss": 5.99
+    "sample": "The most important thing to understand about and the question \u201cfor\u201d and what the more than the nature, that the evidence is, according to the reason, the fact that all is the universe, in it takes up in the fact.\nA person is that the things of the people have nothing has a thing of the life, as a lot of the person's in the meaning from the person must play.\na for the ways that the person needs of the time, the fact, the following the person is why what makes them will say that the right things or ask at the question of the idea to God should also know in",
+    "step": 25,
+    "val_loss": 5.9111
   },
-  "step": 24,
-  "updated": "2026-08-08T03:28:54+00:00"
+  "step": 25,
+  "updated": "2026-08-08T03:43:49+00:00"
 }
