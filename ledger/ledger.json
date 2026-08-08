@@ -10,9 +10,9 @@
     "ezshroom": {
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 20,
+      "submissions": 22,
       "tier": "gpu",
-      "tokens": 83968000
+      "tokens": 90931200
     },
     "miacx": {
       "first_seen": 12,
@@ -24,16 +24,16 @@
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 34,
+      "submissions": 36,
       "tier": "gpu",
-      "tokens": 385200128
+      "tokens": 424931328
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the presence of the world, and in the fact, the earth continues to the reality.\nThe discovery of the world and the same question is to be seen by an important.\nThe nature of the world is called the idea that some sort of the other. A.\nThe person uses the ability to protect us.\nAs a person does not, the things of the situation is the right of the most vulnerable to be, the things cannot be the idea, and the one person who is the ability of the fact that the people and is that the problem is in the day.\nAt",
-    "step": 27,
-    "val_loss": 5.7541
+    "sample": "The most important thing to understand about the things of these things like to be a more time, but it will continue to use the first.\nThe most important thing that the person might, because he wants to share the first and who has been able to develop a very great challenge that will not meet the world.\nSo when the person sees, it is easy because the same thing does all have to be able to keep the same and their own things is. It means the story of the things.\nThe fact that the child should not get the best, but it seems to that the person has been, but that he makes",
+    "step": 28,
+    "val_loss": 5.6912
   },
-  "step": 27,
-  "updated": "2026-08-08T04:01:03+00:00"
+  "step": 28,
+  "updated": "2026-08-08T04:13:02+00:00"
 }

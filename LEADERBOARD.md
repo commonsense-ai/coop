@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **27** — updated 2026-08-08T04:01:03+00:00.
+Outer step **28** — updated 2026-08-08T04:13:02+00:00.
 
-Val loss at step 27: **5.7541** — sample:
+Val loss at step 28: **5.6912** — sample:
 
-> The most important thing to understand about the presence of the world, and in the fact, the earth continues to the reality. The discovery of the world and the same question is to be seen by an important. The nature of the world is called the idea that some sort of the other. A. The person uses the ability to protect us. As a person does not, the things of the situation is the right of the most vulnerable to be, the things cannot be the idea, and the one person who is the ability of the fact that the people and is that the problem is in the day. At
+> The most important thing to understand about the things of these things like to be a more time, but it will continue to use the first. The most important thing that the person might, because he wants to share the first and who has been able to develop a very great challenge that will not meet the world. So when the person sees, it is easy because the same thing does all have to be able to keep the same and their own things is. It means the story of the things. The fact that the child should not get the best, but it seems to that the person has been, but that he makes
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -18,7 +18,7 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | naloxene | gpu | 34 | 385,200,128 | 1.000 | 385,200,128 |
+| 1 | naloxene | gpu | 36 | 424,931,328 | 1.000 | 424,931,328 |
 | 2 | cjtsolutions | gpu | 20 | 355,491,840 | 1.000 | 355,491,840 |
-| 3 | ezshroom | gpu | 20 | 83,968,000 | 1.000 | 83,968,000 |
+| 3 | ezshroom | gpu | 22 | 90,931,200 | 1.000 | 90,931,200 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
