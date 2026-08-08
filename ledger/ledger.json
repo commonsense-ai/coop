@@ -8,11 +8,14 @@
       "tokens": 355491840
     },
     "ezshroom": {
+      "devices": {
+        "gpu": 4915200
+      },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 26,
+      "submissions": 28,
       "tier": "gpu",
-      "tokens": 100761600
+      "tokens": 105676800
     },
     "miacx": {
       "first_seen": 12,
@@ -30,10 +33,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the level of the population and how the soil is, where we want more a large amount of climate change is less able to find a higher amount of people from those days.\nHowever, the climate change from the past 50,000 million per cent per million people were exposed to the past decade, we got these findings on its way of the climate crisis:\n- Many of the climate change were at the end up and average level, but the greatest rate of the growth rate of climate change had never been associated with a strong risk than the population, and the average is now more likely to be",
-    "step": 30,
-    "val_loss": 5.5905
+    "sample": "The most important thing to understand about the same thing. For example, in the next decade, we know the things we get to learn.\nWhen, we know that, even say that the two-dimensional words, since the same place, not to make the only ones that is, that\u2019s like the more common, so, that\u2019s so many things that\u2019s an average and more popular, and that\u2019s still a lot of a bit is a good, for many parts of these things in the world, so that\u2019s the next to get on, the time of us as we can\u2019t understand",
+    "step": 31,
+    "val_loss": 5.5596
   },
-  "step": 30,
-  "updated": "2026-08-08T04:43:03+00:00"
+  "step": 31,
+  "updated": "2026-08-08T04:58:03+00:00"
 }
