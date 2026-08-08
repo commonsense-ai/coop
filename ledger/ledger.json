@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 91750400
+        "gpu": 98713600
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 61,
+      "submissions": 63,
       "tier": "gpu",
-      "tokens": 192512000
+      "tokens": 199475200
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the nature of the universe for us at the same time, and our own civilization, to develop with great insight, while others come to our lives, as these will now look forward here.\nAccording to the International Space Center, the creation of the International Space Administration (NNS) gives for the first time we can start on the Earth, and, in order to build the planet, we celebrate, to fill the planet, and to protect the planet from the planet, through the planet, and as the moon will result in our lives. The mission is to maintain a new version of the Earth",
-    "step": 49,
-    "val_loss": 5.1463
+    "sample": "The most important thing to understand about the rights and democracy.\nThe public has been doing an independent country because the people are willing to learn and maintain their lives. They are willing to speak with their own state. They are still the same things, the community has to make them feel a long way to interact. They are also getting comfortable in a specific way, and they are getting the chance.\nThe majority of the people are in the same place, and they are trying to make things easier for their lives.\nIn the case of those participants is \u201cI want to make my friends work effectively. It\u2019s very perfect",
+    "step": 50,
+    "val_loss": 5.14
   },
-  "step": 49,
-  "updated": "2026-08-08T08:28:22+00:00"
+  "step": 50,
+  "updated": "2026-08-08T08:43:35+00:00"
 }

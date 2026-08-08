@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **49** — updated 2026-08-08T08:28:22+00:00.
+Outer step **50** — updated 2026-08-08T08:43:35+00:00.
 
-Val loss at step 49: **5.1463** — sample:
+Val loss at step 50: **5.14** — sample:
 
-> The most important thing to understand about the nature of the universe for us at the same time, and our own civilization, to develop with great insight, while others come to our lives, as these will now look forward here. According to the International Space Center, the creation of the International Space Administration (NNS) gives for the first time we can start on the Earth, and, in order to build the planet, we celebrate, to fill the planet, and to protect the planet from the planet, through the planet, and as the moon will result in our lives. The mission is to maintain a new version of the Earth
+> The most important thing to understand about the rights and democracy. The public has been doing an independent country because the people are willing to learn and maintain their lives. They are willing to speak with their own state. They are still the same things, the community has to make them feel a long way to interact. They are also getting comfortable in a specific way, and they are getting the chance. The majority of the people are in the same place, and they are trying to make things easier for their lives. In the case of those participants is “I want to make my friends work effectively. It’s very perfect
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -21,5 +21,5 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | naloxene | nvidia-gpu | 54 | 825,929,728 | 1.000 | 825,929,728 |
 | 2 | cjtsolutions | gpu | 20 | 355,491,840 | 1.000 | 355,491,840 |
-| 3 | ezshroom | gpu | 61 | 192,512,000 | 1.000 | 192,512,000 |
+| 3 | ezshroom | gpu | 63 | 199,475,200 | 1.000 | 199,475,200 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
