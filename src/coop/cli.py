@@ -16,7 +16,7 @@ from pathlib import Path
 
 import yaml
 
-from coop import hubio, submit
+from coop import __version__, hubio, settings, submit, update
 from coop.join import DEFAULT_REPO, fetch_raw, pick_device
 from coop.status import FILENAME as STATUS_FILENAME
 from coop.status import read_status
@@ -34,6 +34,7 @@ coop — help train a small language model with your computer
   coop logs -f      watch the worker do its thing
   coop stop         stop contributing — your credit stays
   coop run latest   talk to the model trained so far (no account needed)
+  coop update       get the newest coop (`--auto on` to keep it current)
 
 first time? just run `coop start` — it walks you through the one-time setup.
 in a hurry? `coop start --latest` skips the menu and joins the current run."""
@@ -57,19 +58,21 @@ one-time setup — coop needs a free Hugging Face account:
 DEVICE_NAMES = {"mps": "Apple GPU", "cuda": "NVIDIA GPU", "cpu": "CPU"}
 
 
-SETTINGS = HOME / "settings.json"
-
-
 def read_settings() -> dict:
-    try:
-        return json.loads(SETTINGS.read_text())
-    except (FileNotFoundError, json.JSONDecodeError):
-        return {}
+    return settings.read(HOME)
 
 
 def write_settings(**kw) -> None:
-    HOME.mkdir(parents=True, exist_ok=True)
-    SETTINGS.write_text(json.dumps({**read_settings(), **kw}, indent=2))
+    settings.write(HOME, **kw)
+
+
+def update_line(repo: str, force: bool = False) -> str:
+    """One line about a newer coop, or nothing at all — a version check must never be
+    the reason a volunteer can't read their own status."""
+    manifest = update.available(repo, HOME, force=force)
+    if not manifest:
+        return ""
+    return update.notice(manifest, auto=bool(read_settings().get("auto_update")))
 
 
 def run_config_path() -> str:
@@ -344,6 +347,9 @@ def cmd_start(a: argparse.Namespace) -> None:
     print("  coop status    how it's going")
     print("  coop logs -f   watch it work")
     print("  coop stop      stop contributing")
+    note = update_line(a.repo)
+    if note:
+        print(f"\n{note}")
 
 
 def bar(frac: float, width: int = 30) -> str:
@@ -448,6 +454,9 @@ def cmd_status(a: argparse.Namespace) -> None:
             print(f"now      {line}{stale}")
     else:
         print("worker   not running — `coop start` to contribute")
+    note = update_line(a.repo)
+    if note:
+        print(f"update   {note}")
     if st.get("rounds_done"):
         when = "this session" if running else "last session"
         toks = st.get("tokens_session", 0)
@@ -568,6 +577,44 @@ def cmd_run(a: argparse.Namespace) -> None:
             print("\n(stopped)")
 
 
+def cmd_update(a: argparse.Namespace) -> None:
+    if a.auto:
+        on = a.auto == "on"
+        write_settings(auto_update=on)
+        print(
+            "auto-update on — a running worker takes new versions between rounds, never mid-round"
+            if on
+            else "auto-update off — new versions wait for `coop update`"
+        )
+    manifest = update.available(a.repo, HOME, force=True)
+    if not manifest:
+        print(f"coop {__version__} — you're on the newest version")
+        return
+    version = manifest.get("version", "?")
+    print(f"coop {version} is out (you're on {__version__})")
+    for line in (manifest.get("notes"), manifest.get("url")):
+        if line:
+            print(f"  {line}")
+    if a.check:
+        print("\n`coop update` installs it")
+        return
+    kind = update.install_kind()
+    if kind == update.GIT:
+        raise SystemExit("this is a git checkout of coop — `git pull` updates it")
+    print("\nupdating — this can take a minute ...")
+    ok, out = update.apply(a.repo, kind)
+    if not ok:
+        print(out)
+        raise SystemExit("update failed — nothing was lost, you're still on a working coop")
+    print(f"updated to coop {version}")
+    pid = read_pid()
+    if pid and alive(pid):
+        if read_settings().get("auto_update"):
+            print("the running worker moves over when its current round finishes")
+        else:
+            print("a worker is still running the old version — `coop stop`, then `coop start`")
+
+
 def cmd_logs(a: argparse.Namespace) -> None:
     if not LOGFILE.exists():
         raise SystemExit(f"no log yet at {LOGFILE} — has the worker ever started?")
@@ -591,6 +638,7 @@ def main() -> None:
         prog="coop", description="contribute your computer to a community-trained model"
     )
     ap.add_argument("--repo", default=DEFAULT_REPO, help=argparse.SUPPRESS)
+    ap.add_argument("--version", action="version", version=f"coop {__version__}")
     sub = ap.add_subparsers(dest="cmd")
 
     st = sub.add_parser("start", help="start contributing in the background")
@@ -620,6 +668,12 @@ def main() -> None:
     lg.add_argument("-f", "--follow", action="store_true")
     lg.add_argument("-n", "--lines", type=int, default=40)
 
+    up = sub.add_parser("update", help="get the newest coop")
+    up.add_argument("--check", action="store_true", help="say what's new, install nothing")
+    up.add_argument(
+        "--auto", choices=["on", "off"], help="let the worker update itself between rounds"
+    )
+
     a = ap.parse_args()
     if a.cmd == "start":
         a.model = model_from_words(a.words)
@@ -633,6 +687,8 @@ def main() -> None:
         cmd_status(a)
     elif a.cmd == "logs":
         cmd_logs(a)
+    elif a.cmd == "update":
+        cmd_update(a)
     else:
         print(WELCOME)
 

@@ -40,3 +40,49 @@ jobs:
             npm publish --access public
           fi
         working-directory: npm
+
+  # The update channel. Volunteers poll this one file: `coop status` shows a new
+  # version, and a worker with auto-update on adopts it between rounds. It runs last
+  # but not conditionally — volunteers install from git, so the tag *is* the release
+  # whatever the registries did, and a publish that fails must not leave every
+  # machine unable to hear about a fix. On `ledger` because workflows can't push main.
+  announce:
+    needs: [pypi, npm]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ledger
+          fetch-depth: 0
+      - env:
+          TAG: ${{ github.ref_name }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          git fetch --tags --force origin
+          notes=$(git tag -l --format='%(contents:subject)' "$TAG")
+          jq -n \
+            --arg version "${TAG#v}" \
+            --arg tag "$TAG" \
+            --arg url "https://github.com/$REPO/releases/tag/$TAG" \
+            --arg notes "$notes" \
+            --arg at "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            '{version:$version, tag:$tag, url:$url, notes:$notes, published_at:$at}' \
+            > release.json
+          git config user.name "coop-aggregator"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add release.json
+          if git diff --cached --quiet; then
+            echo "release.json already current"
+            exit 0
+          fi
+          git commit -m "announce $TAG"
+          # every aggregator tick pushes ledger too, so losing the race is normal
+          for _ in 1 2 3; do
+            git pull --rebase origin ledger && git push && exit 0
+            sleep 5
+          done
+          exit 1

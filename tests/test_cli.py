@@ -58,7 +58,6 @@ def test_load_runs_falls_back_to_single_run(monkeypatch):
 
 def test_settings_roundtrip_and_merge(tmp_path, monkeypatch):
     monkeypatch.setattr(cli, "HOME", tmp_path)
-    monkeypatch.setattr(cli, "SETTINGS", tmp_path / "settings.json")
     assert cli.read_settings() == {}
     cli.write_settings(run_config="config/run.yaml")
     cli.write_settings(run_name="fineweb-150m")
@@ -119,7 +118,6 @@ def test_start_is_a_noop_when_already_running(tmp_path, monkeypatch, capsys):
 
 def test_start_latest_skips_the_picker_and_the_remembered_run(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(cli, "HOME", tmp_path)
-    monkeypatch.setattr(cli, "SETTINGS", tmp_path / "settings.json")
     monkeypatch.setattr(cli, "PIDFILE", tmp_path / "worker.pid")
     monkeypatch.setattr(cli, "LOGFILE", tmp_path / "worker.log")
     cli.write_settings(run_config="config/stage1.yaml")  # an older remembered run
@@ -286,3 +284,71 @@ def test_farewell_shows_session_bars_and_resume(tmp_path, monkeypatch, capsys):
     assert "your share" in out and "rank 1" in out
     assert "discussions/9" in out
     assert "resume any time: coop start" in out
+
+
+def test_update_says_so_when_there_is_nothing_new(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli.update, "available", lambda repo, home, **k: None)
+    cli.cmd_update(argparse.Namespace(repo="o/r", check=False, auto=None))
+    assert "newest version" in capsys.readouterr().out
+
+
+def test_update_check_reports_but_installs_nothing(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(
+        cli.update, "available", lambda repo, home, **k: {"version": "99.0.0", "notes": "faster"}
+    )
+    monkeypatch.setattr(
+        cli.update, "apply", lambda *a, **k: pytest.fail("--check must not install")
+    )
+    cli.cmd_update(argparse.Namespace(repo="o/r", check=True, auto=None))
+    out = capsys.readouterr().out
+    assert "99.0.0 is out" in out and "faster" in out and "`coop update` installs it" in out
+
+
+def test_update_installs_and_points_at_the_running_worker(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "PIDFILE", tmp_path / "worker.pid")
+    cli.PIDFILE.write_text(str(os.getpid()))
+    monkeypatch.setattr(cli.update, "available", lambda repo, home, **k: {"version": "99.0.0"})
+    monkeypatch.setattr(cli.update, "install_kind", lambda: cli.update.UVX)
+    monkeypatch.setattr(cli.update, "apply", lambda repo, kind: (True, "ok"))
+    cli.cmd_update(argparse.Namespace(repo="o/r", check=False, auto=None))
+    out = capsys.readouterr().out
+    assert "updated to coop 99.0.0" in out
+    assert "coop stop" in out  # the worker is still on the old code
+
+
+def test_update_refuses_to_move_a_git_checkout(tmp_path, monkeypatch):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli.update, "available", lambda repo, home, **k: {"version": "99.0.0"})
+    monkeypatch.setattr(cli.update, "install_kind", lambda: cli.update.GIT)
+    monkeypatch.setattr(cli.update, "apply", lambda *a, **k: pytest.fail("hands off the checkout"))
+    with pytest.raises(SystemExit, match="git pull"):
+        cli.cmd_update(argparse.Namespace(repo="o/r", check=False, auto=None))
+
+
+def test_update_auto_on_persists_and_changes_the_notice(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli.update, "available", lambda repo, home, **k: None)
+    cli.cmd_update(argparse.Namespace(repo="o/r", check=True, auto="on"))
+    assert cli.read_settings()["auto_update"] is True
+    assert "auto-update on" in capsys.readouterr().out
+
+    monkeypatch.setattr(cli.update, "available", lambda repo, home, **k: {"version": "99.0.0"})
+    assert "auto-update will take it" in cli.update_line("o/r")
+
+    cli.cmd_update(argparse.Namespace(repo="o/r", check=True, auto="off"))
+    assert cli.read_settings()["auto_update"] is False
+    assert "run `coop update`" in cli.update_line("o/r")
+
+
+def test_status_shows_a_waiting_update(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "PIDFILE", tmp_path / "worker.pid")
+    monkeypatch.setattr(cli, "load_run_config", lambda repo: CFG)
+    monkeypatch.setattr(cli.update, "available", lambda repo, home, **k: {"version": "99.0.0"})
+    monkeypatch.setattr(cli.hubio, "whoami", lambda: "tester")
+    monkeypatch.setattr(cli, "fetch_raw", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
+    cli.cmd_status(argparse.Namespace(repo="o/r"))
+    assert "update   coop 99.0.0 is out" in capsys.readouterr().out

@@ -21,6 +21,7 @@ from pathlib import Path
 import torch
 import yaml
 
+from coop import update
 from coop.status import FILENAME as STATUS_FILENAME
 from coop.status import StatusFile
 
@@ -65,6 +66,31 @@ def config_changed(repo: str, work: Path, current: str, path: str = "config/run.
     except OSError:
         return False
     return latest != current
+
+
+NOTED: set[str] = set()  # announced by this process already; `coop logs` is not a nag
+
+
+def check_for_update(repo: str, work: Path, status: StatusFile) -> None:
+    """Between rounds only: a restart here can never cost a volunteer trained work,
+    and the same is not true a single step earlier."""
+    manifest = update.available(repo, work)
+    if not manifest:
+        return
+    version = manifest.get("version", "")
+    auto = update.auto_enabled(work)
+    status.update(update_available=version)
+    if not auto or update.attempted(work, version):
+        if not auto and version not in NOTED:
+            NOTED.add(version)
+            log.info("%s", update.notice(manifest))
+        return
+    log.info("coop %s is out — updating and restarting into it", version)
+    status.update(phase=f"updating to coop {version}")
+    update.mark_attempted(work, version)  # before the attempt: a bad release can't loop
+    why = update.restart_into_update(repo, sys.argv[1:])
+    log.warning("auto-update didn't take (%s) — carrying on with the version you have", why)
+    status.update(phase="auto-update failed — still training")
 
 
 def derive_skip(username: str, docs: int = 20000, total_docs: int = TRAIN_DOCS) -> int:
@@ -180,6 +206,7 @@ def main():
                 log.info("coordinator config changed — restarting to adopt the new run")
                 status.update(phase="new run detected — restarting to join it")
                 os.execv(sys.executable, [sys.executable, "-m", "coop.join", *sys.argv[1:]])
+            check_for_update(a.repo, work, status)
             # back-to-back rounds; see trainer.main for why waiting is the only waste
             h_next = cfg["inner"].get("h_max", 500)
         except KeyboardInterrupt:
