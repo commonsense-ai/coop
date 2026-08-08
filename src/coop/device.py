@@ -5,6 +5,7 @@ disagree about what a donor is running on.
 """
 
 import functools
+import shutil
 import subprocess
 
 import torch
@@ -40,6 +41,8 @@ def nvidia_present() -> bool:
     Broad except on purpose: this only decides whether to print a hint, so any
     surprise from shelling out must degrade to "can't tell", never break the
     command it was called from."""
+    if not shutil.which("nvidia-smi"):
+        return False  # the common case: no driver tooling, so spawn nothing at all
     try:
         p = subprocess.run(["nvidia-smi", "-L"], capture_output=True, text=True, timeout=5)
         return p.returncode == 0 and "GPU" in p.stdout

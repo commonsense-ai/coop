@@ -81,6 +81,8 @@ def test_no_gap_when_cuda_works(monkeypatch):
 
 
 def stub_nvidia_smi(monkeypatch, present: bool, calls: list | None = None):
+    monkeypatch.setattr(dev.shutil, "which", lambda n: "/usr/bin/nvidia-smi" if present else None)
+
     def run(*a, **k):
         if calls is not None:
             calls.append(a)
@@ -108,6 +110,17 @@ def test_gap_when_torch_has_cuda_but_cannot_reach_the_driver(monkeypatch):
     fake_cuda(monkeypatch, available=False, built=True)
     stub_nvidia_smi(monkeypatch, present=True)
     assert "driver" in dev.cuda_gap()
+
+
+def test_no_nvidia_smi_means_no_subprocess_at_all(monkeypatch):
+    """Most machines have no driver tooling. Spawning there is pure cost, and it
+    reaches into any subprocess mock the caller happens to have installed — which
+    is exactly how this probe broke cmd_start's test on Linux."""
+    monkeypatch.setattr(dev.shutil, "which", lambda name: None)
+    spawned: list = []
+    monkeypatch.setattr(dev.subprocess, "run", lambda *a, **k: spawned.append(a))
+    assert dev.nvidia_present() is False
+    assert spawned == []
 
 
 def test_detection_failing_can_never_break_the_command(monkeypatch):

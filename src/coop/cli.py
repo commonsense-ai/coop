@@ -329,6 +329,8 @@ def cmd_start(a: argparse.Namespace) -> None:
         cmd += ["--device", a.device]
     if a.rounds:
         cmd += ["--rounds", str(a.rounds)]
+    device = a.device or pick_device()
+    warn_cuda_gap(device)  # before the worker starts: an idle GPU is worth fixing first
     with LOGFILE.open("ab") as log:
         p = subprocess.Popen(
             cmd,
@@ -343,9 +345,7 @@ def cmd_start(a: argparse.Namespace) -> None:
     if not alive(p.pid):
         print(tail(LOGFILE, 15))
         raise SystemExit(f"the worker exited immediately — log above, full log: {LOGFILE}")
-    device = a.device or pick_device()
     print(f"training {model_repo} as {user} on your {describe(device)} (pid {p.pid})")
-    warn_cuda_gap(device)
     print("(switch models any time: coop stop, then coop start --choose)")
     if a.rounds:
         print(f"will stop by itself after {a.rounds} round{'s' if a.rounds > 1 else ''}")
