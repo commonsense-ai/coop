@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 56115200
+        "gpu": 63078400
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 48,
+      "submissions": 50,
       "tier": "gpu",
-      "tokens": 156876800
+      "tokens": 163840000
     },
     "miacx": {
       "first_seen": 12,
@@ -26,20 +26,20 @@
     },
     "naloxene": {
       "devices": {
-        "nvidia-gpu": 92979200
+        "nvidia-gpu": 156467200
       },
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 44,
+      "submissions": 46,
       "tier": "gpu",
-      "tokens": 594505728
+      "tokens": 657993728
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the importance of things and feelings.\nHere is a lot of ways.\nThe reason for the future of reading comes with it, then it comes to be true, and so it comes to us to make sense of and explore the topic of the people and the people make us feel new.\nBut what is the same thing into your own.\nIf you mean to start your question, try them, but keep them feel confident and we do not know what I\u2019m thinking!\nSo, do you say, the difference between the whole language and the language, your answer is not,",
-    "step": 41,
-    "val_loss": 5.3429
+    "sample": "The most important thing to understand about our understanding about the future, but also by examining the story to come across the lives that we are committed to a more interesting perspective than it. The idea of what is the main question, meaning and why it relates to a particular essay that seems to that is not a better chance; it means to think, say, what we do in the way that we have taught. It is impossible to work out, to say, in the very long way, to find ourselves.\nYou'll see you are the following questions written. To answer questions about people they were never able to understand what you have",
+    "step": 42,
+    "val_loss": 5.3041
   },
-  "step": 41,
-  "updated": "2026-08-08T06:58:25+00:00"
+  "step": 42,
+  "updated": "2026-08-08T07:13:33+00:00"
 }
