@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **71** — updated 2026-08-08T13:10:03+00:00.
+Outer step **72** — updated 2026-08-08T13:29:05+00:00.
 
-Val loss at step 71: **5.1013** — sample:
+Val loss at step 72: **5.0939** — sample:
 
-> The most important thing to understand about this. The research and investigation “The research has developed very relevant knowledge that we can use to teach a better understanding of the concepts we perceive in our research,” said Dr. David M. Roberts, an expert on the University of Maryland at the University of California at Oregon. “You can’t think about the science, but you can’t know what you mean.” “They can communicate with science that you can write and understand the facts of the research.” In an interview with researchers at the University of Washington, researchers from the University of Minnesota and other Wisconsin-wide data
+> The most important thing to understand about his life that he wants him to have a happy answer: He walked, looking for him and wants to serve him again in his life. She may take her time to make this effort. So, this passage? Dr. Ann's mission: “It might not happen if you hear the real human soul, the truth is that this country is in trouble. If you think your life is happening, there is a lot of things that you may not believe in a bad state of your life. Instead it seems that you may see the fact is very different. Most of us believe
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -21,5 +21,5 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | naloxene | nvidia-gpu | 54 | 825,929,728 | 1.000 | 825,929,728 |
 | 2 | cjtsolutions | gpu | 20 | 355,491,840 | 1.000 | 355,491,840 |
-| 3 | ezshroom | gpu | 103 | 307,609,600 | 1.000 | 307,609,600 |
+| 3 | ezshroom | gpu | 105 | 314,572,800 | 1.000 | 314,572,800 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
