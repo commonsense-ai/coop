@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 226099200,
+        "apple-gpu": 232243200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 170,
+      "submissions": 172,
       "tier": "gpu",
-      "tokens": 565260288
+      "tokens": 571404288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about when you're looking into the subject, but it looks like this one of those things that are happening in the world where that becomes the subject. Here are several reasons why you might ask yourself about how you'll say something you're looking at? The idea goes all together to understand what happens when you're looking into something that goes through something the way you're looking into your mind that you're putting together the subject of something that you're looking into. Imagine all that you're dealing with? It's actually how you're looking into something that you're talking about before you're looking into the subject",
-    "step": 110,
-    "val_loss": 4.6634
+    "sample": "The most important thing to understand about and explain why what happened to everybody? Why not or what happens to them? How do we relate to the problem? How do we think this? How do we relate to the problem? How do we relate to the problem? How should we relate to these questions? What do we relate to the problem? Why do we relate to all that? How do we relate to this problem? How do we relate to all these questions? How do we describe this problem? How are we relate to our problem? How do we relate to this problem? How do we relate to them? How often do",
+    "step": 111,
+    "val_loss": 4.6594
   },
-  "step": 110,
-  "updated": "2026-08-08T22:22:19+00:00"
+  "step": 111,
+  "updated": "2026-08-08T22:37:12+00:00"
 }
