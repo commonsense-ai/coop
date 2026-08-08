@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 24576000
+        "gpu": 29491200
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 36,
+      "submissions": 38,
       "tier": "gpu",
-      "tokens": 125337600
+      "tokens": 130252800
     },
     "miacx": {
       "first_seen": 12,
@@ -33,10 +33,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about them.\n\u201cIt\u2019s time to be sure,\u201d \u201cGod must become the best. God is God and God.\u201d (The Jews are told they are) and the God is not the same.\nBut the earth\u2019s Earth, which is, the earth who are, is true, it becomes some kind of life. They are quite, the Sun which he is the Earth of God and their planet, and they would suffer from the power of God.\nThe Earth is the Earth, the sky, which said the Earth of God as the earth, and the earth is said to",
-    "step": 35,
-    "val_loss": 5.4907
+    "sample": "The most important thing to understand about the rest, in terms of any kind of ways. This approach might include:\n- How to do the fact that this is impossible to show yourself, it is not really true. So do we know that if it was to work, it must happen. All of these examples are quite better than ever thought of thinking and what they did, if someone who might have enough experience might like a chance to do with them. So, the situation will need to have them the ability to do with something and the world, and then how would one way of being involved in that process?\nThat would",
+    "step": 36,
+    "val_loss": 5.4848
   },
-  "step": 35,
-  "updated": "2026-08-08T05:42:58+00:00"
+  "step": 36,
+  "updated": "2026-08-08T05:54:45+00:00"
 }
