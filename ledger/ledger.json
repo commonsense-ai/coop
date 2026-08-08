@@ -3,24 +3,24 @@
     "cjtsolutions": {
       "devices": {
         "gpu": 56717312,
-        "nvidia-gpu": 948224000
+        "nvidia-gpu": 997376000
       },
       "first_seen": 9,
-      "reputation": 0.9991272036431913,
-      "submissions": 67,
+      "reputation": 0.999293034950985,
+      "submissions": 69,
       "tier": "gpu",
-      "tokens": 1360433152
+      "tokens": 1409585152
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 97075200,
+        "apple-gpu": 105267200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 145,
+      "submissions": 148,
       "tier": "gpu",
-      "tokens": 436236288
+      "tokens": 444428288
     },
     "miacx": {
       "first_seen": 12,
@@ -31,20 +31,20 @@
     },
     "naloxene": {
       "devices": {
-        "nvidia-gpu": 324403200
+        "nvidia-gpu": 339558400
       },
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 54,
+      "submissions": 55,
       "tier": "gpu",
-      "tokens": 825929728
+      "tokens": 841084928
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about our health. It helps us learn how to manage ourselves into our health and how we respond to health issues \u2014 including health issues \u2014 and how we respond to health issues \u2014 that may affect our health needs \u2014 and help us develop a more productive, healthier lifestyle.\nGet a full-on-the-body in-person programs with our staff.\nIn July 2018, we implemented a three-year effort to achieve the goal of addressing the challenges we face today in this unit. We also analyzed, tested and measured, analyzed and examined data from different sources. We identified, and analyzed and analyzed",
-    "step": 97,
-    "val_loss": 4.6578
+    "sample": "The most important thing to understand about it \u2014 when you hear them? If they hear someone\u2019s thoughts, you're at something like they think, you're what you think, but if an event isn't relevant, you're just going to understand what each day in the video doesn't seem like, but it doesn't seem to tell them what to do -- but what they think they mean about it? When we think it's going to tell us what we're talking about, we're trying to understand what they've done before.\"\n- No one should ask questions or questions or questions about the events they've learned\n-",
+    "step": 98,
+    "val_loss": 4.6526
   },
-  "step": 97,
-  "updated": "2026-08-08T18:02:06+00:00"
+  "step": 98,
+  "updated": "2026-08-08T18:15:24+00:00"
 }

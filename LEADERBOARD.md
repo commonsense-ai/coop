@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **97** — updated 2026-08-08T18:02:06+00:00.
+Outer step **98** — updated 2026-08-08T18:15:24+00:00.
 
-Val loss at step 97: **4.6578** — sample:
+Val loss at step 98: **4.6526** — sample:
 
-> The most important thing to understand about our health. It helps us learn how to manage ourselves into our health and how we respond to health issues — including health issues — and how we respond to health issues — that may affect our health needs — and help us develop a more productive, healthier lifestyle. Get a full-on-the-body in-person programs with our staff. In July 2018, we implemented a three-year effort to achieve the goal of addressing the challenges we face today in this unit. We also analyzed, tested and measured, analyzed and examined data from different sources. We identified, and analyzed and analyzed
+> The most important thing to understand about it — when you hear them? If they hear someone’s thoughts, you're at something like they think, you're what you think, but if an event isn't relevant, you're just going to understand what each day in the video doesn't seem like, but it doesn't seem to tell them what to do -- but what they think they mean about it? When we think it's going to tell us what we're talking about, we're trying to understand what they've done before." - No one should ask questions or questions or questions about the events they've learned -
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -19,7 +19,7 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 
 | # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
 |---|-------------|----------|----------|--------|------------|-------|
-| 1 | cjtsolutions | nvidia-gpu | 67 | 1,360,433,152 | 0.999 | 1,359,245,771 |
-| 2 | naloxene | nvidia-gpu | 54 | 825,929,728 | 1.000 | 825,929,728 |
-| 3 | ezshroom | apple-gpu | 145 | 436,236,288 | 1.000 | 436,236,288 |
+| 1 | cjtsolutions | nvidia-gpu | 69 | 1,409,585,152 | 0.999 | 1,408,588,625 |
+| 2 | naloxene | nvidia-gpu | 55 | 841,084,928 | 1.000 | 841,084,928 |
+| 3 | ezshroom | apple-gpu | 148 | 444,428,288 | 1.000 | 444,428,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
