@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 125747200
+        "gpu": 130662400
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 71,
+      "submissions": 73,
       "tier": "gpu",
-      "tokens": 226508800
+      "tokens": 231424000
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about these questions.\n- Why do you find your thoughts? Why do you feel a little bit of it?\n- A wide range of questions that involve a number of possible answers and answers with one answer so you have the questions you know about the article and answer questions and answers.\n- Why you want the question? What are you doing?\n- Which are you going to do with for some questions?\n- What are you talking to someone about people and adults?\n- You don\u2019t think about someone what you do about. What are you asking?\n- How are you",
-    "step": 54,
-    "val_loss": 5.0988
+    "sample": "The most important thing to understand about this issue here.\n- Not all things you can get some sense of what you're going to do and then make decisions out how you're going to make a chance to go.\n- Try using new ideas and resources - what's going to do, think, and how you can achieve your career or even the way to express themselves, or even try using your own business!The Battle of John\u2019s son, \u201cThe Lord Jesus,\u201d says \u201cThe Lord will tell you how you might see our Lord.\u201d\nAnd it was like us that while there were some other things. And",
+    "step": 55,
+    "val_loss": 5.0959
   },
-  "step": 54,
-  "updated": "2026-08-08T09:43:49+00:00"
+  "step": 55,
+  "updated": "2026-08-08T09:55:58+00:00"
 }
