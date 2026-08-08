@@ -34,7 +34,8 @@ coop — help train a small language model with your computer
   coop logs -f   watch the worker do its thing
   coop stop      stop contributing — your credit stays
 
-first time? just run `coop start` — it walks you through the one-time setup."""
+first time? just run `coop start` — it walks you through the one-time setup.
+in a hurry? `coop start --latest` skips the menu and joins the current run."""
 
 ONBOARDING = """\
 welcome! here's what happens when you contribute:
@@ -287,8 +288,10 @@ def cmd_start(a: argparse.Namespace) -> None:
         print(f"already contributing (pid {pid}) — `coop status` to check on it")
         return
     runs = load_runs(a.repo)
-    stored = None if a.choose else read_settings().get("run_config")
-    sel = choose_run(runs, a.model, stored, interactive=sys.stdin.isatty())
+    # --latest is the picker's opposite: no menu, no remembered setting, just the run
+    # the co-op is training right now (the registry lists live runs newest first)
+    stored = None if a.choose or a.latest else read_settings().get("run_config")
+    sel = choose_run(runs, a.model, stored, interactive=sys.stdin.isatty() and not a.latest)
     if sel is None:
         print("which model do you want to train?  (arrows + enter)\n")
         live = [r.get("status") == "live" for r in runs]
@@ -522,6 +525,9 @@ def main() -> None:
     st.add_argument("words", nargs="*", metavar="[training] [model]")
     st.add_argument("--hf-token", default=None, help="Hugging Face write token (first run only)")
     st.add_argument("--choose", action="store_true", help="re-open the model picker")
+    st.add_argument(
+        "--latest", action="store_true", help="no picker, no questions: join the current run"
+    )
     st.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
     st.add_argument(
         "--rounds", type=int, default=0, help="stop after N rounds (default: run until coop stop)"
