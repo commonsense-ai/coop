@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 72908800
+        "gpu": 79872000
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 54,
+      "submissions": 56,
       "tier": "gpu",
-      "tokens": 173670400
+      "tokens": 180633600
     },
     "miacx": {
       "first_seen": 12,
@@ -26,20 +26,20 @@
     },
     "naloxene": {
       "devices": {
-        "nvidia-gpu": 279347200
+        "nvidia-gpu": 324403200
       },
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 52,
+      "submissions": 54,
       "tier": "gpu",
-      "tokens": 780873728
+      "tokens": 825929728
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the basics of a successful life.\nThe question of the material that works together to exist is that there is no evidence that we have to say the truth of something else in things. The theory of this is that there is the difference between the situation we are as far as the things we work as, it, how we are in our lives and our lives. That is what we have, of what we expect with the difference between us and we are in this topic: it is what we believe is, the idea that what we have been doing, and it is what we feel.\nSo",
-    "step": 45,
-    "val_loss": 5.2125
+    "sample": "The most important thing to understand about the future of the health industry. According to the Centers for Health Research, we have used a series of strategies that are considered in a general manner, and also include the same kind of knowledge about the health industry.\nThe most widely used health care of the body. The health care and prevention of health care include:\n- Social therapy, and a variety of complications, including depression, and depression, as well as physical therapy, and mental health. The patient may want to understand the potential risk of anxiety:\n- Medical prevention\n- Physical therapy, such as stress, exercise, and exercise",
+    "step": 46,
+    "val_loss": 5.1936
   },
-  "step": 45,
-  "updated": "2026-08-08T07:45:36+00:00"
+  "step": 46,
+  "updated": "2026-08-08T07:59:03+00:00"
 }
