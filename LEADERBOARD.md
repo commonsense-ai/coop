@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **37** — updated 2026-08-08T06:13:05+00:00.
+Outer step **38** — updated 2026-08-08T06:28:12+00:00.
 
-Val loss at step 37: **5.4721** — sample:
+Val loss at step 38: **5.4545** — sample:
 
-> The most important thing to understand about the number of materials and technologies on the lowest levels and higher rates. In the case, there is always more things about the same issue and the resources we wish to be able to find out of the advantages of the science. Thus, for example, the authors want to use technology because we are more likely to learn from the research process, and we can to keep learning more and more attention than everyone’s learning. With this research, we will learn how to make sure more we're thinking about the implications and risks we'll do to know a more. Finally, we'll find the
+> The most important thing to understand about the ways in life? For instance, we are the only need to do this to make it interesting to take the best time into the future that they want to get the difference from your time. So remember, we'll only ask everyone who would need to go out and what they were on. To do for the time your life, to look forward to be more willing to do so on. So, let’s think of those who have the opportunity to do it really want to find the difference. When they were not trying to lose a little idea, they will enjoy them, they will
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -21,5 +21,5 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | naloxene | gpu | 39 | 501,526,528 | 1.000 | 501,526,528 |
 | 2 | cjtsolutions | gpu | 20 | 355,491,840 | 1.000 | 355,491,840 |
-| 3 | ezshroom | gpu | 40 | 137,216,000 | 1.000 | 137,216,000 |
+| 3 | ezshroom | gpu | 42 | 144,179,200 | 1.000 | 144,179,200 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
