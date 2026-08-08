@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 98713600
+        "gpu": 106905600
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 63,
+      "submissions": 65,
       "tier": "gpu",
-      "tokens": 199475200
+      "tokens": 207667200
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the rights and democracy.\nThe public has been doing an independent country because the people are willing to learn and maintain their lives. They are willing to speak with their own state. They are still the same things, the community has to make them feel a long way to interact. They are also getting comfortable in a specific way, and they are getting the chance.\nThe majority of the people are in the same place, and they are trying to make things easier for their lives.\nIn the case of those participants is \u201cI want to make my friends work effectively. It\u2019s very perfect",
-    "step": 50,
-    "val_loss": 5.14
+    "sample": "The most important thing to understand about the impact of good quality and potential, but also their knowledge base in order to address this issue.\nWe\u2019re learning how to protect new technologies and tools. We are able to explore the need for an understanding of how to use new technologies for our students, and how to evaluate their knowledge to achieve new goals.\nWe\u2019ve been unable to explore the impact of technology using and implementing ideas about the future of children, as well as increasing our lives. Instead, our children are constantly making progress, and also help us achieve new skills and learning. These strategies are critical in all the skills",
+    "step": 51,
+    "val_loss": 5.1269
   },
-  "step": 50,
-  "updated": "2026-08-08T08:43:35+00:00"
+  "step": 51,
+  "updated": "2026-08-08T08:58:43+00:00"
 }
