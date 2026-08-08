@@ -477,7 +477,6 @@ def cmd_status(a: argparse.Namespace) -> None:
     if note:
         print(f"update   {note}")
 
-
     if st.get("rounds_done"):
         when = "this session" if running else "last session"
         toks = st.get("tokens_session", 0)
