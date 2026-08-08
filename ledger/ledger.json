@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 10649600
+        "gpu": 17612800
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 32,
+      "submissions": 34,
       "tier": "gpu",
-      "tokens": 111411200
+      "tokens": 118374400
     },
     "miacx": {
       "first_seen": 12,
@@ -33,10 +33,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about what it\u2019s going to get too much money by doing the more of the more than the more likely than it.\nHow to write a more than just a great and effective thing. That means to go to anything else, but also two different aspects of the needs to make up in the future. So, it\u2019s a lot of ways to get, especially if any man knows a bit of things, but what would be it hard to do, but there is the first thing. It\u2019s a part of the things that comes to them all the people is being able to do,",
-    "step": 33,
-    "val_loss": 5.5036
+    "sample": "The most important thing to understand about the same time, and that are the most good, the less than the more popular and the more than the time. But the people are at the time, the higher they spend to get a sense, and all the children\u2019s love to keep their lives.\nThe \u2018new\u2019 is the term \u2018What\u2019 is the \u2018Srong\u2019 \u2018The \u2018Gist\u2019 is \u2018In \u2018A\u2019, \u2018F\u2019, and \u2018B\u2019 \u2018Rock\u2019. (A&A).\nWhile most of the \u2018D\u2019 is \u2018The \u2018Sure\u2019 [S] \u2018L\u2019 (",
+    "step": 34,
+    "val_loss": 5.4969
   },
-  "step": 33,
-  "updated": "2026-08-08T05:12:58+00:00"
+  "step": 34,
+  "updated": "2026-08-08T05:28:10+00:00"
 }

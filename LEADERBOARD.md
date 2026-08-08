@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **33** — updated 2026-08-08T05:12:58+00:00.
+Outer step **34** — updated 2026-08-08T05:28:10+00:00.
 
-Val loss at step 33: **5.5036** — sample:
+Val loss at step 34: **5.4969** — sample:
 
-> The most important thing to understand about what it’s going to get too much money by doing the more of the more than the more likely than it. How to write a more than just a great and effective thing. That means to go to anything else, but also two different aspects of the needs to make up in the future. So, it’s a lot of ways to get, especially if any man knows a bit of things, but what would be it hard to do, but there is the first thing. It’s a part of the things that comes to them all the people is being able to do,
+> The most important thing to understand about the same time, and that are the most good, the less than the more popular and the more than the time. But the people are at the time, the higher they spend to get a sense, and all the children’s love to keep their lives. The ‘new’ is the term ‘What’ is the ‘Srong’ ‘The ‘Gist’ is ‘In ‘A’, ‘F’, and ‘B’ ‘Rock’. (A&A). While most of the ‘D’ is ‘The ‘Sure’ [S] ‘L’ (
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -21,5 +21,5 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | naloxene | gpu | 39 | 501,526,528 | 1.000 | 501,526,528 |
 | 2 | cjtsolutions | gpu | 20 | 355,491,840 | 1.000 | 355,491,840 |
-| 3 | ezshroom | gpu | 32 | 111,411,200 | 1.000 | 111,411,200 |
+| 3 | ezshroom | gpu | 34 | 118,374,400 | 1.000 | 118,374,400 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
