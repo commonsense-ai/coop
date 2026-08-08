@@ -29,6 +29,9 @@ job aggregates them into outer steps on a public HF model repo.
 - The aggregator is stateless: every tick reads all state from the repos, does one outer
   step, writes state back, exits. A crashed tick resumes on the next cron fire.
 - All network I/O goes through `src/coop/hubio.py`.
+- Every outer step is a new commit, so every round pins a new sha and the hub cache would
+  grow by a whole checkpoint per step. Anything that downloads in a loop prunes after
+  itself (`hubio.prune_cache`) or it fills a volunteer's disk overnight.
 - Batch API calls. One `create_commit` per checkpoint upload; never per-file calls in a loop.
   GITHUB_TOKEN is capped at 1,000 REST requests/hour/repo.
 - Keep an aggregator tick under 10 minutes; Actions kills jobs at 6 hours.

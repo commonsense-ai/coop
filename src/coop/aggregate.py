@@ -282,6 +282,13 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
         )
         hub.merge_or_close_pr(dataset_repo, pr.num, merge=False, comment=comment)
 
+    # Every submission arrives on its own PR revision, and this tick has now closed all
+    # of them: nothing will ever read those bytes again. Once per tick, not once per PR
+    # — pruning inside the loop above would evict revisions this same tick downloaded.
+    # Actions is spared only because HF_HOME dies with the runner; a self-hosted or
+    # local aggregator caches the entire inbox forever.
+    hub.prune_cache(dataset_repo, keep=0, repo_type="dataset")
+
     wall = time.time() - t0
     log.info(
         "tick done in %.1fs: step %d -> %d, %d accepted, %d rejected, %d merged%s",

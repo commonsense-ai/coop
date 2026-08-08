@@ -2,6 +2,7 @@
 
 import functools
 import json
+import logging
 import os
 import tempfile
 from pathlib import Path
@@ -10,9 +11,13 @@ from huggingface_hub import CommitOperationAdd, HfApi, hf_hub_download
 from huggingface_hub.utils import EntryNotFoundError
 from safetensors.torch import load_file, save_file
 
+log = logging.getLogger(__name__)
+
 CKPT_FILE = "checkpoint.safetensors"
 OPT_FILE = "optimizer.safetensors"
 META_FILE = "meta.json"
+
+CACHE_KEEP = 2  # cached revisions kept per repo: the one in hand, plus a spare
 
 
 def _reset_xet_session() -> None:
@@ -78,13 +83,56 @@ def resolve_revision(repo_id: str, revision: str = "main", repo_type: str = "mod
     return api().repo_info(repo_id, revision=revision, repo_type=repo_type).sha
 
 
+def prune_cache(
+    repo_id: str, current: str | None = None, keep: int = CACHE_KEEP, repo_type: str = "model"
+) -> int:
+    """Evict cached revisions of a repo beyond the newest `keep`.
+
+    Every outer step is a new commit, so each round pins a fresh sha and caches a whole
+    new checkpoint beside the last one — the hub cache only ever grows, and a worker
+    left looping overnight eats a volunteer's disk one checkpoint per step. Best-effort:
+    a cache we can't scan is not worth failing a round of real training over."""
+    try:
+        from huggingface_hub import scan_cache_dir
+
+        cache = scan_cache_dir()
+        repo = next(
+            (r for r in cache.repos if r.repo_id == repo_id and r.repo_type == repo_type), None
+        )
+        if repo is None:
+            return 0
+        newest = sorted(repo.revisions, key=lambda r: r.last_modified, reverse=True)
+        # the revision in hand is protected by sha, not by mtime: a cache hit doesn't
+        # restat the snapshot, so the one we are about to read can look old
+        spared = {current} if current else set()
+        for rev in newest:
+            if len(spared) >= keep:
+                break
+            spared.add(rev.commit_hash)
+        stale = [r.commit_hash for r in newest if r.commit_hash not in spared]
+        if not stale:
+            return 0
+        strategy = cache.delete_revisions(*stale)
+        freed = strategy.expected_freed_size
+        strategy.execute()
+        log.info(
+            "pruned %d stale cached revisions of %s (%.0f MB)", len(stale), repo_id, freed / 1e6
+        )
+        return len(stale)
+    except Exception as e:
+        log.debug("cache prune skipped (%s)", e)
+        return 0
+
+
 @_transfer
 def download_checkpoint(model_repo: str, revision: str = "main") -> tuple[dict, dict]:
     if revision == "main":
         revision = resolve_revision(model_repo)
     ckpt = hf_hub_download(model_repo, CKPT_FILE, revision=revision, token=token())
     meta = hf_hub_download(model_repo, META_FILE, revision=revision, token=token())
-    return load_file(ckpt), json.loads(Path(meta).read_text())
+    state = load_file(ckpt), json.loads(Path(meta).read_text())
+    prune_cache(model_repo, current=revision)  # after the read: the bytes are in hand
+    return state
 
 
 @_transfer

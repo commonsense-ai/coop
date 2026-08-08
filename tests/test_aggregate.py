@@ -41,6 +41,7 @@ class FakeHub:
         self.uploaded = None
         self.closed = {}
         self.files = {}
+        self.pruned = []
 
     def download_file(self, repo, filename, **kw):
         return self.files[filename]
@@ -68,6 +69,10 @@ class FakeHub:
 
     def merge_or_close_pr(self, repo, num, merge=False, comment=None):
         self.closed[num] = comment
+
+    def prune_cache(self, repo, current=None, keep=2, repo_type="model"):
+        self.pruned.append((repo, keep, repo_type))
+        return 0
 
 
 def write_submission(tmp_path, name, delta, meta):
@@ -381,3 +386,19 @@ def test_malformed_pr_rejected_without_outer_step(tmp_path):
     assert summary["step"] == 5 and summary["accepted"] == 0 and summary["rejected"] == 1
     assert hub.uploaded is None
     assert "malformed" in hub.closed[1]
+
+
+def test_tick_prunes_the_inbox_cache_after_closing_every_pr(tmp_path):
+    """Each submission arrives on its own PR revision. The tick closes them all, so the
+    cached bytes are dead — unpruned they accumulate a whole inbox per tick."""
+    model = GPT.from_config(GPTConfig(**CFG["model"]))
+    state = canonical_state(model)
+    delta = {k: torch.ones_like(v) * 0.01 for k, v in state.items()}
+    prs = {
+        1: write_submission(tmp_path, "alice", delta, sub_meta("alice", 5)),
+        2: write_submission(tmp_path, "bob", delta, sub_meta("bob", 5)),
+    }
+    hub = FakeHub(state, {"step": 5}, prs)
+    run_tick(CFG, hub=hub, repo_root=str(tmp_path))
+    assert set(hub.closed) == {1, 2}  # every PR consumed before anything is evicted
+    assert hub.pruned == [(CFG["repos"]["dataset"], 0, "dataset")]  # once per tick, not per PR
