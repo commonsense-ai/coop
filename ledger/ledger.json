@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 43417600
+        "gpu": 50380800
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 42,
+      "submissions": 44,
       "tier": "gpu",
-      "tokens": 144179200
+      "tokens": 151142400
     },
     "miacx": {
       "first_seen": 12,
@@ -25,18 +25,21 @@
       "tokens": 3186688
     },
     "naloxene": {
+      "devices": {
+        "nvidia-gpu": 35635200
+      },
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 39,
+      "submissions": 40,
       "tier": "gpu",
-      "tokens": 501526528
+      "tokens": 537161728
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the ways in life? For instance, we are the only need to do this to make it interesting to take the best time into the future that they want to get the difference from your time. So remember, we'll only ask everyone who would need to go out and what they were on. To do for the time your life, to look forward to be more willing to do so on. So, let\u2019s think of those who have the opportunity to do it really want to find the difference.\nWhen they were not trying to lose a little idea, they will enjoy them, they will",
-    "step": 38,
-    "val_loss": 5.4545
+    "sample": "The most important thing to understand about how we are trying to solve them that it might look like something that they might learn.\n\u201cSawes us will not know.\u201d\n\u201cBut we do know we might only know, and there is why we are them, not we know, a lot, and we have them out.\u201d\nThe answer was this, but the idea of a lot of knowledge could help us to understand them, and not to do not, in the future.\u201d\nThe story began to do is what we do. Every time we might have been trying to say \u201cto teach a lot, but I want",
+    "step": 39,
+    "val_loss": 5.4247
   },
-  "step": 38,
-  "updated": "2026-08-08T06:28:12+00:00"
+  "step": 39,
+  "updated": "2026-08-08T06:43:22+00:00"
 }
