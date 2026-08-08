@@ -2,6 +2,7 @@
 
 import argparse
 import contextlib
+import dataclasses
 import functools
 import json
 import logging
@@ -13,17 +14,11 @@ from safetensors.torch import save_file
 
 from coop import hubio, load_config, setup_logging, submit
 from coop.data import iter_batches
+from coop.join import pick_device
 from coop.model import GPT, GPTConfig, load_canonical_state
+from coop.throttle import StallWatchdog, Throttle
 
 log = logging.getLogger(__name__)
-
-
-def pick_device() -> str:
-    if torch.cuda.is_available():
-        return "cuda"
-    if torch.backends.mps.is_available():
-        return "mps"
-    return "cpu"
 
 
 @functools.cache
@@ -78,8 +73,10 @@ def run_worker(
     accumulator=None,
     precision: str = "auto",
     compile_model: bool = False,
+    throttle: Throttle | None = None,
 ) -> tuple[Path | None, Path | None]:
     inner = cfg["inner"]
+    thr = throttle or Throttle()
     # TF32 for any matmul that stays fp32; a no-op off cuda
     torch.set_float32_matmul_precision("high")
     if status:
@@ -104,39 +101,53 @@ def run_worker(
         "fp32" if isinstance(amp(), contextlib.nullcontext) else "bf16",
         ", compiled" if compile_model else "",
     )
-    batches = iter_batches(data_bin, inner["batch_size"], cfg["model"]["block_size"], seed=seed)
+    batch_size = inner["batch_size"]
+    batches = iter_batches(data_bin, batch_size, cfg["model"]["block_size"], seed=seed)
     pin = device.startswith("cuda")  # non_blocking only overlaps from pinned memory
     h = h_override or inner["h_steps"]
+    if thr.shaping:
+        log.info("throttled: %s", thr.describe(batch_size))
+    splits = thr.splits(batch_size)
     t0 = time.time()
     model.train()
     steps_done = 0
-    for i in range(h):
-        if stop is not None and stop.is_set():
-            log.info("stop requested — packaging the %d steps finished so far", steps_done)
-            break
-        x, y = next(batches)
-        if pin:
-            x, y = x.pin_memory(), y.pin_memory()
-        x = x.to(device, non_blocking=True)
-        y = y.to(device, non_blocking=True)
-        with amp():
-            _, loss = model(x, y)
-        opt.zero_grad(set_to_none=True)
-        loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), inner["grad_clip"])
-        opt.step()
-        steps_done = i + 1
-        if i % 10 == 0 or i == h - 1:
-            log.info("inner step %d/%d loss %.4f", i + 1, h, loss.item())
-            if status:
-                status.update(
-                    phase="training",
-                    start_step=start_step,
-                    inner_step=steps_done,
-                    h_steps=h,
-                    loss=round(loss.item(), 4),
-                    steps_per_sec=round(steps_done / max(time.time() - t0, 1e-6), 2),
-                )
+    with StallWatchdog(thr.stall_secs) as watchdog:
+        for i in range(h):
+            if stop is not None and stop.is_set():
+                log.info("stop requested — packaging the %d steps finished so far", steps_done)
+                break
+            x, y = next(batches)
+            opt.zero_grad(set_to_none=True)
+            loss_sum = None
+            for mx, my in zip(x.chunk(splits), y.chunk(splits)):
+                if pin:
+                    mx, my = mx.pin_memory(), my.pin_memory()
+                mx = mx.to(device, non_blocking=True)
+                my = my.to(device, non_blocking=True)
+                with amp():
+                    _, loss = model(mx, my)
+                # weight by real chunk size: uneven splits must still average to the
+                # full-batch loss, or the pseudo-gradient stops matching everyone else's
+                share = mx.shape[0] / x.shape[0]
+                (loss * share).backward()
+                part = loss.detach() * share
+                loss_sum = part if loss_sum is None else loss_sum + part
+            torch.nn.utils.clip_grad_norm_(model.parameters(), inner["grad_clip"])
+            opt.step()
+            steps_done = i + 1
+            watchdog.beat()
+            if i % 10 == 0 or i == h - 1:
+                step_loss = loss_sum.item()  # one sync per logged step, not per micro-batch
+                log.info("inner step %d/%d loss %.4f", i + 1, h, step_loss)
+                if status:
+                    status.update(
+                        phase="training",
+                        start_step=start_step,
+                        inner_step=steps_done,
+                        h_steps=h,
+                        loss=round(step_loss, 4),
+                        steps_per_sec=round(steps_done / max(time.time() - t0, 1e-6), 2),
+                    )
     wall = time.time() - t0
     if steps_done == 0:
         return None, None  # stopped before any training: nothing worth submitting
@@ -150,7 +161,7 @@ def run_worker(
         "start_step": start_step,
         "h_steps": steps_done,
         "wall_secs": round(wall, 2),
-        "tokens": steps_done * inner["batch_size"] * cfg["model"]["block_size"],
+        "tokens": steps_done * batch_size * cfg["model"]["block_size"],
         "tier": "cpu" if device == "cpu" else "gpu",
         "quant": "none",
     }
@@ -203,6 +214,14 @@ def main():
         dest="compile_model",
         help="torch.compile the model (first step is slow; pays off on long cuda rounds)",
     )
+    ap.add_argument(
+        "--gentle",
+        action="store_true",
+        help="smaller kernels per step: lowers peak GPU draw on marginal power delivery",
+    )
+    ap.add_argument(
+        "--power-limit", type=int, default=None, metavar="W", help="cap the GPU via nvidia-smi"
+    )
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--no-submit", action="store_true")
     ap.add_argument("--dry-run", action="store_true", help="package but only log the submission")
@@ -210,6 +229,9 @@ def main():
     ap.add_argument("--pause", type=int, default=60, help="retry delay after a failed round")
     a = ap.parse_args()
     cfg = load_config(a.config)
+    thr = Throttle.gentle() if a.gentle else Throttle()
+    thr = dataclasses.replace(thr, power_limit_w=a.power_limit)
+    thr.apply(a.device)
     acc = submit.StepAccumulator() if cfg["inner"].get("accumulate_rounds") else None
     rnd, h_next = 0, None
     while True:
@@ -227,6 +249,7 @@ def main():
                 accumulator=acc,
                 precision=a.precision,
                 compile_model=a.compile_model,
+                throttle=thr,
             )
             # Rounds run back-to-back: each re-resolves the head checkpoint, and
             # same-user same-step submissions token-weight merge into one vote, so

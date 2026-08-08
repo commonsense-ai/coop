@@ -8,6 +8,7 @@ from safetensors.torch import load_file
 from coop import hubio
 from coop.model import GPT, GPTConfig, canonical_state
 from coop.submit import dequantize_delta
+from coop.throttle import Throttle
 from coop.trainer import autocast_ctx, make_adamw, pick_device, run_worker
 
 CFG = {
@@ -139,3 +140,35 @@ def test_delta_keys_survive_compile_wrapping(tmp_path, monkeypatch):
     )
     delta = dequantize_delta(load_file(str(delta_path)))
     assert set(delta.keys()) == set(state.keys())
+
+
+def _unquantized_round(tmp_path, monkeypatch, throttle, tag):
+    """One round with quantization off, so deltas compare exactly rather than through
+    an int8 grid."""
+    cfg = {**CFG, "inner": {**CFG["inner"], "quantize": None}}
+    torch.manual_seed(0)
+    state = canonical_state(GPT.from_config(GPTConfig(**cfg["model"])))
+    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo: (state, {"step": 3}))
+    monkeypatch.setattr(hubio, "whoami", lambda: "tester")
+    delta_path, meta_path = run_worker(
+        cfg,
+        _shard(tmp_path),
+        out_dir=str(tmp_path / tag),
+        do_submit=False,
+        h_override=4,
+        throttle=throttle,
+    )
+    return load_file(str(delta_path)), json.loads(meta_path.read_text())
+
+
+def test_throttling_does_not_change_the_pseudo_gradient(tmp_path, monkeypatch):
+    """Micro-batching is a power lever, not a training change: a throttled volunteer
+    must submit the same update — and claim the same tokens — as an unthrottled one."""
+    plain, plain_meta = _unquantized_round(tmp_path, monkeypatch, None, "plain")
+    gentle, gentle_meta = _unquantized_round(tmp_path, monkeypatch, Throttle.gentle(), "gentle")
+
+    assert gentle_meta["tokens"] == plain_meta["tokens"]
+    assert gentle_meta["h_steps"] == plain_meta["h_steps"]
+    assert set(gentle.keys()) == set(plain.keys())
+    for k, v in plain.items():
+        assert torch.allclose(gentle[k], v, atol=1e-5, rtol=1e-4), k
