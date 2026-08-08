@@ -225,6 +225,11 @@ def goal_tokens(cfg: dict) -> int:
     return int(cfg.get("goal_tokens", TOKEN_TARGET))
 
 
+def goal_note(cfg: dict) -> str:
+    """Why the goal is where it is. Empty when the run config doesn't say."""
+    return str(cfg.get("goal_note") or "").strip()
+
+
 def parse_board(md: str) -> list[dict]:
     rows = []
     for ln in md.splitlines():
@@ -368,11 +373,14 @@ def farewell(a: argparse.Namespace, st: dict) -> None:
         rows = parse_board(md)
         total = sum(r["tokens"] for r in rows)
         try:
-            target = goal_tokens(load_run_config(a.repo))
+            cfg = load_run_config(a.repo)
         except (SystemExit, Exception):  # goal display must never hide the bars
-            target = TOKEN_TARGET
+            cfg = {}
+        target = goal_tokens(cfg)
         print(f"\ncommunity progress toward a fully trained model (~{target:,} tokens)")
         print(f"  {bar(total / target)} {100 * total / target:.1f}%")
+        if why := goal_note(cfg):
+            print(f"  {why}")
         user = st.get("user") or hubio.whoami()
         mine = next((r for r in rows if r["user"] == user), None)
         if mine and total:
@@ -468,6 +476,7 @@ def probe_remote(a: argparse.Namespace) -> dict:
         return ctx
     ctx["model_repo"] = cfg["repos"]["model"]
     ctx["goal"] = goal_tokens(cfg)
+    ctx["goal_note"] = goal_note(cfg)
     user = read_status(HOME / STATUS_FILENAME).get("user") or hubio.whoami()
     ctx["user"] = user
     try:
@@ -627,6 +636,8 @@ def cmd_status(a: argparse.Namespace) -> None:
         target = goal_tokens(cfg)
         pct = 100 * total / target
         print(f"goal     {total:,} of ~{target:,} community tokens ({pct:.1f}%)")
+        if why := goal_note(cfg):
+            print(f"{'':<9}{why}")
     except OSError:
         pass
     try:

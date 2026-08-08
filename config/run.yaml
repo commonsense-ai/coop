@@ -1,6 +1,9 @@
 # Stage 2 run config — the live coordinator truth.
 
-goal_tokens: 3000000000  # Chinchilla-optimal for ~145M params; overtraining continues past it
+goal_tokens: 6000000000  # 2x Chinchilla for ~146M params; the 3B budget was met at outer step 113
+# One plain-English line under the goal bar. The target moves during a run; without this the
+# bar just falls from 100% to half and every volunteer reads it as work lost.
+goal_note: "past 3B (Chinchilla-optimal) on 8 Aug — 6B makes a better model"
 
 repos:
   model: commonsense-ai/fineweb-150m          # DRAFT name — decide before genesis

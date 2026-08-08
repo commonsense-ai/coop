@@ -1,9 +1,11 @@
 import io
 import os
+from pathlib import Path
 
 import pytest
 
 import coop.progress as pg
+from coop import load_config
 
 TRAINING = {
     "phase": "training",
@@ -37,6 +39,33 @@ CTX = {
     "of": 14,
     "inbox": "empty — all submitted work has been aggregated",
 }
+
+
+NOTE = "3B was reached 8 Aug; 6B buys a better model"
+
+
+def test_the_goal_note_follows_the_model_bar_in_both_views():
+    """The target moves mid-run; the bar halving needs a sentence next to it."""
+    ctx = {**CTX, "goal_note": NOTE}
+    simple = pg.simple_rows(ctx)
+    assert simple[simple.index(next(r for r in simple if "of ~" in r)) + 1].strip() == NOTE
+    advanced = pg.advanced_rows(ctx)
+    goal = next(i for i, r in enumerate(advanced) if r.startswith("goal "))
+    assert advanced[goal + 1] == " " * 9 + NOTE
+
+
+def test_the_live_goal_note_survives_an_80_column_screen():
+    """clip() takes the tail off a long line, and the tail is the half that says why."""
+    cfg = load_config(str(Path(__file__).parents[1] / "config" / "run.yaml"))
+    note = cfg.get("goal_note")
+    if note:
+        screen = pg.render({**CTX, "goal_note": note}, cursor=None, width=80)
+        assert any(note in ln for ln in screen), f"{len(note)} chars is too wide for the note"
+
+
+def test_a_run_without_a_goal_note_gets_no_blank_line():
+    assert not any(r.strip() == "" for r in pg.simple_rows(CTX)[:3])
+    assert not any(r.startswith(" ") for r in pg.advanced_rows(CTX))
 
 
 def test_phase_progress_splits_fraction_from_words():
