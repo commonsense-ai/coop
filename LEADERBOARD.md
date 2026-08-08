@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **57** — updated 2026-08-08T10:28:47+00:00.
+Outer step **58** — updated 2026-08-08T10:37:12+00:00.
 
-Val loss at step 57: **5.0881** — sample:
+Val loss at step 58: **5.0788** — sample:
 
-> The most important thing to understand about the consequences of being involved in the future. - Check out, to find out, write, and perform the importance of a career. - Turn, or organize the idea of a company to ensure that a company can afford its resources and resources, as well as using a company's policies. - Set up, share and organize software to help the company so that each company is more efficient than its employees. - Add time and time. - Go out, time, and work time. - Help out, then, and avoid their clients and customers in the future.
+> The most important thing to understand about these issues, and we’ll have to share everything—but not only the future or business-changing. What the policy makers want to do - If these types of questions were first discussed, then these questions were done in the first place. - “What kind of data that data scientists find it possible. In addition, while we see data that we can help us to identify, and that we don’t always know about them in the right direction. - When it comes to data-oriented solutions, I’ve found that data scientists can do a pretty high-cost
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -21,5 +21,5 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | naloxene | nvidia-gpu | 54 | 825,929,728 | 1.000 | 825,929,728 |
 | 2 | cjtsolutions | gpu | 20 | 355,491,840 | 1.000 | 355,491,840 |
-| 3 | ezshroom | gpu | 77 | 245,350,400 | 1.000 | 245,350,400 |
+| 3 | ezshroom | gpu | 79 | 248,217,600 | 1.000 | 248,217,600 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
