@@ -3,24 +3,24 @@
     "cjtsolutions": {
       "devices": {
         "gpu": 56717312,
-        "nvidia-gpu": 778240000
+        "nvidia-gpu": 835584000
       },
       "first_seen": 9,
-      "reputation": 0.9977471600455061,
-      "submissions": 58,
+      "reputation": 0.99817519963686,
+      "submissions": 60,
       "tier": "gpu",
-      "tokens": 1190449152
+      "tokens": 1247793152
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 76595200,
+        "apple-gpu": 84787200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 138,
+      "submissions": 140,
       "tier": "gpu",
-      "tokens": 415756288
+      "tokens": 423948288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about a variety of diseases and to develop their symptoms. People are at a higher risk than others. People who don\u2019t live in a clinical phase or who don\u2019t live in a family history or who don\u2019t live in a life-changing environment \u2014 while those who live in a single family and who do live in a living-age household are more likely than those who live in one generation \u2014 but there are a few things that don\u2019t live in these days.\nHow do these symptoms happen? What are the signs of those symptoms?\n- What are the symptoms of a person",
-    "step": 92,
-    "val_loss": 4.7227
+    "sample": "The most important thing to understand about these questions, but how they relate to them? What about these issues? How can we ask you to ask them about the topic? How can we answer these questions? What will they relate to them? How will they relate to the concepts they tell us? What are their feelings about the topic? How can they explain what they understand what they want? How will they explain them? How should they understand their symptoms? How can they understand them? How should they solve their problems? How should they examine them? How will they listen to their symptoms? How will they respond to them when they ask",
+    "step": 93,
+    "val_loss": 4.7082
   },
-  "step": 92,
-  "updated": "2026-08-08T17:14:49+00:00"
+  "step": 93,
+  "updated": "2026-08-08T17:30:00+00:00"
 }
