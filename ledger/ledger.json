@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 137625600
+        "gpu": 144588800
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 75,
+      "submissions": 77,
       "tier": "gpu",
-      "tokens": 238387200
+      "tokens": 245350400
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about this. While we know we are in a way we cannot find an excellent knowledge about it and it would like we need to find the better ways for our society, it's worth being an opportunity to achieve that we can do what we want to do.\nYou can do this by thinking about what we consider in the future and in the future, but the fact of these issues is that they are largely focused on the way we are able to express, and we can even need to see our very best practices.\nYou can know all the questions, especially a good way to achieve a more and",
-    "step": 56,
-    "val_loss": 5.0935
+    "sample": "The most important thing to understand about the consequences of being involved in the future.\n- Check out, to find out, write, and perform the importance of a career.\n- Turn, or organize the idea of a company to ensure that a company can afford its resources and resources, as well as using a company's policies.\n- Set up, share and organize software to help the company so that each company is more efficient than its employees.\n- Add time and time.\n- Go out, time, and work time.\n- Help out, then, and avoid their clients and customers in the future.\n",
+    "step": 57,
+    "val_loss": 5.0881
   },
-  "step": 56,
-  "updated": "2026-08-08T10:13:41+00:00"
+  "step": 57,
+  "updated": "2026-08-08T10:28:47+00:00"
 }
