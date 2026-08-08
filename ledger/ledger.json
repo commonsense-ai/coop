@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 111820800
+        "gpu": 120832000
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 67,
+      "submissions": 69,
       "tier": "gpu",
-      "tokens": 212582400
+      "tokens": 221593600
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the issues of the community and an organization\u2019s decisions.\nItemizes the significance of a crisis for citizens of knowledge and the purpose of knowledge and knowledge. In this study, we explore the role of a child\u2019s thinking skills in terms of being the learning experience.\nIt\u2019s a positive sense of thinking how to get a conversation between the actions and the benefits, where people are capable of developing their thinking. Through and treating what we define, we need to know how to look at how to communicate our thinking skills, including how to communicate our understanding of our thinking.\nThese",
-    "step": 52,
-    "val_loss": 5.116
+    "sample": "The most important thing to understand about it and its nature has no decision to come in a way and say it has an enormous impact on what happened at first.\nWhat Is The End of Work\nIt allows us to create a sense of what we call, or what we call the most effective rules, that we can understand and see the basics and attitudes of knowledge or behavior in our future.\nWhat Does the Work Work\nThis is a time when I hear it. The next day I think it should contain a complete, but it doesn't work. Many of it is a good idea to understand it here the ways it takes",
+    "step": 53,
+    "val_loss": 5.1052
   },
-  "step": 52,
-  "updated": "2026-08-08T09:11:04+00:00"
+  "step": 53,
+  "updated": "2026-08-08T09:28:43+00:00"
 }
