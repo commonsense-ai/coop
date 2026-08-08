@@ -48,17 +48,46 @@ def _entry(ledger: dict, meta: dict, step: int) -> dict:
             "submissions": 0,
             "tokens": 0,
             "tier": meta.get("tier", "cpu"),
+            "devices": {},
             "reputation": 1.0,
         },
     )
 
 
+def machine(meta: dict) -> str:
+    """Which machine a round came off. Workers on 0.3.0 and earlier only send the gpu/cpu tier,
+    so their rounds keep saying that rather than being guessed into a vendor."""
+    return meta.get("device") or meta.get("tier", "cpu")
+
+
+# the vague labels older workers send, and the device.KIND spellings that supersede them
+COARSE = {"gpu": ("nvidia-gpu", "apple-gpu"), "tpu": ("google-tpu",)}
+
+
+def hardware(entry: dict) -> str:
+    """Every machine a contributor has trained on, the one that did the most first.
+    A donor with a GPU box and a laptop was previously shown as whichever submitted last."""
+    devices = dict(entry.get("devices") or {})
+    if not devices:
+        return entry.get("tier", "cpu")  # a ledger written before the split was tracked
+    for vague, named in COARSE.items():
+        known = [d for d in named if d in devices]
+        if vague in devices and known:
+            # rounds from a worker that would only say "gpu" belong to the card it turned
+            # out to be, not to a second machine nobody owns
+            devices[max(known, key=lambda d: devices[d])] += devices.pop(vague)
+    return "·".join(sorted(devices, key=lambda d: (-devices[d], d)))
+
+
 def update_ledger(ledger: dict, accepted: list[dict], step: int, rejected: list[dict] = ()) -> dict:
     for meta in accepted:
         e = _entry(ledger, meta, step)
+        tokens = int(meta.get("tokens", 0))
         e["submissions"] += 1
-        e["tokens"] += int(meta.get("tokens", 0))
+        e["tokens"] += tokens
         e["tier"] = meta.get("tier", e["tier"])
+        devices = e.setdefault("devices", {})
+        devices[machine(meta)] = devices.get(machine(meta), 0) + tokens
         e["reputation"] += REP_ALPHA * (1.0 - e["reputation"])
     for meta in rejected:
         e = _entry(ledger, meta, step)
@@ -92,14 +121,15 @@ def render_leaderboard(ledger: dict, archives: list[str] = ()) -> str:
     lines += [
         "Score = tokens contributed × reputation. Reputation is an EMA of acceptance",
         f"(alpha={REP_ALPHA}): rejected submissions lower it, accepted ones restore it.",
-        "CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board.",
+        "CPU work (tokenize / dedup / filter / eval) earns tokens on this same board.",
+        "Hardware lists every machine a contributor has trained on, biggest share first.",
         "",
-        "| # | Contributor | Tier | Accepted | Tokens | Reputation | Score |",
-        "|---|-------------|------|----------|--------|------------|-------|",
+        "| # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |",
+        "|---|-------------|----------|----------|--------|------------|-------|",
     ]
     for i, (user, e) in enumerate(rows, 1):
         lines.append(
-            f"| {i} | {user} | {e['tier']} | {e['submissions']} | {e['tokens']:,} "
+            f"| {i} | {user} | {hardware(e)} | {e['submissions']} | {e['tokens']:,} "
             f"| {e['reputation']:.3f} | {score(e):,.0f} |"
         )
     if archives:

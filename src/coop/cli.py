@@ -211,8 +211,10 @@ def tail(path: Path, n: int) -> str:
 
 
 TS = re.compile(r"^\d\d-\d\d \d\d:\d\d:\d\d ")
-# leaderboard row: | rank | user | tier | accepted | tokens | reputation | score |
-BOARD_ROW = re.compile(r"^\| (\d+) \| (\S+) \| \S+ \| \d+ \| ([\d,]+) \| ")
+# leaderboard row: | rank | user | hardware | accepted | tokens | reputation | score |
+# the hardware cell is anything-but-a-pipe: older clients matched `\S+` there, which is
+# why the board still writes it without spaces
+BOARD_ROW = re.compile(r"^\| (\d+) \| (\S+) \| [^|]+ \| \d+ \| ([\d,]+) \| ")
 TOKEN_TARGET = 300_000_000  # fallback when the run config doesn't declare goal_tokens
 
 
