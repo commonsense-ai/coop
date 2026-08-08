@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **109** — updated 2026-08-08T22:11:50+00:00.
+Outer step **110** — updated 2026-08-08T22:22:19+00:00.
 
-Val loss at step 109: **4.6566** — sample:
+Val loss at step 110: **4.6634** — sample:
 
-> The most important thing to understand about these questions. Some questions are asked if there are any questions or questions. Or the question of whether your answer is correct? The answers to the questions are presented in the questions. They are answered every time. How do you determine if there are any questions? Are there questions? If you suspect? Are there anyone answers? If you believe the answers are correct? What questions are correct? Are there questions? Are there questions? Will there answers. If there are answers or questions regarding questions, you may ask for the questions. Should the question be answered? Are there questions you believe you would
+> The most important thing to understand about when you're looking into the subject, but it looks like this one of those things that are happening in the world where that becomes the subject. Here are several reasons why you might ask yourself about how you'll say something you're looking at? The idea goes all together to understand what happens when you're looking into something that goes through something the way you're looking into your mind that you're putting together the subject of something that you're looking into. Imagine all that you're dealing with? It's actually how you're looking into something that you're talking about before you're looking into the subject
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -21,5 +21,5 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | cjtsolutions | nvidia-gpu | 70 | 1,411,633,152 | 0.999 | 1,410,734,974 |
 | 2 | naloxene | nvidia-gpu | 61 | 1,027,452,928 | 1.000 | 1,027,452,928 |
-| 3 | ezshroom | apple-gpu | 168 | 559,116,288 | 1.000 | 559,116,288 |
+| 3 | ezshroom | apple-gpu | 170 | 565,260,288 | 1.000 | 565,260,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |

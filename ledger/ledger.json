@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 219955200,
+        "apple-gpu": 226099200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 168,
+      "submissions": 170,
       "tier": "gpu",
-      "tokens": 559116288
+      "tokens": 565260288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about these questions. Some questions are asked if there are any questions or questions. Or the question of whether your answer is correct?\nThe answers to the questions are presented in the questions. They are answered every time. How do you determine if there are any questions? Are there questions? If you suspect? Are there anyone answers? If you believe the answers are correct? What questions are correct? Are there questions? Are there questions? Will there answers. If there are answers or questions regarding questions, you may ask for the questions. Should the question be answered? Are there questions you believe you would",
-    "step": 109,
-    "val_loss": 4.6566
+    "sample": "The most important thing to understand about when you're looking into the subject, but it looks like this one of those things that are happening in the world where that becomes the subject. Here are several reasons why you might ask yourself about how you'll say something you're looking at? The idea goes all together to understand what happens when you're looking into something that goes through something the way you're looking into your mind that you're putting together the subject of something that you're looking into. Imagine all that you're dealing with? It's actually how you're looking into something that you're talking about before you're looking into the subject",
+    "step": 110,
+    "val_loss": 4.6634
   },
-  "step": 109,
-  "updated": "2026-08-08T22:11:50+00:00"
+  "step": 110,
+  "updated": "2026-08-08T22:22:19+00:00"
 }
