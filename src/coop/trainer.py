@@ -188,6 +188,7 @@ def run_worker(
     meta_path = out / f"delta_step{start_step}.json"
     save_file(delta, str(delta_path))
     meta_path.write_text(json.dumps(meta, indent=2))
+    submit.trim_rounds(out)
     log.info(
         "pseudo-gradient written: %s (%.1f MB, %d tokens in %.0fs)",
         delta_path,

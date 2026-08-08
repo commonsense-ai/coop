@@ -18,6 +18,7 @@ NUMEL_SUFFIX = "::numel"
 
 PENDING = "pending"
 PENDING_MAX = 8  # ~75MB each at int4; a long outage must not fill a volunteer's disk
+ROUNDS_KEEP = 3  # finished rounds left in the out dir to inspect; they are already uploaded
 
 
 def quantize_delta(delta: dict) -> dict:
@@ -150,10 +151,23 @@ def discard(base: Path) -> None:
         p.unlink(missing_ok=True)
 
 
+def _stale(d: Path, keep: int, pattern: str = "*.json") -> list[Path]:
+    """Round bases in `d` past the newest `keep`, oldest first."""
+    js = sorted(d.glob(pattern), key=lambda p: p.stat().st_mtime)
+    return [p.with_suffix("") for p in js[: max(len(js) - keep, 0)]]
+
+
 def _trim(d: Path) -> None:
-    for js in sorted(d.glob("*.json"), key=lambda p: p.stat().st_mtime)[:-PENDING_MAX]:
-        log.warning("pending queue full — dropping the oldest parked round %s", js.stem)
-        discard(js.with_suffix(""))
+    for base in _stale(d, PENDING_MAX):
+        log.warning("pending queue full — dropping the oldest parked round %s", base.name)
+        discard(base)
+
+
+def trim_rounds(out_dir, keep: int = ROUNDS_KEEP) -> None:
+    """One pseudo-gradient per outer step lands in the out dir and stays there. Each is
+    the size of a submission, so a worker left looping outgrows the model it trains."""
+    for base in _stale(Path(out_dir), keep, "delta_step*.json"):
+        discard(base)
 
 
 def pending_count(out_dir) -> int:

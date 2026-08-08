@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 
 import pytest
 import torch
@@ -17,6 +18,7 @@ from coop.submit import (
     submission_paths,
     submit,
     submit_accumulated,
+    trim_rounds,
 )
 
 CFG = {"repos": {"dataset": "x/inbox"}}
@@ -253,3 +255,42 @@ def test_pending_count_is_zero_before_anything_parks(tmp_path):
     assert pending_count(tmp_path) == 0
     _park(tmp_path, 5)
     assert pending_count(tmp_path) == 1
+
+
+def _rounds(out, steps):
+    """Finished rounds as the trainer writes them: one pair per outer step."""
+    for i, s in enumerate(steps):
+        (out / f"delta_step{s}.safetensors").write_bytes(b"x" * 16)
+        (out / f"delta_step{s}.json").write_text(json.dumps({"start_step": s}))
+        for p in out.glob(f"delta_step{s}.*"):
+            os.utime(p, (i, i))  # mtime is the round order
+
+
+def test_trim_rounds_bounds_the_out_dir(tmp_path):
+    """One pseudo-gradient per outer step, kept forever, is what eats a volunteer's disk."""
+    _rounds(tmp_path, [1, 2, 3, 4, 5])
+    trim_rounds(tmp_path, keep=2)
+    assert sorted(p.name for p in tmp_path.glob("delta_step*")) == [
+        "delta_step4.json",
+        "delta_step4.safetensors",
+        "delta_step5.json",
+        "delta_step5.safetensors",
+    ]
+
+
+def test_trim_rounds_leaves_the_parked_queue_alone(tmp_path):
+    """Parked rounds are unsent work with their own budget; only drain() may drop them."""
+    _rounds(tmp_path, [1, 2, 3])
+    pending = tmp_path / PENDING
+    pending.mkdir()
+    (pending / "step9_abc.safetensors").write_bytes(b"unsent")
+    (pending / "step9_abc.json").write_text("{}")
+    trim_rounds(tmp_path, keep=1)
+    assert _parked(tmp_path) == [pending / "step9_abc.json"]
+    assert (pending / "step9_abc.safetensors").exists()
+
+
+def test_trim_rounds_is_a_noop_below_the_limit(tmp_path):
+    _rounds(tmp_path, [1, 2])
+    trim_rounds(tmp_path, keep=3)
+    assert len(list(tmp_path.glob("delta_step*.safetensors"))) == 2

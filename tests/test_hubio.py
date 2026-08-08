@@ -161,3 +161,82 @@ def test_a_missing_optimizer_is_not_a_failed_transfer(monkeypatch):
     monkeypatch.setattr(hubio, "hf_hub_download", raise_)
     assert hubio.download_optimizer("x/model") is None
     assert resets == []
+
+
+def fake_cache(monkeypatch, revisions, repo_id="x/model", repo_type="model"):
+    """A scanned cache of (sha, last_modified) revisions; returns the deleted shas."""
+    deleted = []
+
+    def execute():
+        deleted.extend(strategy.shas)
+
+    strategy = SimpleNamespace(expected_freed_size=557_000_000, execute=execute, shas=())
+
+    def delete_revisions(*shas):
+        strategy.shas = shas
+        return strategy
+
+    repo = SimpleNamespace(
+        repo_id=repo_id,
+        repo_type=repo_type,
+        revisions=[SimpleNamespace(commit_hash=s, last_modified=t) for s, t in revisions],
+    )
+    cache = SimpleNamespace(repos=[repo], delete_revisions=delete_revisions)
+    monkeypatch.setattr("huggingface_hub.scan_cache_dir", lambda: cache)
+    return deleted
+
+
+def test_prune_cache_keeps_the_newest_and_evicts_the_rest(monkeypatch):
+    deleted = fake_cache(monkeypatch, [("old", 1), ("mid", 2), ("new", 3)])
+    assert hubio.prune_cache("x/model", keep=2) == 1
+    assert deleted == ["old"]
+
+
+def test_prune_cache_spares_the_revision_in_hand_even_when_it_looks_old(monkeypatch):
+    """A cache hit doesn't restat the snapshot, so the sha we are reading can be the
+    oldest by mtime. Evicting it would delete the checkpoint out from under the round."""
+    deleted = fake_cache(monkeypatch, [("inhand", 1), ("mid", 2), ("new", 3)])
+    assert hubio.prune_cache("x/model", current="inhand", keep=2) == 1
+    assert deleted == ["mid"]  # "new" fills the spare slot; "inhand" is protected
+
+
+def test_prune_cache_leaves_other_repos_alone(monkeypatch):
+    deleted = fake_cache(monkeypatch, [("a", 1), ("b", 2)], repo_id="other/repo")
+    assert hubio.prune_cache("x/model", keep=1) == 0
+    assert deleted == []
+
+
+def test_prune_cache_never_fails_a_round(monkeypatch):
+    """Training already happened; an unscannable cache must not cost the round."""
+
+    def boom():
+        raise OSError("read-only home")
+
+    monkeypatch.setattr("huggingface_hub.scan_cache_dir", boom)
+    assert hubio.prune_cache("x/model") == 0
+
+
+def test_download_checkpoint_prunes_the_revisions_it_supersedes(monkeypatch, tmp_path):
+    mock = fake_api(monkeypatch)
+    mock.repo_info.return_value = SimpleNamespace(sha="new")
+    ckpt = tmp_path / hubio.CKPT_FILE
+    save_file({"w": torch.ones(2)}, str(ckpt))
+    meta = tmp_path / hubio.META_FILE
+    meta.write_text(json.dumps({"step": 5}))
+    monkeypatch.setattr(
+        hubio,
+        "hf_hub_download",
+        lambda repo, fn, **kw: str(ckpt) if fn == hubio.CKPT_FILE else str(meta),
+    )
+    deleted = fake_cache(monkeypatch, [("old", 1), ("prev", 2), ("new", 3)])
+    state, m = hubio.download_checkpoint("x/model")
+    assert m == {"step": 5} and torch.equal(state["w"], torch.ones(2))
+    assert deleted == ["old"]  # every outer step is a new sha; the cache must not just grow
+
+
+def test_prune_cache_keep_zero_evicts_everything(monkeypatch):
+    """What the aggregator asks for: once a tick has closed every PR, none of the inbox
+    revisions it cached will ever be read again."""
+    deleted = fake_cache(monkeypatch, [("pr1", 1), ("pr2", 2), ("pr3", 3)], repo_type="dataset")
+    assert hubio.prune_cache("x/model", keep=0, repo_type="dataset") == 3
+    assert sorted(deleted) == ["pr1", "pr2", "pr3"]
