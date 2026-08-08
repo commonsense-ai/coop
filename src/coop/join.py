@@ -93,6 +93,31 @@ def check_for_update(repo: str, work: Path, status: StatusFile) -> None:
     status.update(phase="auto-update failed — still training")
 
 
+def shard_progress(status: StatusFile, stage: str, unit: str):
+    """Report the one-time shard build to both `coop logs` and `coop status` — it is the
+    longest a volunteer ever waits with nothing to look at, and it looks hung."""
+    from coop.data import Progress
+
+    drawn = Progress(stage, unit=unit)
+    t0, last = time.time(), 0.0
+
+    def report(done: int, total: int) -> None:
+        nonlocal last
+        drawn(done, total)
+        now = time.time()
+        if now - last < 1.0 and done < total:
+            return  # status.json is rewritten on every update: throttle to ~1 Hz
+        last = now
+        status.update(
+            shard_stage=stage,
+            shard_done=done,
+            shard_total=total,
+            shard_per_sec=round(done / max(now - t0, 1e-6), 1),
+        )
+
+    return report
+
+
 def derive_skip(username: str, docs: int = 20000, total_docs: int = TRAIN_DOCS) -> int:
     """Deterministic per-user shard offset so volunteers train on (mostly) disjoint slices.
     Slots wrap at the dataset end so every username maps to a full shard inside it."""
@@ -152,8 +177,14 @@ def main():
             dataset=cfg["data"].get("hf_dataset", "roneneldan/TinyStories"),
             text_field=cfg["data"].get("text_field", "text"),
             config=cfg["data"].get("hf_config"),
+            progress=shard_progress(status, "downloading docs", "docs"),
         )
-        tokenize_file(load_tokenizer(str(tok_path)), txt, str(shard))
+        tokenize_file(
+            load_tokenizer(str(tok_path)),
+            txt,
+            str(shard),
+            progress=shard_progress(status, "tokenizing", "bytes"),
+        )
 
     device = a.device or pick_device()
     # pick_device already skips a card this torch can't launch on; an explicit

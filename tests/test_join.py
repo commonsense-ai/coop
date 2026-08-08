@@ -1,6 +1,23 @@
 import urllib.request
 
 import coop.join as join
+from coop.status import StatusFile, read_status
+
+
+def test_shard_progress_feeds_status_and_finishes_at_full(tmp_path):
+    path = tmp_path / "status.json"
+    report = join.shard_progress(StatusFile(path), "downloading docs", "docs")
+    report(0, 20000)
+    st = read_status(path)
+    assert (st["shard_stage"], st["shard_done"], st["shard_total"]) == (
+        "downloading docs",
+        0,
+        20000,
+    )
+    report(5000, 20000)  # throttled to ~1 Hz: this one is dropped, the last one never is
+    assert read_status(path)["shard_done"] == 0
+    report(20000, 20000)
+    assert read_status(path)["shard_done"] == 20000
 
 
 def test_derive_skip_deterministic_and_bounded():

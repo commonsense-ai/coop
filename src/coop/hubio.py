@@ -22,6 +22,14 @@ def api() -> HfApi:
     return HfApi(token=token())
 
 
+def dataset_fs():
+    """Filesystem view of the hub: lets the shard builder range-read inside a dataset's
+    parquet files instead of streaming every row before the one it wants."""
+    from huggingface_hub import HfFileSystem
+
+    return HfFileSystem(token=token())
+
+
 def whoami() -> str:
     try:
         return api().whoami()["name"]
