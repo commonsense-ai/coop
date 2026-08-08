@@ -14,6 +14,8 @@ job aggregates them into outer steps on a public HF model repo.
 - lint: `uv run ruff check .`
 - format: `uv run ruff format .`
 - worker round: `uv run python -m coop.trainer --data data/<shard>.bin`
+- speed check: `uv run python -m coop.bench` (no network; `--device`, `--batch-size`,
+  `--compile` to explore a machine, and the phase split says where a step goes)
 - aggregator tick: `uv run python -m coop.aggregate`
 - release: bump version in pyproject.toml + src/coop/__init__.py + npm/package.json,
   then `git tag vX.Y.Z && git push origin vX.Y.Z` — Actions publishes PyPI (coop-ai)

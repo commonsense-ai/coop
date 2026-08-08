@@ -47,6 +47,31 @@ def autocast_ctx(device: str, precision: str = "auto"):
     return contextlib.nullcontext()
 
 
+def clip_grads(params: list, max_norm: float, device: str) -> None:
+    """Gradient clipping, spelled so the reduction isn't the slowest part of the step.
+
+    torch's clip_grad_norm_ reduces with vector_norm, which on MPS runs at 7.5 GB/s
+    against 465 GB/s for the same bytes through a dot product: 154 ms of a 425 ms step
+    at stage-2 shapes, three times the forward pass, to read 0.58 GB. Summing dots is
+    the identical quantity (up to float ordering) and measured 31x faster there, 3.4x
+    on CPU. cuda keeps the stock path — torch documents foreach as the CUDA default,
+    so the reduction is already one fused multi-tensor kernel there, and no NVIDIA
+    hardware was on hand to prove a change safe."""
+    if device.startswith("cuda"):
+        torch.nn.utils.clip_grad_norm_(params, max_norm)
+        return
+    grads = [p.grad for p in params if p.grad is not None]
+    if not grads:
+        return
+    sq = torch.zeros((), device=grads[0].device, dtype=torch.float32)
+    for g in grads:
+        flat = g.reshape(-1)
+        sq = sq + torch.dot(flat, flat)
+    scale = (max_norm / (sq.sqrt() + 1e-6)).clamp(max=1.0)
+    for g in grads:
+        g.mul_(scale)
+
+
 def make_adamw(params, inner: dict):
     kw = dict(lr=inner["lr"], betas=tuple(inner["betas"]), weight_decay=inner["weight_decay"])
     try:
@@ -98,6 +123,7 @@ def run_worker(
         ", compiled" if compile_model else "",
     )
     batches = iter_batches(data_bin, inner["batch_size"], cfg["model"]["block_size"], seed=seed)
+    params = list(model.parameters())  # 148 tensors; rebuilding the list every step is waste
     pin = device.startswith("cuda")  # non_blocking only overlaps from pinned memory
     h = h_override or inner["h_steps"]
     t0 = time.time()
@@ -116,7 +142,7 @@ def run_worker(
             _, loss = model(x, y)
         opt.zero_grad(set_to_none=True)
         loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), inner["grad_clip"])
+        clip_grads(params, inner["grad_clip"], device)
         opt.step()
         steps_done = i + 1
         if i % 10 == 0 or i == h - 1:
