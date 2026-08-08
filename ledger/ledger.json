@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 138035200,
+        "apple-gpu": 146227200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 154,
+      "submissions": 156,
       "tier": "gpu",
-      "tokens": 477196288
+      "tokens": 485388288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about something that happens once they start taking an action with a friend to identify and compare and explain what it is to teach.\nThe main idea behind how this transition becomes clear-looking is that it helps to understand the value of the problem in the context of that matter within the context of the problem itself. It helps to explain this, though in reality, we know the importance of being in the context of the problem itself. Whereas it helps us explain what the response moves into the problem as well as what we expect in the context of the problem when it becomes an immediate experience into the problem. Then",
-    "step": 101,
-    "val_loss": 4.6385
+    "sample": "The most important thing to understand about the process and achieve more of this article. It is a whole lot of work. It includes everything but includes something that can be a big thing \u2013 what you're doing and what you're doing? That's all about reading! It's actually about working with all things that that we've learned with, and what you've learned here about it. However, it isn't that big thing we've learned around and it doesn't mean we're going to say we're doing it at all until we're going to go back to work on this topic. This will help us develop many important things that",
+    "step": 102,
+    "val_loss": 4.6324
   },
-  "step": 101,
-  "updated": "2026-08-08T19:28:40+00:00"
+  "step": 102,
+  "updated": "2026-08-08T19:48:26+00:00"
 }
