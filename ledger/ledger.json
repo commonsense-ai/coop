@@ -3,9 +3,9 @@
     "cjtsolutions": {
       "first_seen": 9,
       "reputation": 1.0,
-      "submissions": 1,
-      "tier": "cpu",
-      "tokens": 368640
+      "submissions": 2,
+      "tier": "gpu",
+      "tokens": 52387840
     },
     "ezshroom": {
       "first_seen": 5,
@@ -17,9 +17,9 @@
     "miacx": {
       "first_seen": 12,
       "reputation": 1.0,
-      "submissions": 1,
+      "submissions": 2,
       "tier": "cpu",
-      "tokens": 819200
+      "tokens": 1806336
     },
     "naloxene": {
       "first_seen": 1,
@@ -30,10 +30,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the other areas and social research in the country\u2019s the life in its new economic resources, the country in the political country, was the United States to the fact of the first of the most different and the country, the early, the future problems, the world, in the world, it, and social skills. The other factors are now, the future of their own and then, a few years of God, this question. They had the state of life in the world.\nWhile the population and the first more popular life and a great in the human communities, and the society, the",
-    "step": 13,
-    "val_loss": 6.3833
+    "sample": "The most important thing to understand about the time, the example, the long, as follows. In the second area of the world, the year in the world, the other are, it to the world in the world of the world.\nThe study. The process and the United States, the world is known as the case, the United States, the population. The world, the world.\nThe first way of this way to have the number, the next week. The world is a way to the world. As the world, the country, as a state in the world, the state, and the world has a",
+    "step": 14,
+    "val_loss": 6.3229
   },
-  "step": 13,
-  "updated": "2026-08-08T00:57:32+00:00"
+  "step": 14,
+  "updated": "2026-08-08T01:12:59+00:00"
 }
