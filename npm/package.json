@@ -7,6 +7,6 @@
   "engines": { "node": ">=18", "bun": ">=1.0" },
   "repository": { "type": "git", "url": "git+https://github.com/commonsense-ai/coop.git" },
   "homepage": "https://github.com/commonsense-ai/coop#readme",
-  "license": "Apache-2.0",
+  "license": "SEE LICENSE IN LICENSE.md",
   "keywords": ["distributed-training", "community", "language-model", "diloco"]
 }
