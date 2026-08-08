@@ -3,24 +3,24 @@
     "cjtsolutions": {
       "devices": {
         "gpu": 56717312,
-        "nvidia-gpu": 552960000
+        "nvidia-gpu": 614400000
       },
       "first_seen": 9,
-      "reputation": 0.9935389181107734,
-      "submissions": 48,
+      "reputation": 0.9947665236697265,
+      "submissions": 50,
       "tier": "gpu",
-      "tokens": 965169152
+      "tokens": 1026609152
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 49971200,
+        "apple-gpu": 58163200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 129,
+      "submissions": 132,
       "tier": "gpu",
-      "tokens": 389132288
+      "tokens": 397324288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about them. We are all of a few of them! If they look for a small or small group there are the ones I think about him! As I think, these things aren't necessarily easy. You aren't really good enough to know what happens before you start to live up! How bad and bad?\nThe following are some of the different ways to describe the different ways in which there are these different ways in which we can communicate. We'll see a lot about what happens when someone feels like something they do that happen.\nSo why do people think about the different ideas you want?",
-    "step": 87,
-    "val_loss": 4.7774
+    "sample": "The most important thing to understand about something about this is because it can communicate with a lot of answers, where you can see what happened before you start getting ready.\nOne of the most important aspects of this issue is this list to help you understand what happens when you encounter something about what happens most quickly through an activity routine that comes from a way you've decided at this particular task. This means that you don't understand anything about this but is able you just remember what it seems like that there are many people who've gotten diagnosed. In all cases the person who goes beyond this experience that seems to understand what happens when someone asks",
+    "step": 88,
+    "val_loss": 4.7756
   },
-  "step": 87,
-  "updated": "2026-08-08T16:15:04+00:00"
+  "step": 88,
+  "updated": "2026-08-08T16:30:03+00:00"
 }
