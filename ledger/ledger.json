@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 86835200
+        "gpu": 89702400
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 58,
+      "submissions": 60,
       "tier": "gpu",
-      "tokens": 187596800
+      "tokens": 190464000
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about life?\nOne thing to think about the difference between life and humanity. While some are the things they are, in times of God is a spiritual thing as a person, the idea is to be a friend. Such things are often the same.\nThe word \u201creal\u201d refers to the meaning given to God Christ. She begins to find himself the very idea of God in Israel, though she is born with the people who do the way he wants to come into the world before the God Christ.\nThe Bible focuses on God and the beginning of the Lord, but they believe one day of",
-    "step": 47,
-    "val_loss": 5.1756
+    "sample": "The most important thing to understand about the effects of death may help you to keep the decisions you think.\nThe best way that the science is to read is to make the readers work.\nAnd now, what are you to do when you work? And you can see you, or the best way to get there?\nAnd, they also agree that you are in the world by doing this. But if you think you are learning how things come up with and thinking about. They are so helpful in our lives. They are in all aspects. They can help keep others and feel them safe because of other things they aren't",
+    "step": 48,
+    "val_loss": 5.1547
   },
-  "step": 47,
-  "updated": "2026-08-08T08:13:30+00:00"
+  "step": 48,
+  "updated": "2026-08-08T08:23:18+00:00"
 }
