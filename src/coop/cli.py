@@ -17,7 +17,7 @@ from pathlib import Path
 import yaml
 
 from coop import __version__, hubio, settings, submit, update
-from coop.device import CUDA_FIX, cuda_gap, describe, pick_device
+from coop.device import cuda_gap, describe, pick_device
 from coop.join import DEFAULT_REPO, fetch_raw
 from coop.status import FILENAME as STATUS_FILENAME
 from coop.status import read_status
@@ -64,8 +64,9 @@ def warn_cuda_gap(device: str) -> None:
         return
     gap = cuda_gap()
     if gap:
-        print(f"heads up: you have an NVIDIA GPU but coop is on your CPU — {gap}")
-        print(f"          {CUDA_FIX}")
+        print(f"heads up: you have an NVIDIA GPU but coop is on your CPU — {gap.reason}")
+        if gap.fix:
+            print(f"          {gap.fix}")
 
 
 def read_settings() -> dict:

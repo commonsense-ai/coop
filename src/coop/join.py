@@ -21,7 +21,7 @@ from pathlib import Path
 import yaml
 
 from coop import update
-from coop.device import describe, pick_device
+from coop.device import arch_gap, cpu_fallback, describe, kernel_missing, pick_device
 from coop.status import FILENAME as STATUS_FILENAME
 from coop.status import StatusFile
 
@@ -156,6 +156,10 @@ def main():
         tokenize_file(load_tokenizer(str(tok_path)), txt, str(shard))
 
     device = a.device or pick_device()
+    # pick_device already skips a card this torch can't launch on; an explicit
+    # --device cuda would otherwise crash-loop a whole session away
+    if device.startswith("cuda") and (gap := arch_gap()):
+        device = cpu_fallback(gap)
     label = describe(device)
     log.info("joined as %s on %s; ctrl-c to stop", user, label)
     # the label too: `coop status` reports what the worker actually got, and only
@@ -209,6 +213,10 @@ def main():
         except Exception as e:
             if a.rounds == 1:
                 raise  # single-round runs must fail loudly, not exit 0
+            if device.startswith("cuda") and kernel_missing(e):
+                device = cpu_fallback()  # permanent: pausing and retrying changes nothing
+                status.update(device=device, device_label=describe(device))
+                continue
             # unattended volunteers: transient network/HF errors retry, never crash
             log.warning("round failed (%s); retrying after pause", e)
             time.sleep(a.pause)
