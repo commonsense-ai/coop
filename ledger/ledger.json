@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 147456000
+        "gpu": 149504000
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 79,
+      "submissions": 80,
       "tier": "gpu",
-      "tokens": 248217600
+      "tokens": 250265600
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about these issues, and we\u2019ll have to share everything\u2014but not only the future or business-changing.\nWhat the policy makers want to do\n- If these types of questions were first discussed, then these questions were done in the first place.\n- \u201cWhat kind of data that data scientists find it possible. In addition, while we see data that we can help us to identify, and that we don\u2019t always know about them in the right direction.\n- When it comes to data-oriented solutions, I\u2019ve found that data scientists can do a pretty high-cost",
-    "step": 58,
-    "val_loss": 5.0788
+    "sample": "The most important thing to understand about the future of the actual idea and its implications. The ability to learn to help you from your students and will ensure the safety and safety and safety and security from them.\nYou can find the best way to find out when you are finished, and you can get a good work to help you achieve your child\u2019s needs.\nCalcially, there are a few tips about healthy living a child and lifestyle.\nYou can find a list of tips on the child and parent.\n- Children are a good way to ensure their physical, physical and emotional development.\n- Children are the right",
+    "step": 59,
+    "val_loss": 5.0941
   },
-  "step": 58,
-  "updated": "2026-08-08T10:37:12+00:00"
+  "step": 59,
+  "updated": "2026-08-08T10:43:39+00:00"
 }
