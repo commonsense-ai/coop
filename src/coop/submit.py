@@ -156,6 +156,28 @@ def _trim(d: Path) -> None:
         discard(js.with_suffix(""))
 
 
+def pending_count(out_dir) -> int:
+    d = Path(out_dir) / PENDING
+    return len(list(d.glob("*.json"))) if d.is_dir() else 0
+
+
+def current_step(cfg: dict) -> int | None:
+    """None when the hub is unreachable: nothing gets discarded on a guess."""
+    try:
+        return hubio.get_step(cfg["repos"]["model"])
+    except Exception:
+        return None
+
+
+def expired(meta: dict, step: int | None, tau_max: int) -> bool:
+    """A pseudo-gradient is pinned to the step it was trained from, and past tau_max the
+    aggregator rejects it on sight. Sending one anyway spends a volunteer's bandwidth and
+    a slot in the tick's sweep to be told no."""
+    if step is None or not tau_max:
+        return False
+    return step - int(meta["start_step"]) >= tau_max
+
+
 def stash(
     out_dir, payload: tuple[bytes, bytes], meta: dict, supersedes: Path | None = None
 ) -> Path:
@@ -178,10 +200,12 @@ def drain(cfg: dict, out_dir, skip: Path | None = None) -> int:
     """Re-upload rounds parked by an earlier failure. Each never reached the inbox, so
     each gets its own PR. `skip` is the payload a live accumulator will resend itself."""
     d = Path(out_dir) / PENDING
-    if not d.is_dir():
+    if not d.is_dir() or not (queued := sorted(d.glob("*.json"))):
         return 0
+    tau = cfg.get("staleness", {}).get("tau_max", 0)
+    step = current_step(cfg) if tau else None
     sent = 0
-    for js in sorted(d.glob("*.json")):
+    for js in queued:
         base = js.with_suffix("")
         if skip is not None and base.name == skip.name:
             continue
@@ -193,6 +217,16 @@ def drain(cfg: dict, out_dir, skip: Path | None = None) -> int:
         except (OSError, ValueError, KeyError):
             # unreadable on disk is unrecoverable; drop it rather than wedge the queue
             log.warning("parked round %s can't be read — dropping it", base.name)
+            discard(base)
+            continue
+        if expired(meta, step, tau):
+            log.warning(
+                "parked round %s trained at step %s, the run is at %d — too stale to be "
+                "accepted, dropping it",
+                base.name,
+                meta["start_step"],
+                step,
+            )
             discard(base)
             continue
         try:

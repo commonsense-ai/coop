@@ -260,3 +260,28 @@ def test_no_new_version_is_a_no_op_for_the_worker(tmp_path, monkeypatch):
     st = FakeStatus()
     join.check_for_update("o/r", tmp_path, st)
     assert st.state == {}
+
+
+def test_a_stuck_worker_takes_the_update_even_with_auto_off(tmp_path, monkeypatch):
+    """The volunteer never asked for auto-update — but they did ask to contribute, and a
+    worker that cannot finish a round is doing neither."""
+    monkeypatch.setattr(update, "available", lambda repo, home, **k: manifest())
+    seen = {}
+    monkeypatch.setattr(
+        update, "restart_into_update", lambda repo, args, kind=None: seen.setdefault("tried", True)
+    )
+    assert not update.auto_enabled(tmp_path)
+
+    join.check_for_update("o/r", tmp_path, FakeStatus())  # healthy: notice only
+    assert not seen
+
+    join.check_for_update("o/r", tmp_path, FakeStatus(), repair=True)
+    assert seen["tried"]
+    assert update.attempted(tmp_path, "99.0.0")  # one shot per version, repair included
+
+
+def test_repair_does_not_retry_a_version_that_already_failed(tmp_path, monkeypatch):
+    update.mark_attempted(tmp_path, "99.0.0")
+    monkeypatch.setattr(update, "available", lambda repo, home, **k: manifest())
+    monkeypatch.setattr(update, "restart_into_update", lambda *a, **k: pytest.fail("would loop"))
+    join.check_for_update("o/r", tmp_path, FakeStatus(), repair=True)
