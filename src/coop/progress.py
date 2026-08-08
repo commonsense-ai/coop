@@ -141,6 +141,8 @@ def simple_rows(ctx: dict) -> list[str]:
         rows.append(
             row("the model", total / goal, f"{fmt_tokens(total)} of ~{fmt_tokens(goal)} tokens")
         )
+        if ctx.get("goal_note"):
+            rows.append(f"{'':<{LABEL}} {ctx['goal_note']}")
         mine = ctx.get("my_tokens")
         if mine:
             where = f"rank {ctx['rank']} of {ctx['of']}" if ctx.get("rank") else "credited to you"
@@ -212,6 +214,8 @@ def advanced_rows(ctx: dict) -> list[str]:
     if ctx.get("total_tokens") is not None and ctx.get("goal"):
         total, goal = ctx["total_tokens"], ctx["goal"]
         rows.append(f"goal     {total:,} of ~{goal:,} community tokens ({100 * total / goal:.1f}%)")
+        if ctx.get("goal_note"):
+            rows.append(f"{'':<9}{ctx['goal_note']}")
     if ctx.get("inbox") is not None:
         rows.append(f"inbox    {ctx['inbox']}")
     for label, key in (("board", "board_url"), ("log", "logfile")):

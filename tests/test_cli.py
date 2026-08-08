@@ -323,6 +323,70 @@ def test_farewell_shows_session_bars_and_resume(tmp_path, monkeypatch, capsys):
     assert "resume any time: coop start" in out
 
 
+GOAL_CFG = {
+    "repos": {"model": "o/m", "dataset": "o/d"},
+    "goal_tokens": 6_000_000_000,
+    "goal_note": "3B was reached 8 Aug; 6B buys a better model",
+}
+
+
+def test_farewell_says_why_the_goal_moved(tmp_path, monkeypatch, capsys):
+    """A raised target halves the bar overnight. Unexplained, that reads as work lost."""
+
+    def fake_fetch(repo, path, dest, ref="main"):
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(BOARD_MD)
+        return dest
+
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "fetch_raw", fake_fetch)
+    monkeypatch.setattr(cli, "load_run_config", lambda repo: GOAL_CFG)
+    cli.farewell(argparse.Namespace(repo="o/r"), {"user": "naloxene"})
+    out = capsys.readouterr().out
+    assert "~6,000,000,000 tokens" in out
+    assert "3B was reached 8 Aug" in out
+
+
+def test_status_prints_the_goal_note_under_the_goal(tmp_path, monkeypatch, capsys):
+    def fake_fetch(repo, path, dest, ref="main"):
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(BOARD_MD)
+        return dest
+
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "PIDFILE", tmp_path / "worker.pid")
+    monkeypatch.setattr(cli, "load_run_config", lambda repo: GOAL_CFG)
+    monkeypatch.setattr(cli.update, "available", lambda repo, home, **k: None)
+    monkeypatch.setattr(cli.hubio, "whoami", lambda: "naloxene")
+    monkeypatch.setattr(cli.hubio, "list_open_prs", lambda repo: [])
+    monkeypatch.setattr(cli, "fetch_raw", fake_fetch)
+    cli.cmd_status(argparse.Namespace(repo="o/r"))
+    lines = capsys.readouterr().out.splitlines()
+    goal = next(i for i, ln in enumerate(lines) if ln.startswith("goal "))
+    assert "of ~6,000,000,000 community tokens" in lines[goal]
+    # indented into the value column, so it reads as part of the goal field
+    assert lines[goal + 1] == " " * 9 + GOAL_CFG["goal_note"]
+
+
+def test_status_leaves_out_a_goal_note_the_run_never_set(tmp_path, monkeypatch, capsys):
+    def fake_fetch(repo, path, dest, ref="main"):
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(BOARD_MD)
+        return dest
+
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "PIDFILE", tmp_path / "worker.pid")
+    monkeypatch.setattr(cli, "load_run_config", lambda repo: {"repos": GOAL_CFG["repos"]})
+    monkeypatch.setattr(cli.update, "available", lambda repo, home, **k: None)
+    monkeypatch.setattr(cli.hubio, "whoami", lambda: "naloxene")
+    monkeypatch.setattr(cli.hubio, "list_open_prs", lambda repo: [])
+    monkeypatch.setattr(cli, "fetch_raw", fake_fetch)
+    cli.cmd_status(argparse.Namespace(repo="o/r"))
+    lines = capsys.readouterr().out.splitlines()
+    goal = next(i for i, ln in enumerate(lines) if ln.startswith("goal "))
+    assert not lines[goal + 1].startswith(" " * 9)
+
+
 def test_update_says_so_when_there_is_nothing_new(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(cli, "HOME", tmp_path)
     monkeypatch.setattr(cli.update, "available", lambda repo, home, **k: None)

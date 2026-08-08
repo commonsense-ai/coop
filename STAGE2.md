@@ -6,6 +6,10 @@
 > [commonsense-ai/fineweb-150m](https://huggingface.co/commonsense-ai/fineweb-150m),
 > config cut over (stage 1 archived as `config/stage1.yaml`). Remaining mid-run
 > work: verification via redundant shard assignment; multi-run ledger schema.
+>
+> **3B passed at outer step 113** (2026-08-08, val 4.6002, 3,090,272,256 tokens in
+> 5.8 days from four contributors). Val loss was still descending — ~0.11 over the
+> preceding 20 steps — so `goal_tokens` went to 6B rather than declaring the run done.
 
 Stage 1 (tinystories-15m) is complete: ~363M tokens, val 2.83, four contributors.
 Stage 2 scales to a ~145M-param model on FineWeb-Edu. `config/stage2.yaml` is the
@@ -73,7 +77,7 @@ Work through it top to bottom — each step is mechanical once the one above it 
 
 ## Numbers to sanity-check before launch
 
-- Params: 12L·14H·896d ≈ 145M tied. Chinchilla-optimal ≈ 3B tokens; SmolLM-style
+- Params: 12L·14H·896d = 146,024,704 tied. Chinchilla-optimal ≈ 3B tokens; SmolLM-style
   target 5–10B (state the goal in the announcement).
 - Worker memory: f32 weights 580MB + AdamW 1.2GB + activations ≈ fits 16GB laptops
   at batch 4×1024; CPU-only machines fall below useful throughput — expect a
