@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 176947200
+        "gpu": 178995200
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 92,
+      "submissions": 93,
       "tier": "gpu",
-      "tokens": 277708800
+      "tokens": 279756800
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about how the animal acts in the way of a human body and its consequences.\nOf course, we would see a very bad thing for the animals and the animals out of the earth today. When in the long run we would see a big picture in the human body. Once they came a long way, they would see a smaller piece of a animal. They thought, however, are the same.\nLet\u2019s note be a great thing to think that human beings are all about is the one who knew. So here at the time when the animal doesn\u2019t think that animals are happy and",
-    "step": 65,
-    "val_loss": 5.1597
+    "sample": "The most important thing to understand about and write up with some links, and it takes care of the story.\nSome more information about how to use\nPlace in this blog\nThis blog is a short list of an article I've been using the Google page. Please see the following questions about this article.Each year we celebrate, from February to December, and learn about the history of the year.\nThe theme of the second chapter is more than a handful of years ago. So, that number is needed to produce a political holiday. Let\u2019s get a look at what\u2019s been written, and why not always",
+    "step": 66,
+    "val_loss": 5.1472
   },
-  "step": 65,
-  "updated": "2026-08-08T11:58:51+00:00"
+  "step": 66,
+  "updated": "2026-08-08T12:04:07+00:00"
 }
