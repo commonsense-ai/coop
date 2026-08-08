@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **114** — updated 2026-08-08T23:07:28+00:00.
+Outer step **115** — updated 2026-08-08T23:15:56+00:00.
 
-Val loss at step 114: **4.5701** — sample:
+Val loss at step 115: **4.5492** — sample:
 
-> The most important thing to understand about science or science. If you're interested in science research, you'll need to hire a few people who are interested in science science fields, science and science fields. Take a look at your current scientific knowledge base. You'll find two career paths: the science and science fields you're interested in. What you're interested in science research and science? Are you interested in science studies? If you're interested in science research, you'll find great opportunities for research-based, in some cases. If you're interested in science research, you'll find life-saving options for studying chemistry while in
+> The most important thing to understand about it and make sure you understand what you're and what you're looking for. That's how we're going to be getting involved in helping you understand there's no way to treat your problems. Check out our blog here! Children are taught all about how we are talking about what they're talking about and how they use it. What do we do by when you're talking? A lot of parents are taught through a lot of questions about the way you're talking about something new than you like when you understand your child's speaking is the only way you're thinking about it. Your
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -19,7 +19,7 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 
 | # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
 |---|-------------|----------|----------|--------|------------|-------|
-| 1 | cjtsolutions | nvidia-gpu | 76 | 1,564,004,352 | 1.000 | 1,563,475,501 |
+| 1 | cjtsolutions | nvidia-gpu | 78 | 1,607,012,352 | 1.000 | 1,606,572,203 |
 | 2 | naloxene | nvidia-gpu | 61 | 1,027,452,928 | 1.000 | 1,027,452,928 |
-| 3 | ezshroom | apple-gpu | 176 | 583,692,288 | 1.000 | 583,692,288 |
+| 3 | ezshroom | apple-gpu | 177 | 585,740,288 | 1.000 | 585,740,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |

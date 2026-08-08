@@ -3,24 +3,24 @@
     "cjtsolutions": {
       "devices": {
         "gpu": 56717312,
-        "nvidia-gpu": 1151795200
+        "nvidia-gpu": 1194803200
       },
       "first_seen": 9,
-      "reputation": 0.9996618608086477,
-      "submissions": 76,
+      "reputation": 0.9997261072550047,
+      "submissions": 78,
       "tier": "gpu",
-      "tokens": 1564004352
+      "tokens": 1607012352
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 244531200,
+        "apple-gpu": 246579200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 176,
+      "submissions": 177,
       "tier": "gpu",
-      "tokens": 583692288
+      "tokens": 585740288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about science or science. If you're interested in science research, you'll need to hire a few people who are interested in science science fields, science and science fields.\nTake a look at your current scientific knowledge base. You'll find two career paths: the science and science fields you're interested in. What you're interested in science research and science? Are you interested in science studies? If you're interested in science research, you'll find great opportunities for research-based, in some cases. If you're interested in science research, you'll find life-saving options for studying chemistry while in",
-    "step": 114,
-    "val_loss": 4.5701
+    "sample": "The most important thing to understand about it and make sure you understand what you're and what you're looking for.\nThat's how we're going to be getting involved in helping you understand there's no way to treat your problems. Check out our blog here!\nChildren are taught all about how we are talking about what they're talking about and how they use it. What do we do by when you're talking? A lot of parents are taught through a lot of questions about the way you're talking about something new than you like when you understand your child's speaking is the only way you're thinking about it.\nYour",
+    "step": 115,
+    "val_loss": 4.5492
   },
-  "step": 114,
-  "updated": "2026-08-08T23:07:28+00:00"
+  "step": 115,
+  "updated": "2026-08-08T23:15:56+00:00"
 }
