@@ -1,9 +1,12 @@
 import argparse
+import json
 import os
+from pathlib import Path
 
 import pytest
 
 import coop.cli as cli
+from coop import trend
 
 CFG = {"repos": {"model": "commonsense-ai/tinystories-15m"}}
 
@@ -546,6 +549,72 @@ def test_watch_restarts_then_returns_to_the_view(monkeypatch):
     cli.watch(argparse.Namespace(repo="o/r"))
     assert len(started) == 1
     assert started[0].no_progress is True  # the loop reopens the view, cmd_start must not
+
+
+HIST_CFG = {
+    "repos": {"model": "o/m"},
+    "model": {"vocab_size": 8192},
+    "eval": {"val_file": "val.bin", "batches": 8, "batch_size": 2},
+}
+
+
+def fake_ledger_branch(tmp_path, losses, spec="val.bin:8x2@0"):
+    """fetch_raw over the `ledger` branch: the history file, nothing else."""
+    body = "\n".join(
+        json.dumps({"step": 10 + i, "val_loss": v, "tokens": (i + 1) * 2_000_000, "spec": spec})
+        for i, v in enumerate(losses)
+    )
+
+    def fetch(repo, path, dest, ref="main"):
+        if not path.endswith(trend.HISTORY):
+            raise OSError("offline")
+        Path(dest).parent.mkdir(parents=True, exist_ok=True)
+        Path(dest).write_text(body + "\n")
+        return Path(dest)
+
+    return fetch
+
+
+def test_status_reads_the_direction_off_the_series(tmp_path, monkeypatch, capsys):
+    """The model line prints one number; whether that number is going anywhere is a
+    property of the series, so `coop status` fits the series."""
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "PIDFILE", tmp_path / "worker.pid")
+    monkeypatch.setattr(cli, "load_run_config", lambda repo: HIST_CFG)
+    monkeypatch.setattr(cli.update, "available", lambda repo, home, **k: None)
+    monkeypatch.setattr(cli.hubio, "whoami", lambda: "tester")
+    monkeypatch.setattr(cli.hubio, "list_open_prs", lambda repo: [])
+    meta = tmp_path / "meta.json"
+    meta.write_text(json.dumps({"step": 14, "eval": {"val_loss": 3.4}}))
+    monkeypatch.setattr(cli.hubio, "download_file", lambda repo, name, **k: str(meta))
+    monkeypatch.setattr(
+        cli, "fetch_raw", fake_ledger_branch(tmp_path, [6.0, 5.6, 5.8, 5.1, 5.3, 4.6])
+    )
+
+    cli.cmd_status(argparse.Namespace(repo="o/r"))
+
+    out = capsys.readouterr().out
+    assert "model    o/m @ outer step 14 (val loss 3.4)" in out
+    assert "loss     going down," in out
+    assert "per 1M tokens" in out  # rate against tokens, not against outer steps
+    assert "best 4.6000 at step 15" in out
+    assert "loss against tokens" in out  # the sparkline caption
+
+
+def test_status_survives_a_run_with_no_history_yet(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "PIDFILE", tmp_path / "worker.pid")
+    monkeypatch.setattr(cli, "load_run_config", lambda repo: HIST_CFG)
+    monkeypatch.setattr(cli.update, "available", lambda repo, home, **k: None)
+    monkeypatch.setattr(cli.hubio, "whoami", lambda: "tester")
+    monkeypatch.setattr(cli.hubio, "list_open_prs", lambda repo: [])
+    monkeypatch.setattr(cli, "fetch_raw", lambda *a, **k: (_ for _ in ()).throw(OSError("404")))
+    monkeypatch.setattr(
+        cli.hubio, "download_file", lambda *a, **k: (_ for _ in ()).throw(OSError("offline"))
+    )
+
+    cli.cmd_status(argparse.Namespace(repo="o/r"))
+    assert "loss     " not in capsys.readouterr().out
 
 
 def test_status_shows_a_waiting_update(tmp_path, monkeypatch, capsys):

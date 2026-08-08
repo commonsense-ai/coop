@@ -49,6 +49,19 @@ DiLoCo-style low-communication data parallelism:
 Weights and optimizer state live **only** on Hugging Face (safetensors). Git holds
 code, config, and the contributor ledger.
 
+### Is it actually learning?
+
+Each tick evaluates the new checkpoint on a fixed held-out slice with a fixed seed —
+the same sequences every time, so a change between steps is the model moving and not
+the eval sampling something else — and appends one point to
+[`ledger/history.jsonl`](https://github.com/commonsense-ai/coop/blob/ledger/ledger/history.jsonl).
+A single val loss says nothing: outer steps move it up as often as down. The direction
+is a property of the series, so the leaderboard and `coop status` fit a slope over it
+(against tokens, not outer steps — a step is however much work happened to show up that
+tick) and report it with its standard error, how many steps improved it, and how long
+it has been since the best one. "Going down" means the slope clears two standard errors;
+anything less says so instead of pretending.
+
 ## Stage 2 (current run)
 
 ~145M parameter decoder-only transformer (12 layers, 14 heads, d=896, 1024 context,

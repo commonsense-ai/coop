@@ -10,7 +10,7 @@ from pathlib import Path
 import torch
 from safetensors.torch import load_file
 
-from coop import hubio, ledger, load_config, robust
+from coop import hubio, ledger, load_config, robust, trend
 from coop.data import load_tokenizer
 from coop.eval import eval_val_loss, sample
 from coop.model import GPT, GPTConfig, canonical_state, load_canonical_state
@@ -79,11 +79,14 @@ def _eval_checkpoint(cfg: dict, state: dict, hub) -> dict | None:
     if not ecfg:
         return None
     try:
-        val_path = hub.download_file(cfg["repos"]["model"], ecfg["val_file"])
+        ep = trend.eval_params(cfg)
+        val_path = hub.download_file(cfg["repos"]["model"], ep["val_file"])
         model = GPT.from_config(GPTConfig(**cfg["model"]))
         load_canonical_state(model, state)
+        # Fixed seed, fixed val file: the same sequences every tick, so a step-to-step
+        # change is the model moving and never the eval sampling something else.
         loss = eval_val_loss(
-            model, val_path, batch=ecfg.get("batch_size", 4), iters=ecfg.get("batches", 8)
+            model, val_path, batch=ep["batch_size"], iters=ep["batches"], seed=ep["seed"]
         )
         tok = load_tokenizer(cfg["data"]["tokenizer"])
         text = sample(
@@ -92,7 +95,7 @@ def _eval_checkpoint(cfg: dict, state: dict, hub) -> dict | None:
             ecfg.get("sample_prompt", "Once upon a time"),
             ecfg.get("sample_tokens", 120),
         )
-        return {"val_loss": round(loss, 4), "sample": text}
+        return {"val_loss": round(loss, 4), "sample": text, "spec": trend.spec(cfg)}
     except Exception as e:
         log.warning("eval skipped: %s", e)
         return None
@@ -255,8 +258,28 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
         rejected=[m for _, m, _ in rejected if m],
     )
     ledger.save_ledger(led, led_path)
+
+    # Append before summarizing: the trend has to contain the point this tick measured,
+    # and the token axis is only final once the ledger has taken this step's credit.
+    hist_path = led_path.parent / trend.HISTORY
+    hist = trend.load(hist_path)
+    if evals and advanced:
+        hist = trend.append(
+            hist_path,
+            {
+                "step": step + 1,
+                "at": _now(),
+                "val_loss": evals["val_loss"],
+                "tokens": ledger.total_tokens(led),
+                "contributors": len({m["username"] for _, _, _, m in accepted}),
+                "spec": evals.get("spec"),
+            },
+        )
+    tr = trend.summarize(hist, trend.spec(cfg))
+    if tr:
+        log.info("loss trend @ step %d: %s", tr["step"], trend.describe(tr))
     archives = sorted(p.name for p in Path(repo_root).glob("LEADERBOARD-*.md"))
-    (Path(repo_root) / "LEADERBOARD.md").write_text(ledger.render_leaderboard(led, archives))
+    (Path(repo_root) / "LEADERBOARD.md").write_text(ledger.render_leaderboard(led, archives, tr))
 
     discard_note = (
         "Discarded: this cohort's outer step regressed validation loss past the safety "
@@ -309,6 +332,8 @@ def run_tick(cfg: dict, hub=hubio, repo_root: str = ".") -> dict | None:
     }
     if tripped:
         summary["discarded"] = len(accepted)
+    if tr:
+        summary |= {"val_loss": tr["latest"], "trend": tr["verdict"]}
     return summary
 
 

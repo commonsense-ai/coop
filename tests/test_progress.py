@@ -40,6 +40,20 @@ CTX = {
     "inbox": "empty — all submitted work has been aggregated",
 }
 
+TREND = {
+    "verdict": "down",
+    "latest": 3.02,
+    "n": 9,
+    "improved": 6,
+    "worsened": 2,
+    "best": 3.0,
+    "best_step": 36,
+    "since_best": 1,
+    "per": "1M tokens",
+    "slope": -0.02,
+    "stderr": 0.004,
+}
+
 
 NOTE = "3B was reached 8 Aug; 6B buys a better model"
 
@@ -149,6 +163,31 @@ def test_advanced_view_carries_the_status_fields():
     for field in ("worker", "now", "device", "model", "you", "goal", "inbox", "board", "log"):
         assert f"{field:<8} " in screen or f"{field}   " in screen
     assert "pid 4242" in screen and "outer step 37" in screen and "val loss 3.02" in screen
+
+
+def test_simple_view_says_which_way_the_loss_is_heading():
+    """A bare number reads as progress even when it is bouncing; the direction is the
+    part a volunteer can act on, and it comes with no statistics attached."""
+    screen = "\n".join(pg.render(CTX | {"trend": TREND}, pg.SIMPLE))
+    assert "loss 3.020 and falling" in screen
+    assert "-0.02" not in screen  # no slope in the simple view
+    assert "░" in screen  # and no bar was invented for a loss with no finish line
+
+    rising = "\n".join(pg.render(CTX | {"trend": TREND | {"verdict": "up"}}, pg.SIMPLE))
+    assert "rising" in rising and "something is wrong" in rising
+
+
+def test_advanced_view_carries_the_loss_trend():
+    screen = "\n".join(pg.render(CTX | {"trend": TREND}, pg.ADVANCED, width=160))
+    assert "loss     going down, -0.02 per 1M tokens (±0.004)" in screen
+    assert "6 of 8 steps improved it" in screen
+    assert "best 3.0000 at step 36 (1 step ago)" in screen
+
+
+def test_views_stay_quiet_before_the_first_eval():
+    for mode in (pg.SIMPLE, pg.ADVANCED):
+        screen = "\n".join(pg.render(CTX | {"trend": None}, mode))
+        assert "falling" not in screen and "loss     " not in screen
 
 
 def test_advanced_view_flags_a_worker_that_stopped_reporting():
