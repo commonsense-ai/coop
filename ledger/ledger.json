@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 217907200,
+        "apple-gpu": 219955200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 167,
+      "submissions": 168,
       "tier": "gpu",
-      "tokens": 557068288
+      "tokens": 559116288
     },
     "miacx": {
       "first_seen": 12,
@@ -41,10 +41,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about it - or simply it should recognize how an individual sees an individual's thoughts through them?The importance of human behaviour and how we engage nature. From natural processes to natural environments and communities \u2013 the moral values of individuals, the moral values, concepts and models of society \u2013 are discussed below. It is an excellent tool we can evaluate for each individual in every context of life: to achieve social goals and interests in society and society while promoting social justice and equality.\nThe concept of human behavior: the concept of nature, how we relate to another and the concepts we perceive as social behaviors. How",
-    "step": 108,
-    "val_loss": 4.641
+    "sample": "The most important thing to understand about these questions. Some questions are asked if there are any questions or questions. Or the question of whether your answer is correct?\nThe answers to the questions are presented in the questions. They are answered every time. How do you determine if there are any questions? Are there questions? If you suspect? Are there anyone answers? If you believe the answers are correct? What questions are correct? Are there questions? Are there questions? Will there answers. If there are answers or questions regarding questions, you may ask for the questions. Should the question be answered? Are there questions you believe you would",
+    "step": 109,
+    "val_loss": 4.6566
   },
-  "step": 108,
-  "updated": "2026-08-08T22:07:17+00:00"
+  "step": 109,
+  "updated": "2026-08-08T22:11:50+00:00"
 }
