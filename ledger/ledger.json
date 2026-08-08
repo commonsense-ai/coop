@@ -14,19 +14,26 @@
       "tier": "gpu",
       "tokens": 40550400
     },
+    "miacx": {
+      "first_seen": 12,
+      "reputation": 1.0,
+      "submissions": 1,
+      "tier": "cpu",
+      "tokens": 819200
+    },
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 10,
-      "tier": "cpu",
-      "tokens": 20283392
+      "submissions": 12,
+      "tier": "gpu",
+      "tokens": 22974464
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about that their.\nHow\nHow You have to be sure you help to a lot of a variety\nI would only\nHow do?\n\" so if your you are something\n- As you to make to follow- It is to the place to tell you do you\n- If you should be a time.\nThe book that is a\n- A\n- There are.\n- If you have the idea it. A common,\n- The book and if the more than a very different way, the you can ask to checking:\n- I can provide them, with",
-    "step": 11,
-    "val_loss": 6.4613
+    "sample": "The most important thing to understand about the following in the world, the world and the role of the country. The country.\nThe British State of the two years, one time, there is the world to the same time.\nYou can take the same way, the world is a new and the same time, there is a few days a particular. A lot of the world. As a different more.\nThis can provide a great time.\nIt is also a result. In some of the same time, the long- You might need of the same way to a number of the one one of the time is a",
+    "step": 12,
+    "val_loss": 6.4511
   },
-  "step": 11,
-  "updated": "2026-08-08T00:27:39+00:00"
+  "step": 12,
+  "updated": "2026-08-08T00:37:51+00:00"
 }
