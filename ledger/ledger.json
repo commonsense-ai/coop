@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 183910400
+        "gpu": 188825600
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 95,
+      "submissions": 97,
       "tier": "gpu",
-      "tokens": 284672000
+      "tokens": 289587200
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about your condition.\nAnother way to do all you are willing to seek help.\nMany things start to learn from a different level.\nYour help- it be more fun, and getting started in a huge range of different types today.\nAny weight gain weight\nYour body uses it to make you feel less sensitive to exercise.\nIt is important to treat yourself.\nWhen you exercise your workout, you should seek help.\nWhen you go over to learn how to treat yourself from a brief period, you should get the transition every time you've got up with a regular exercise routine.",
-    "step": 67,
-    "val_loss": 5.143
+    "sample": "The most important thing to understand about the relationship between a mental health disorder and a mental health disorder?\nThese mental health issues are an important part of life. The brain disorder lies inside a healthy, as it affects the psychological well-being of the brain. Thus, we want to find the best path for this disorder. This disorder could help with this disorder.\nDr. Michael Lee, MD, PhD, PhD, and the American Academy of Sciences at the university.\u201cI think it takes a lot of data sets in the long term I want to know every day I look in this, \u2018What is the meaning of",
+    "step": 68,
+    "val_loss": 5.1418
   },
-  "step": 67,
-  "updated": "2026-08-08T12:13:57+00:00"
+  "step": 68,
+  "updated": "2026-08-08T12:29:07+00:00"
 }
