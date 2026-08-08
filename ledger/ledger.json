@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 50380800
+        "gpu": 53248000
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 44,
+      "submissions": 46,
       "tier": "gpu",
-      "tokens": 151142400
+      "tokens": 154009600
     },
     "miacx": {
       "first_seen": 12,
@@ -26,20 +26,20 @@
     },
     "naloxene": {
       "devices": {
-        "nvidia-gpu": 35635200
+        "nvidia-gpu": 70451200
       },
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 40,
+      "submissions": 42,
       "tier": "gpu",
-      "tokens": 537161728
+      "tokens": 571977728
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about how we are trying to solve them that it might look like something that they might learn.\n\u201cSawes us will not know.\u201d\n\u201cBut we do know we might only know, and there is why we are them, not we know, a lot, and we have them out.\u201d\nThe answer was this, but the idea of a lot of knowledge could help us to understand them, and not to do not, in the future.\u201d\nThe story began to do is what we do. Every time we might have been trying to say \u201cto teach a lot, but I want",
-    "step": 39,
-    "val_loss": 5.4247
+    "sample": "The most important thing to understand about the situation. For instance, whether we don\u2019t read the way, what kind of language is to do? Many are in the classroom that can do if they were in a particular thing they could find out of the student.- In the early stages, the idea that the media uses the computer to help the internet. The internet can be a means of a computer learning environment. The person can do it be the word for us to produce technology. That doesn\u2019t mean what it works.\n- The computer learning is the world\u2019s largest internet.\n- The hardware is created",
+    "step": 40,
+    "val_loss": 5.3852
   },
-  "step": 39,
-  "updated": "2026-08-08T06:43:22+00:00"
+  "step": 40,
+  "updated": "2026-08-08T06:52:11+00:00"
 }
