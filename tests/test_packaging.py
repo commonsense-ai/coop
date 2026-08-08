@@ -29,3 +29,21 @@ def test_torch_cpu_index_stays_behind_the_cpu_extra():
         assert src.get("extra") == "cpu", src
     assert any(d.startswith("torch") for d in PYPROJECT["project"]["dependencies"])
     assert PYPROJECT["project"]["optional-dependencies"]["cpu"] == ["torch>=2.4"]
+
+
+def test_nothing_still_advertises_a_license_the_repo_no_longer_grants():
+    # the terms are undecided (LICENSE.md); a manifest left saying Apache-2.0 publishes
+    # a grant nobody has agreed to — pypi and npm read these fields, not the notice
+    npm = json.loads((ROOT / "npm" / "package.json").read_text())
+    assert "All rights reserved" in (ROOT / "LICENSE.md").read_text()
+    assert not (ROOT / "LICENSE").exists()  # two license files, one of them wrong
+    assert PYPROJECT["project"]["license"] == "LicenseRef-Proprietary"
+    assert npm["license"] == "SEE LICENSE IN LICENSE.md"
+    for readme in (ROOT / "README.md", ROOT / "npm" / "README.md"):
+        assert "Apache-2.0" not in readme.read_text()
+
+
+def test_the_npm_copy_of_the_notice_matches_the_real_one():
+    # npm publishes from npm/, so the notice has to live there too — and drift means
+    # the package ships terms the repository never agreed to
+    assert (ROOT / "npm" / "LICENSE.md").read_text() == (ROOT / "LICENSE.md").read_text()

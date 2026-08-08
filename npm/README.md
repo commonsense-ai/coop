@@ -59,4 +59,4 @@ and the architecture writeup live in the
 [GitHub repository](https://github.com/commonsense-ai/coop). The model itself
 is [commonsense-ai/tinystories-15m](https://huggingface.co/commonsense-ai/tinystories-15m).
 
-License: Apache-2.0
+License: undecided — all rights reserved for now, see LICENSE.md in the repository.

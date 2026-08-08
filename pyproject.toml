@@ -3,7 +3,7 @@ name = "coop-ai"  # distribution name; the import package and CLI are both `coop
 version = "0.3.0"
 description = "Community-pretrained small language model via DiLoCo-style low-communication training"
 readme = "README.md"
-license = "Apache-2.0"
+license = "LicenseRef-Proprietary"  # undecided; see LICENSE.md
 requires-python = ">=3.10"
 keywords = ["distributed-training", "diloco", "community", "language-model"]
 dependencies = [

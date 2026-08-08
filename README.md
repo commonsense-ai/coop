@@ -189,4 +189,4 @@ uv run ruff check .
 Everything is configured in [config/run.yaml](config/run.yaml). Architecture rules
 live in [AGENTS.md](AGENTS.md).
 
-License: Apache-2.0.
+License: undecided — all rights reserved for now, see [LICENSE.md](LICENSE.md).
