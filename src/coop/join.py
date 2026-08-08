@@ -70,6 +70,40 @@ def config_changed(repo: str, work: Path, current: str, path: str = "config/run.
 
 NOTED: set[str] = set()  # announced by this process already; `coop logs` is not a nag
 
+RESTARTS_ENV = "COOP_RESTARTS"  # survives the exec; cleared by the first round that lands
+FAILS_BEFORE_RESTART = 3
+MAX_RESTARTS = 3
+
+
+def restarts_so_far() -> int:
+    """Restarts since the last round that actually landed."""
+    try:
+        return int(os.environ.get(RESTARTS_ENV, "0"))
+    except ValueError:
+        return 0
+
+
+def should_restart(fails: int) -> bool:
+    """A streak this long is a property of the process, not of the network. Capped:
+    once a few fresh processes have failed the same way it is the world that is down,
+    and restarting into an outage only churns."""
+    return fails >= FAILS_BEFORE_RESTART and restarts_so_far() < MAX_RESTARTS
+
+
+def restart_worker(status: StatusFile, fails: int) -> None:
+    """Re-exec between rounds, into the same version. Some failures outlive the round
+    that caused them — a hub client that caches its first error replays it for every
+    later call, failing rounds that never touch what broke — and only a new process
+    clears that. Same pid, so `coop stop` still reaches the worker, and rounds parked
+    on disk go out on the way back up."""
+    n = restarts_so_far() + 1
+    log.warning(
+        "%d rounds failed in a row — restarting the worker (%d of %d)", fails, n, MAX_RESTARTS
+    )
+    status.update(phase="restarting after repeated failures")
+    os.environ[RESTARTS_ENV] = str(n)
+    os.execv(sys.executable, [sys.executable, "-m", "coop.join", *sys.argv[1:]])
+
 
 def check_for_update(repo: str, work: Path, status: StatusFile) -> None:
     """Between rounds only: a restart here can never cost a volunteer trained work,
@@ -204,7 +238,7 @@ def main():
     seed_base = machine_seed(work)
     acc = submit.StepAccumulator() if cfg["inner"].get("accumulate_rounds") else None
     out = work / "out"
-    rnd, h_next, tokens_session = 0, None, 0
+    rnd, h_next, tokens_session, fails = 0, None, 0, 0
     while not stop.is_set():
         try:
             # rounds an outage parked (this process or an earlier one) go out first; the
@@ -225,6 +259,8 @@ def main():
             if meta_path is None:  # stopped before the round trained anything
                 break
             rnd += 1
+            fails = 0
+            os.environ.pop(RESTARTS_ENV, None)  # this process works: restore its budget
             meta = json.loads(meta_path.read_text())
             tokens_session += meta["tokens"]
             status.update(rounds_done=rnd, tokens_session=tokens_session)
@@ -249,7 +285,10 @@ def main():
                 status.update(device=device, device_label=describe(device))
                 continue
             # unattended volunteers: transient network/HF errors retry, never crash
+            fails += 1
             log.warning("round failed (%s); retrying after pause", e)
+            if should_restart(fails):
+                restart_worker(status, fails)  # does not return
             time.sleep(a.pause)
     status.update(phase="stopped")
     log.info("worker stopped")
