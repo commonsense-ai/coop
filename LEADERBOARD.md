@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **25** — updated 2026-08-08T03:43:49+00:00.
+Outer step **26** — updated 2026-08-08T03:59:19+00:00.
 
-Val loss at step 25: **5.9111** — sample:
+Val loss at step 26: **5.8251** — sample:
 
-> The most important thing to understand about and the question “for” and what the more than the nature, that the evidence is, according to the reason, the fact that all is the universe, in it takes up in the fact. A person is that the things of the people have nothing has a thing of the life, as a lot of the person's in the meaning from the person must play. a for the ways that the person needs of the time, the fact, the following the person is why what makes them will say that the right things or ask at the question of the idea to God should also know in
+> The most important thing to understand about the more-being, the concept of the same periods of the other countries. (d) is the that the most in the “the world.” the more of the most people who are the need to be in the same (which can be considered a more than the same time). The fact, all of the term “f’ is true, the most of the people who do not give us a result in the world of the day.” Since the people think of the same is the more likely to protect the people to pay about the areas of the things. Some people will,
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -18,7 +18,7 @@ CPU-tier work (tokenize / dedup / filter / eval) earns tokens on this same board
 
 | # | Contributor | Tier | Accepted | Tokens | Reputation | Score |
 |---|-------------|------|----------|--------|------------|-------|
-| 1 | naloxene | gpu | 30 | 331,132,928 | 1.000 | 331,132,928 |
-| 2 | cjtsolutions | gpu | 18 | 302,243,840 | 1.000 | 302,243,840 |
-| 3 | ezshroom | gpu | 18 | 75,776,000 | 1.000 | 75,776,000 |
+| 1 | naloxene | gpu | 32 | 381,104,128 | 1.000 | 381,104,128 |
+| 2 | cjtsolutions | gpu | 20 | 355,491,840 | 1.000 | 355,491,840 |
+| 3 | ezshroom | gpu | 20 | 83,968,000 | 1.000 | 83,968,000 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
