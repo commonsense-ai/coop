@@ -3,16 +3,16 @@
     "cjtsolutions": {
       "first_seen": 9,
       "reputation": 1.0,
-      "submissions": 10,
+      "submissions": 12,
       "tier": "gpu",
-      "tokens": 133488640
+      "tokens": 188784640
     },
     "ezshroom": {
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 10,
+      "submissions": 12,
       "tier": "gpu",
-      "tokens": 56115200
+      "tokens": 61030400
     },
     "miacx": {
       "first_seen": 12,
@@ -24,16 +24,16 @@
     "naloxene": {
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 22,
+      "submissions": 24,
       "tier": "gpu",
-      "tokens": 138334208
+      "tokens": 189124608
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the top period of the problem and the right to achieve the story and the best is the word which means that makes a computer and is given in the opportunity to learn the world, a problem that it is the right!\n-friendly is the classroom and \"I saw a new article in our ability to engage in the world and the next.\nThe student and the first and what's research, as a student health and a lot of the student learning skills and students a student and the social health-year-based life\u2014the school students for the school and the person, it takes the students",
-    "step": 21,
-    "val_loss": 6.0757
+    "sample": "The most important thing to understand about the most of a piece of a new effect, but that it must still, if the most of the problem.\nThis is more than the person may also allows us to the idea about the past, we are in a lot and the word to get the brain does, so that the condition, what will occur in a single step to the future and the right and the job, the concept that the patient can become to understand the past.\nEven though it\u2019s what we can not all the results in the environment and the way.\n\u201cYou want to know why can\u2019s why",
+    "step": 22,
+    "val_loss": 6.0741
   },
-  "step": 21,
-  "updated": "2026-08-08T02:43:43+00:00"
+  "step": 22,
+  "updated": "2026-08-08T02:59:10+00:00"
 }
