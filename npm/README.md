@@ -19,11 +19,17 @@ that it's zero-setup.
 ## Commands
 
 ```sh
-npx coop-ai start     # begin contributing (runs in the background)
-npx coop-ai status    # live progress + ETA, your rank, who else is training
-npx coop-ai logs -f   # watch the worker do its thing
-npx coop-ai stop      # submits work-in-progress, shows your impact, stops
+npx coop-ai start       # begin contributing (runs in the background)
+npx coop-ai status      # live progress + ETA, your rank, who else is training
+npx coop-ai logs -f     # watch the worker do its thing
+npx coop-ai stop        # submits work-in-progress, shows your impact, stops
+npx coop-ai run latest  # talk to the model trained so far — no account needed
 ```
+
+`run latest` downloads the current checkpoint and takes prompts, so you can hear
+what the co-op has built without training anything. `run tinystories` plays the
+finished stage-1 model, which is far more coherent than a run still in progress.
+Add `--prompt "..."` to generate once and exit.
 
 Using [Bun](https://bun.sh)? Swap `npx` for `bunx` — same commands, same
 launcher.

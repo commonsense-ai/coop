@@ -65,6 +65,28 @@ TinyStories by volunteers in six days, val loss 9.01 → 2.8. It stays usable fo
 has the weights, the model card, and a working load-and-generate snippet. The final
 stage-1 leaderboard is archived as `LEADERBOARD-stage1.md` on the ledger branch.
 
+## Try the model
+
+Talk to whatever the volunteers have trained so far — no account, no clone, no
+training:
+
+```sh
+npx coop-ai run latest     # bun: bunx coop-ai run latest
+```
+
+It downloads the current checkpoint (cached after the first time), then takes
+prompts and writes what comes next. `run tinystories` plays the finished stage-1
+model instead, which is far more coherent than a run still in progress. One-off
+and pipeable:
+
+```sh
+coop run latest --prompt "The best way to learn mathematics is"
+echo "Once upon a time" | coop run tinystories
+```
+
+`--tokens`, `--temperature`, `--top-k`, and `--device` are there when you want
+them; `--revision` pins a specific checkpoint.
+
 ## Donate compute
 
 One command if you have Node or [Bun](https://bun.sh) (it uses

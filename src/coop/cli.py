@@ -29,10 +29,11 @@ BOARD = "https://github.com/{repo}/blob/ledger/LEADERBOARD.md"
 WELCOME = """\
 coop — help train a small language model with your computer
 
-  coop start     begin contributing (runs in the background)
-  coop status    live progress, your rank, who else is training
-  coop logs -f   watch the worker do its thing
-  coop stop      stop contributing — your credit stays
+  coop start        begin contributing (runs in the background)
+  coop status       live progress, your rank, who else is training
+  coop logs -f      watch the worker do its thing
+  coop stop         stop contributing — your credit stays
+  coop run latest   talk to the model trained so far (no account needed)
 
 first time? just run `coop start` — it walks you through the one-time setup."""
 
@@ -74,11 +75,11 @@ def run_config_path() -> str:
     return read_settings().get("run_config", "config/run.yaml")
 
 
-def load_run_config(repo: str, path: str | None = None) -> dict:
+def load_run_config(repo: str, path: str | None = None, dest: str = "run.yaml") -> dict:
     HOME.mkdir(parents=True, exist_ok=True)
     path = path or run_config_path()
     try:
-        return yaml.safe_load(fetch_raw(repo, path, HOME / "run.yaml").read_text())
+        return yaml.safe_load(fetch_raw(repo, path, HOME / dest).read_text())
     except OSError as e:
         raise SystemExit(f"could not fetch the run config from github.com/{repo}: {e}") from e
 
@@ -493,6 +494,77 @@ def cmd_status(a: argparse.Namespace) -> None:
     print(f"log      {LOGFILE}")
 
 
+def run_model_from_words(words: list[str]) -> str | None:
+    """`coop run the latest model` -> "latest"; the nouns are optional filler."""
+    rest = [w for w in words if w not in ("model", "the")]
+    if len(rest) > 1:
+        raise SystemExit(f"too many arguments: {' '.join(words)}")
+    return rest[0] if rest else None
+
+
+def cmd_run(a: argparse.Namespace) -> None:
+    from coop import play
+
+    # settle the prompt before the download: a pipe with nothing in it should fail
+    # now, not after several hundred MB of checkpoint
+    prompt = a.prompt
+    if prompt is None and not sys.stdin.isatty():  # echo "Once upon a" | coop run latest
+        prompt = sys.stdin.read().strip()
+        if not prompt:
+            raise SystemExit('no prompt — try `coop run latest --prompt "Once upon a time"`')
+
+    sel = play.pick_run(load_runs(a.repo), a.model)
+    # own cache file: ~/.coop/run.yaml belongs to a worker that may be training a
+    # different run right now, and fetch_raw overwrites in place
+    cfg = load_run_config(a.repo, sel["config"], dest="run.play.yaml")
+    name = sel.get("name") or cfg["repos"]["model"].split("/")[-1]
+    print(f"loading {name} — the first run downloads the checkpoint, then it's cached")
+    try:
+        model, tok, meta, device = play.load_run(
+            a.repo, cfg, HOME, name, revision=a.revision, device=a.device
+        )
+    except Exception as e:
+        raise SystemExit(f"couldn't load {name}: {e}") from e
+
+    val = meta.get("eval", {}).get("val_loss")
+    line = f"{name} · outer step {meta['step']}"
+    line += f" · val loss {val}" if val is not None else ""
+    print(f"{line} · running on your {DEVICE_NAMES.get(device, device)}")
+
+    def emit(prompt: str) -> None:
+        for piece in play.stream(
+            model,
+            tok,
+            prompt,
+            n_tokens=a.tokens,
+            temperature=a.temperature,
+            top_k=a.top_k,
+            device=device,
+        ):
+            print(piece, end="", flush=True)
+        print()
+
+    if prompt:
+        emit(prompt)
+        return
+
+    print("\nit writes what comes next. type a prompt, or ctrl-c to leave.")
+    while True:
+        try:
+            prompt = input("\n> ").strip()
+        except (EOFError, KeyboardInterrupt):
+            print()
+            return
+        if prompt in ("exit", "quit"):
+            return
+        if not prompt:
+            continue
+        try:
+            emit(prompt)
+        except KeyboardInterrupt:  # cancels this generation, not the session
+            print("\n(stopped)")
+
+
 def cmd_logs(a: argparse.Namespace) -> None:
     if not LOGFILE.exists():
         raise SystemExit(f"no log yet at {LOGFILE} — has the worker ever started?")
@@ -527,6 +599,15 @@ def main() -> None:
         "--rounds", type=int, default=0, help="stop after N rounds (default: run until coop stop)"
     )
 
+    rn = sub.add_parser("run", help="talk to the model trained so far (no account needed)")
+    rn.add_argument("words", nargs="*", metavar="[latest|model]")
+    rn.add_argument("--prompt", default=None, help="generate once and exit; good for pipes")
+    rn.add_argument("--tokens", type=int, default=200, help="how much to generate (default 200)")
+    rn.add_argument("--temperature", type=float, default=0.8, help="higher = wilder")
+    rn.add_argument("--top-k", type=int, default=50)
+    rn.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
+    rn.add_argument("--revision", default="main", help="pin a checkpoint revision")
+
     sub.add_parser("stop", help="stop contributing")
     sub.add_parser("status", help="worker and model state")
     lg = sub.add_parser("logs", help="show what the worker is doing")
@@ -537,6 +618,9 @@ def main() -> None:
     if a.cmd == "start":
         a.model = model_from_words(a.words)
         cmd_start(a)
+    elif a.cmd == "run":
+        a.model = run_model_from_words(a.words)
+        cmd_run(a)
     elif a.cmd == "stop":
         cmd_stop(a)
     elif a.cmd == "status":
