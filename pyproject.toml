@@ -13,6 +13,7 @@ dependencies = [
     "numpy>=1.26",
     "tokenizers>=0.20",
     "datasets>=3.0",
+    "pyarrow>=15",  # shard builder seeks row groups directly; datasets ships it anyway
     "pyyaml>=6.0",
 ]
 

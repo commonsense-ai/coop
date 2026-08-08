@@ -245,6 +245,13 @@ def now_line(st: dict) -> str:
         rate = st.get("steps_per_sec") or 0
         eta = f" · ~{fmt_eta((h - i) / rate)} left" if rate else ""
         return f"training — inner step {i}/{h} · loss {st.get('loss', '?')}{eta}"
+    if phase.startswith("building your data shard") and st.get("shard_total"):
+        done, total = st.get("shard_done", 0), st["shard_total"]
+        rate = st.get("shard_per_sec") or 0
+        eta = f" · ~{fmt_eta((total - done) / rate)} left" if rate and done < total else ""
+        frac = done / total
+        stage = st.get("shard_stage", "")
+        return f"building your data shard — {stage} {bar(frac, 16)} {100 * frac:.0f}%{eta}"
     if phase == "waiting":
         step = st.get("waiting_past_step")
         which = f"outer step {step + 1}" if isinstance(step, int) else "the next outer step"
@@ -353,8 +360,8 @@ def cmd_start(a: argparse.Namespace) -> None:
     print("(switch models any time: coop stop, then coop start --choose)")
     if a.rounds:
         print(f"will stop by itself after {a.rounds} round{'s' if a.rounds > 1 else ''}")
-    print("the first round downloads the model and builds your data shard — that one-time")
-    print("prep can take a while for big datasets; `coop status` always shows the phase")
+    print("the first round downloads the model and builds your data shard — `coop status`")
+    print("shows a progress bar for both, so you can see the one-time prep move")
     print("  coop status    how it's going")
     print("  coop logs -f   watch it work")
     print("  coop stop      stop contributing")

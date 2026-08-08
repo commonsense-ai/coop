@@ -198,6 +198,25 @@ def test_now_line_waiting_names_the_next_step():
     assert "outer step 13" in cli.now_line({"phase": "waiting", "waiting_past_step": 12})
 
 
+def test_now_line_shows_shard_build_progress():
+    st = {
+        "phase": "building your data shard (one-time)",
+        "shard_stage": "downloading docs",
+        "shard_done": 5000,
+        "shard_total": 20000,
+        "shard_per_sec": 50.0,
+    }
+    line = cli.now_line(st)
+    assert line.startswith("building your data shard — downloading docs ")
+    assert "25%" in line and "~5m 00s left" in line
+
+
+def test_now_line_shard_build_survives_a_missing_total():
+    """Status written before the first progress report: say the phase, promise nothing."""
+    st = {"phase": "building your data shard (one-time)"}
+    assert cli.now_line(st) == "building your data shard (one-time)"
+
+
 def test_now_line_passes_other_phases_through():
     assert cli.now_line({"phase": "downloading checkpoint"}) == "downloading checkpoint"
 
