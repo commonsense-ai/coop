@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 120832000
+        "gpu": 125747200
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 69,
+      "submissions": 71,
       "tier": "gpu",
-      "tokens": 221593600
+      "tokens": 226508800
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about it and its nature has no decision to come in a way and say it has an enormous impact on what happened at first.\nWhat Is The End of Work\nIt allows us to create a sense of what we call, or what we call the most effective rules, that we can understand and see the basics and attitudes of knowledge or behavior in our future.\nWhat Does the Work Work\nThis is a time when I hear it. The next day I think it should contain a complete, but it doesn't work. Many of it is a good idea to understand it here the ways it takes",
-    "step": 53,
-    "val_loss": 5.1052
+    "sample": "The most important thing to understand about these questions.\n- Why do you find your thoughts? Why do you feel a little bit of it?\n- A wide range of questions that involve a number of possible answers and answers with one answer so you have the questions you know about the article and answer questions and answers.\n- Why you want the question? What are you doing?\n- Which are you going to do with for some questions?\n- What are you talking to someone about people and adults?\n- You don\u2019t think about someone what you do about. What are you asking?\n- How are you",
+    "step": 54,
+    "val_loss": 5.0988
   },
-  "step": 53,
-  "updated": "2026-08-08T09:28:43+00:00"
+  "step": 54,
+  "updated": "2026-08-08T09:43:49+00:00"
 }
