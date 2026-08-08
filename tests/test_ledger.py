@@ -64,3 +64,12 @@ def test_render_leaderboard_lists_archived_runs():
     assert "## Past runs" in board
     assert "[stage1 — final board](LEADERBOARD-stage1.md)" in board
     assert "## Past runs" not in render_leaderboard(led)
+
+
+def test_board_tells_old_installs_how_to_get_the_update_command():
+    # coop cannot announce itself to a version that shipped without `coop update`;
+    # the board the aggregator rewrites every tick is the one channel that reaches them
+    board = render_leaderboard(empty_ledger())
+    assert "before 0.3.0" in board
+    assert "uv tool install --force git+https://github.com/commonsense-ai/coop" in board
+    assert board.index("Running coop from before") < board.index("Score = tokens contributed")
