@@ -7,6 +7,11 @@ on:
     tags: ["v*"]
 
 jobs:
+  # The coop-ai PyPI project is still in review. Uploading to a project that does
+  # not exist yet 404s and takes the whole release red with it, so publishing stays
+  # off behind a switch: set the repo variable PUBLISH_PYPI to true once it clears
+  # (`gh variable set PUBLISH_PYPI --body true`). The build still runs, so a tag
+  # that can't produce a valid sdist/wheel fails here rather than at publish time.
   pypi:
     runs-on: ubuntu-latest
     environment: pypi
@@ -16,7 +21,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
       - run: uv build
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - if: ${{ vars.PUBLISH_PYPI == 'true' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+      - if: ${{ vars.PUBLISH_PYPI != 'true' }}
+        run: echo "::notice title=PyPI publish held::coop-ai is still in review; set PUBLISH_PYPI=true to publish"
 
   npm:
     runs-on: ubuntu-latest
@@ -30,15 +38,32 @@ jobs:
           node-version: 22
           registry-url: "https://registry.npmjs.org"
       - run: npm install -g npm@latest # trusted publishing needs a recent npm
-      # idempotent: the first release was published manually, and re-tagging
-      # must not turn the run red over an already-live version
-      - run: |
+      # Publishing needs a credential this workflow cannot conjure: either a trusted
+      # publisher configured for coop-ai on npmjs.com, or an NPM_TOKEN secret. With
+      # neither, npm answers a bare 404 on PUT (it hides 403s) and the run goes red
+      # over something no workflow change can fix — v0.3.0 died exactly there. So a
+      # credential-less failure warns and moves on; with a token present, a failure
+      # is real and stays red.
+      - env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
           v=$(node -p "require('./package.json').version")
+          # idempotent: re-tagging must not go red over an already-live version
           if npm view "coop-ai@$v" version >/dev/null 2>&1; then
             echo "coop-ai@$v already on npm — skipping"
-          else
-            npm publish --access public
+            exit 0
           fi
+          if npm publish --access public; then
+            exit 0
+          fi
+          if [ -n "${NODE_AUTH_TOKEN:-}" ]; then
+            echo "::error title=npm publish failed::a credential was present, so this is a real failure"
+            exit 1
+          fi
+          echo "::warning title=npm launcher not published::coop-ai@$v has no publish credential." \
+            "Configure a trusted publisher (npmjs.com -> coop-ai -> Settings -> Trusted Publisher ->" \
+            "GitHub Actions, commonsense-ai/coop, release.yml) or add an NPM_TOKEN secret." \
+            "Volunteers keep resolving the Python CLI from git, but the launcher stub stays stale."
         working-directory: npm
 
   # The update channel. Volunteers poll this one file: `coop status` shows a new
