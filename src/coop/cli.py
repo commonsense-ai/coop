@@ -240,6 +240,13 @@ def parse_board(md: str) -> list[dict]:
 
 def now_line(st: dict) -> str:
     phase = st.get("phase", "")
+    if st.get("failing"):
+        # the honest version of "running": the worker is up and getting nowhere
+        n = st["failing"]
+        err = st.get("last_error", "")
+        return f"{n} round{'s' if n > 1 else ''} in a row failed — retrying" + (
+            f"\n         last error: {err}" if err else ""
+        )
     if phase == "training" and st.get("h_steps"):
         i, h = st.get("inner_step", 0), st["h_steps"]
         rate = st.get("steps_per_sec") or 0
@@ -270,8 +277,7 @@ def last_activity(path: Path) -> str:
 
 def pending_rounds() -> int:
     """Finished rounds an outage left parked on disk; the worker resends them itself."""
-    d = HOME / "out" / submit.PENDING
-    return len(list(d.glob("*.json"))) if d.is_dir() else 0
+    return submit.pending_count(HOME / "out")
 
 
 def ensure_token(explicit: str | None) -> str:
@@ -468,7 +474,9 @@ def cmd_status(a: argparse.Namespace) -> None:
         line = now_line(st)
         if line:
             age = time.time() - st.get("updated_at", time.time())
-            stale = f" (no update for {fmt_eta(age)} — check `coop logs`)" if age > 300 else ""
+            # a worker that says it is failing has already explained the silence
+            quiet = age > 300 and not st.get("failing")
+            stale = f" (no update for {fmt_eta(age)} — check `coop logs`)" if quiet else ""
             print(f"now      {line}{stale}")
     else:
         print("worker   not running — `coop start` to contribute")
@@ -491,7 +499,12 @@ def cmd_status(a: argparse.Namespace) -> None:
         print(f"session  {st['rounds_done']} rounds · {toks:,} tokens trained {when}")
     n = pending_rounds()
     if n:
-        how = "retrying every round" if running else "they go out on the next `coop start`"
+        if not running:
+            how = "they go out on the next `coop start`"
+        elif n >= submit.PENDING_MAX:
+            how = "training is paused until they send"
+        else:
+            how = "retrying every round"
         print(f"pending  {n} finished round(s) saved locally after a failed upload — {how}")
 
     try:

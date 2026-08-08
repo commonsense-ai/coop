@@ -11,6 +11,7 @@ from coop.submit import (
     dequantize_delta,
     dequantize_delta_int4,
     drain,
+    pending_count,
     quantize_delta,
     quantize_delta_int4,
     submission_paths,
@@ -213,3 +214,42 @@ def test_accumulator_keeps_a_parked_payload_from_an_older_step(tmp_path, monkeyp
     submit_accumulated(QCFG, acc, d, {"start_step": 6, "tokens": 1000, "username": "a"}, tmp_path)
     assert acc.pending is None
     assert len(_parked(tmp_path)) == 1  # step 5's work still queued, not discarded
+
+
+SCFG = {"repos": {"dataset": "x/inbox", "model": "x/m"}, "staleness": {"tau_max": 8}}
+
+
+def _park(tmp_path, step):
+    d = tmp_path / PENDING
+    d.mkdir(exist_ok=True)
+    (d / f"step{step}_aa.json").write_text(json.dumps({"username": "a", "start_step": step}))
+    (d / f"step{step}_aa.safetensors").write_bytes(b"w")
+
+
+def test_drain_drops_a_parked_round_the_run_has_already_left_behind(tmp_path, monkeypatch):
+    """A delta is pinned to its start_step: past tau_max the aggregator rejects it on
+    sight, so uploading 73MB of it only costs the volunteer bandwidth."""
+    _park(tmp_path, 5)  # 20 - 5 >= 8: dead
+    _park(tmp_path, 15)  # 20 - 15 < 8: still worth sending
+    monkeypatch.setattr("coop.submit.hubio.get_step", lambda repo: 20)
+    sent = []
+    monkeypatch.setattr(
+        "coop.submit.hubio.open_pr", lambda repo, ops, msg: sent.append(msg) or FakeInfo()
+    )
+    assert drain(SCFG, tmp_path) == 1
+    assert "step 15" in sent[0] and len(sent) == 1
+    assert _parked(tmp_path) == []  # the stale one is gone too, just never sent
+
+
+def test_drain_sends_everything_when_the_step_is_unknown(tmp_path, monkeypatch):
+    """Offline is not evidence of staleness: never discard a volunteer's work on a guess."""
+    _park(tmp_path, 5)
+    monkeypatch.setattr("coop.submit.hubio.get_step", _offline)
+    monkeypatch.setattr("coop.submit.hubio.open_pr", lambda repo, ops, msg: FakeInfo())
+    assert drain(SCFG, tmp_path) == 1
+
+
+def test_pending_count_is_zero_before_anything_parks(tmp_path):
+    assert pending_count(tmp_path) == 0
+    _park(tmp_path, 5)
+    assert pending_count(tmp_path) == 1

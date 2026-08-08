@@ -124,3 +124,45 @@ def test_restart_worker_reexecs_this_worker_and_carries_the_streak(monkeypatch, 
     assert seen["argv"][1:] == ["-m", "coop.join", "--pause", "60"]
     assert os.environ[join.RESTARTS_ENV] == "2"  # the child is told it is a restart
     assert "restarting" in read_status(path)["phase"]
+
+
+def test_next_pause_backs_off_to_a_cap():
+    pause = 60
+    seen = []
+    for _ in range(8):
+        pause = join.next_pause(pause, 60)
+        seen.append(pause)
+    assert seen[:3] == [120, 240, 480]
+    assert seen[-1] == join.PAUSE_MAX  # an outage lasts hours; stop polling every minute
+    assert join.next_pause(join.PAUSE_MAX, 60) == join.PAUSE_MAX
+
+
+def _recover_args(tmp_path, status):
+    return ("o/r", tmp_path, "cfg", "config/run.yaml", status, join.FAILS_BEFORE_RESTART)
+
+
+def test_recover_looks_for_a_fix_only_once_restarts_are_spent(monkeypatch, tmp_path):
+    """The gap this closes: check_for_update lives on the path a broken worker never
+    reaches, so the machines that need a release are the ones that never see it."""
+    monkeypatch.setattr(join, "config_changed", lambda *a, **k: False)
+    monkeypatch.setattr(join, "restart_worker", lambda *a: (_ for _ in ()).throw(SystemExit))
+    looked = []
+    monkeypatch.setattr(join, "check_for_update", lambda *a, **k: looked.append(k))
+
+    monkeypatch.setenv(join.RESTARTS_ENV, "0")  # budget left: restart before repairing
+    with pytest.raises(SystemExit):
+        join.recover(*_recover_args(tmp_path, StatusFile(tmp_path / "s.json")))
+    assert looked == []
+
+    monkeypatch.setenv(join.RESTARTS_ENV, str(join.MAX_RESTARTS))  # spent, nothing landed
+    join.recover(*_recover_args(tmp_path, StatusFile(tmp_path / "s.json")))
+    assert looked == [{"repair": True}]
+
+
+def test_recover_leaves_a_single_blip_alone(monkeypatch, tmp_path):
+    monkeypatch.setattr(
+        join, "restart_worker", lambda *a: pytest.fail("one failure is not a wedge")
+    )
+    monkeypatch.setattr(join, "check_for_update", lambda *a, **k: pytest.fail("too eager"))
+    monkeypatch.setattr(join, "config_changed", lambda *a, **k: pytest.fail("too eager"))
+    join.recover("o/r", tmp_path, "cfg", "config/run.yaml", StatusFile(tmp_path / "s.json"), 1)

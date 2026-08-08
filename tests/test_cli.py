@@ -371,3 +371,12 @@ def test_status_shows_a_waiting_update(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(cli, "fetch_raw", lambda *a, **k: (_ for _ in ()).throw(OSError("offline")))
     cli.cmd_status(argparse.Namespace(repo="o/r"))
     assert "update   coop 99.0.0 is out" in capsys.readouterr().out
+
+
+def test_now_line_says_a_worker_is_failing_instead_of_pretending():
+    """`running` plus a frozen phase reads healthy; an AFK volunteer needs the truth."""
+    line = cli.now_line({"phase": "round failed — retrying", "failing": 3, "last_error": "403"})
+    assert "3 rounds in a row failed" in line
+    assert "403" in line
+    one = cli.now_line({"phase": "round failed — retrying", "failing": 1})
+    assert "1 round in a row failed" in one

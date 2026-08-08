@@ -38,6 +38,12 @@ job aggregates them into outer steps on a public HF model repo.
 - `release.json` on `ledger` is the update channel volunteers poll; it is compared
   against `__version__`, so a tag that forgets the version bump tells every volunteer
   to update forever. Workers only ever restart between rounds, never mid-round.
+- Auto-update is off by default and every path respects that, with one exception: a
+  worker that cannot finish a single round (failures, restarts spent, nothing landed)
+  checks the channel and takes a fix anyway. It is already not doing what the volunteer
+  asked for. Do not widen this to workers that are merely slow or unlucky.
+- A pseudo-gradient is only worth sending for `staleness.tau_max` outer steps. Anything
+  parked on disk past that is discarded, not uploaded — the aggregator would reject it.
 - Never pin torch to the CPU index in `[tool.uv.sources]` unqualified: uv applies a
   package's sources to `uvx`/`pip install git+...`, so the pin follows the package onto
   volunteers' machines and strands GPU donors on CPU. CI opts in with `--extra cpu`.

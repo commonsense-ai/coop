@@ -73,6 +73,13 @@ NOTED: set[str] = set()  # announced by this process already; `coop logs` is not
 RESTARTS_ENV = "COOP_RESTARTS"  # survives the exec; cleared by the first round that lands
 FAILS_BEFORE_RESTART = 3
 MAX_RESTARTS = 3
+PAUSE_MAX = 900  # a worker nothing is landing for should idle cheaply, not poll every minute
+
+
+def next_pause(pause: int, base: int) -> int:
+    """Back off between failed rounds. An outage lasts hours and a volunteer is asleep:
+    retrying every minute for all of it buys nothing the first few tries didn't."""
+    return min(max(pause, base) * 2, PAUSE_MAX)
 
 
 def restarts_so_far() -> int:
@@ -90,38 +97,77 @@ def should_restart(fails: int) -> bool:
     return fails >= FAILS_BEFORE_RESTART and restarts_so_far() < MAX_RESTARTS
 
 
+def reexec() -> None:
+    """Same pid, so `coop stop` still reaches the worker and the pidfile stays valid."""
+    os.execv(sys.executable, [sys.executable, "-m", "coop.join", *sys.argv[1:]])
+
+
 def restart_worker(status: StatusFile, fails: int) -> None:
     """Re-exec between rounds, into the same version. Some failures outlive the round
     that caused them — a hub client that caches its first error replays it for every
     later call, failing rounds that never touch what broke — and only a new process
-    clears that. Same pid, so `coop stop` still reaches the worker, and rounds parked
-    on disk go out on the way back up."""
+    clears that. Rounds parked on disk go out on the way back up."""
     n = restarts_so_far() + 1
     log.warning(
         "%d rounds failed in a row — restarting the worker (%d of %d)", fails, n, MAX_RESTARTS
     )
     status.update(phase="restarting after repeated failures")
     os.environ[RESTARTS_ENV] = str(n)
-    os.execv(sys.executable, [sys.executable, "-m", "coop.join", *sys.argv[1:]])
+    reexec()
 
 
-def check_for_update(repo: str, work: Path, status: StatusFile) -> None:
+def adopt_new_run(status: StatusFile) -> None:
+    """A new run (or a retuned config) shipped: re-exec picks up everything — new model,
+    tokenizer, shard, credit rules — in one go."""
+    log.info("coordinator config changed — restarting to adopt the new run")
+    status.update(phase="new run detected — restarting to join it")
+    reexec()
+
+
+def recover(
+    repo: str, work: Path, cfg_text: str, run_config: str, status: StatusFile, fails: int
+) -> None:
+    """What a worker owes its volunteer once rounds stop landing: restart out of a process
+    the first failure poisoned, and — when restarts are spent and still nothing lands — go
+    looking for a fix. That last part is the whole point: the healthy path checks the
+    channel after a round completes, which a worker that never completes one never reaches,
+    so the machines most in need of a release are the only ones that never see it."""
+    if should_restart(fails):
+        restart_worker(status, fails)  # does not return
+    if fails < FAILS_BEFORE_RESTART:
+        return
+    if config_changed(repo, work, cfg_text, path=run_config):
+        adopt_new_run(status)
+    check_for_update(repo, work, status, repair=True)
+
+
+def check_for_update(repo: str, work: Path, status: StatusFile, repair: bool = False) -> None:
     """Between rounds only: a restart here can never cost a volunteer trained work,
-    and the same is not true a single step earlier."""
+    and the same is not true a single step earlier.
+
+    `repair` is the stuck worker. Auto-update is off by default because nothing on a
+    volunteer's machine should change unless they ask — but a worker that cannot finish
+    a single round is already not doing the one thing they did ask for, and a fix on the
+    channel is the only thing left that can change that. Still one attempt per version,
+    and still never someone's git checkout."""
     manifest = update.available(repo, work)
     if not manifest:
         return
     version = manifest.get("version", "")
-    auto = update.auto_enabled(work)
+    auto = update.auto_enabled(work) or repair
     status.update(update_available=version)
     if not auto or update.attempted(work, version):
         if not auto and version not in NOTED:
             NOTED.add(version)
             log.info("%s", update.notice(manifest))
         return
-    log.info("coop %s is out — updating and restarting into it", version)
+    if repair:
+        log.warning("nothing is landing on this worker — taking coop %s to try to fix it", version)
+    else:
+        log.info("coop %s is out — updating and restarting into it", version)
     status.update(phase=f"updating to coop {version}")
     update.mark_attempted(work, version)  # before the attempt: a bad release can't loop
+    os.environ.pop(RESTARTS_ENV, None)  # different code deserves its own restart budget
     why = update.restart_into_update(repo, sys.argv[1:])
     log.warning("auto-update didn't take (%s) — carrying on with the version you have", why)
     status.update(phase="auto-update failed — still training")
@@ -239,11 +285,34 @@ def main():
     acc = submit.StepAccumulator() if cfg["inner"].get("accumulate_rounds") else None
     out = work / "out"
     rnd, h_next, tokens_session, fails = 0, None, 0, 0
+    pause = a.pause
     while not stop.is_set():
         try:
             # rounds an outage parked (this process or an earlier one) go out first; the
             # accumulator's own parked copy is skipped because its next upload resends it
             submit.drain(cfg, out, skip=acc.pending if acc else None)
+            # a.rounds == 1 is someone watching a foreground round: let it run and say why
+            queued = submit.pending_count(out)
+            if queued >= submit.PENDING_MAX and a.rounds != 1:
+                # uploading is what's broken, and a delta is only worth anything for
+                # tau_max steps: another round would push an older one off the queue to
+                # expire in its place. Wait for the backlog to move instead of burning
+                # a volunteer's GPU on work that cannot be delivered.
+                fails += 1
+                pause = next_pause(pause, a.pause)
+                log.warning(
+                    "%d finished rounds still waiting to upload — pausing training for %ds",
+                    queued,
+                    pause,
+                )
+                status.update(
+                    phase="waiting to send finished rounds — training paused",
+                    failing=fails,
+                    last_error=f"{queued} finished rounds could not be uploaded",
+                )
+                recover(a.repo, work, cfg_text, a.run_config, status, fails)
+                stop.wait(pause)
+                continue
             _, meta_path = run_worker(
                 cfg,
                 str(shard),
@@ -259,19 +328,15 @@ def main():
             if meta_path is None:  # stopped before the round trained anything
                 break
             rnd += 1
-            fails = 0
+            fails, pause = 0, a.pause
             os.environ.pop(RESTARTS_ENV, None)  # this process works: restore its budget
             meta = json.loads(meta_path.read_text())
             tokens_session += meta["tokens"]
-            status.update(rounds_done=rnd, tokens_session=tokens_session)
+            status.update(rounds_done=rnd, tokens_session=tokens_session, failing=None)
             if a.rounds and rnd >= a.rounds:
                 break
             if config_changed(a.repo, work, cfg_text, path=a.run_config):
-                # a new run (or retuned config) shipped: re-exec picks up everything —
-                # new model, tokenizer, shard, credit rules — with the same pid
-                log.info("coordinator config changed — restarting to adopt the new run")
-                status.update(phase="new run detected — restarting to join it")
-                os.execv(sys.executable, [sys.executable, "-m", "coop.join", *sys.argv[1:]])
+                adopt_new_run(status)
             check_for_update(a.repo, work, status)
             # back-to-back rounds; see trainer.main for why waiting is the only waste
             h_next = cfg["inner"].get("h_max", 500)
@@ -286,10 +351,13 @@ def main():
                 continue
             # unattended volunteers: transient network/HF errors retry, never crash
             fails += 1
-            log.warning("round failed (%s); retrying after pause", e)
-            if should_restart(fails):
-                restart_worker(status, fails)  # does not return
-            time.sleep(a.pause)
+            pause = next_pause(pause, a.pause)
+            log.warning("round failed (%s); retrying in %ds", e, pause)
+            # nobody is watching a background worker: `coop status` has to say this
+            # itself, or a volunteer sees "running" over a machine doing nothing
+            status.update(phase="round failed — retrying", failing=fails, last_error=str(e)[:300])
+            recover(a.repo, work, cfg_text, a.run_config, status, fails)
+            stop.wait(pause)
     status.update(phase="stopped")
     log.info("worker stopped")
 

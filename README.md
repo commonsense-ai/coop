@@ -137,6 +137,12 @@ mid-round, so a restart can't cost you trained work — and picks its training b
 where it left off. Off by default: nothing on your machine changes unless you ask.
 A clone is left alone either way; there, `git pull` is the update.
 
+One exception, and it only fires when your worker is already broken. If it cannot
+finish a single round — several failures in a row, a restart, still nothing — it will
+take a newer version if one exists, even with auto-update off. You asked it to
+contribute, it isn't contributing, and a fix on the channel is the only thing left
+that can change that. `coop status` says so, and `coop logs` shows the attempt.
+
 Self-updating only works from 0.3.0 on, so an install older than that can't reach it:
 
 ```
