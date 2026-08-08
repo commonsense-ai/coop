@@ -18,7 +18,7 @@ import torch
 
 from coop import load_config, setup_logging
 from coop.data import iter_batches
-from coop.device import describe, pick_device
+from coop.device import describe, pick_device, resolve, step_sync, unusable
 from coop.model import GPT, GPTConfig, count_params
 from coop.trainer import autocast_ctx, clip_grads, make_adamw
 
@@ -54,6 +54,7 @@ def run(cfg: dict, device: str, steps: int, warmup: int, precision: str, compile
     opt = make_adamw(model.parameters(), inner)
     params = list(model.parameters())
     amp = lambda: autocast_ctx(device, precision)  # noqa: E731
+    tick = step_sync(device)
 
     with tempfile.TemporaryDirectory() as tmp:
         shard = synthetic_shard(Path(tmp) / "bench.bin", cfg["model"]["vocab_size"])
@@ -87,6 +88,7 @@ def run(cfg: dict, device: str, steps: int, warmup: int, precision: str, compile
             clip_grads(params, inner["grad_clip"], device)
             t = mark("clip", t)
             opt.step()
+            tick()
             mark("optimizer", t)
         sync(device)
         wall = time.perf_counter() - t_all
@@ -99,7 +101,7 @@ def main():
     setup_logging()
     ap = argparse.ArgumentParser(description="measure this machine's training speed")
     ap.add_argument("--config", default="config/run.yaml")
-    ap.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
+    ap.add_argument("--device", default=None, help="cuda | mps | tpu | cpu (default: auto)")
     ap.add_argument("--steps", type=int, default=20)
     ap.add_argument("--warmup", type=int, default=3, help="steps to discard before timing")
     ap.add_argument("--precision", default="auto", choices=["auto", "bf16", "fp32"])
@@ -112,7 +114,9 @@ def main():
     )
     a = ap.parse_args()
 
-    device = a.device or pick_device()
+    device = resolve(a.device) if a.device else pick_device()
+    if why := unusable(device):
+        raise SystemExit(why)
     cfg = load_config(a.config)
     if a.batch_size:
         cfg["inner"]["batch_size"] = a.batch_size

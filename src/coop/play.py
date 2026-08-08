@@ -36,9 +36,10 @@ def pick_run(runs: list[dict], name: str | None) -> dict:
 
 def load_run(repo: str, cfg: dict, work: Path, name: str, revision: str = "main", device=None):
     """Weights from HF, tokenizer from the code repo. Both public: no token needed."""
-    from coop.join import fetch_raw, pick_device
+    from coop.device import inference_device
+    from coop.join import fetch_raw
 
-    device = device or pick_device()
+    device = inference_device(device)
     model = GPT.from_config(GPTConfig(**cfg["model"]))
     state, meta = hubio.download_checkpoint(cfg["repos"]["model"], revision)
     load_canonical_state(model, state)
