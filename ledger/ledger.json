@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 149504000
+        "gpu": 156467200
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 80,
+      "submissions": 82,
       "tier": "gpu",
-      "tokens": 250265600
+      "tokens": 257228800
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the future of the actual idea and its implications. The ability to learn to help you from your students and will ensure the safety and safety and safety and security from them.\nYou can find the best way to find out when you are finished, and you can get a good work to help you achieve your child\u2019s needs.\nCalcially, there are a few tips about healthy living a child and lifestyle.\nYou can find a list of tips on the child and parent.\n- Children are a good way to ensure their physical, physical and emotional development.\n- Children are the right",
-    "step": 59,
-    "val_loss": 5.0941
+    "sample": "The most important thing to understand about these issues and the role of others. It seems that he would be able to persuade others and others to come up with a means of a very good, and he should learn from, and he must perform it again; and he must take a step further; he must decide His own and the power of his own.\nWhat does the role of an organization of money?\nMost people are willing to listen to the way; and others who are willing to defend it. The role of a given society is also a matter of it. This means that the government would take into consideration the government and",
+    "step": 60,
+    "val_loss": 5.1052
   },
-  "step": 59,
-  "updated": "2026-08-08T10:43:39+00:00"
+  "step": 60,
+  "updated": "2026-08-08T10:58:59+00:00"
 }
