@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 121651200,
+        "apple-gpu": 138035200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 152,
+      "submissions": 154,
       "tier": "gpu",
-      "tokens": 460812288
+      "tokens": 477196288
     },
     "miacx": {
       "first_seen": 12,
@@ -31,20 +31,20 @@
     },
     "naloxene": {
       "devices": {
-        "nvidia-gpu": 499302400
+        "nvidia-gpu": 525926400
       },
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 59,
+      "submissions": 61,
       "tier": "gpu",
-      "tokens": 1000828928
+      "tokens": 1027452928
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the benefits of various tools:\n- What is the difference between good and bad but good? Are everything that seems to fit? Are there any differences between good and bad and bad? Are there anything that seems to happen in the way that your mind does not feel like that? Can you agree on what do you want? Are you looking into the ways that I can understand them? Are there any differences between bad and bad? Are they the elements that seem to represent bad? Are there all these things? Are there any differences between bad and bad? The fact that they should be chosen is that",
-    "step": 100,
-    "val_loss": 4.6453
+    "sample": "The most important thing to understand about something that happens once they start taking an action with a friend to identify and compare and explain what it is to teach.\nThe main idea behind how this transition becomes clear-looking is that it helps to understand the value of the problem in the context of that matter within the context of the problem itself. It helps to explain this, though in reality, we know the importance of being in the context of the problem itself. Whereas it helps us explain what the response moves into the problem as well as what we expect in the context of the problem when it becomes an immediate experience into the problem. Then",
+    "step": 101,
+    "val_loss": 4.6385
   },
-  "step": 100,
-  "updated": "2026-08-08T18:54:33+00:00"
+  "step": 101,
+  "updated": "2026-08-08T19:28:40+00:00"
 }
