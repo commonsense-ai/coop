@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **44** — updated 2026-08-08T07:42:54+00:00.
+Outer step **45** — updated 2026-08-08T07:45:36+00:00.
 
-Val loss at step 44: **5.2378** — sample:
+Val loss at step 45: **5.2125** — sample:
 
-> The most important thing to understand about it. If you think, you know anything different from, in the UK, you cannot find it a great idea. However, you might want to find out how you want to speak and to talk without talking about it: You need to know something you might have about it. A more difficult question to use to read and download out you’ll choose to learn how to write in the comments and answer to questions about answers, and answer questions. - How do you know or not tell us about your topic? - What you want to know on the subject of the
+> The most important thing to understand about the basics of a successful life. The question of the material that works together to exist is that there is no evidence that we have to say the truth of something else in things. The theory of this is that there is the difference between the situation we are as far as the things we work as, it, how we are in our lives and our lives. That is what we have, of what we expect with the difference between us and we are in this topic: it is what we believe is, the idea that what we have been doing, and it is what we feel. So
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -19,7 +19,7 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 
 | # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
 |---|-------------|----------|----------|--------|------------|-------|
-| 1 | naloxene | nvidia-gpu | 50 | 776,777,728 | 1.000 | 776,777,728 |
+| 1 | naloxene | nvidia-gpu | 52 | 780,873,728 | 1.000 | 780,873,728 |
 | 2 | cjtsolutions | gpu | 20 | 355,491,840 | 1.000 | 355,491,840 |
 | 3 | ezshroom | gpu | 54 | 173,670,400 | 1.000 | 173,670,400 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
