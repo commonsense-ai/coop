@@ -5,6 +5,7 @@ import numpy as np
 import torch
 from safetensors.torch import save_file
 
+from coop import trend
 from coop.aggregate import _flatten, run_tick
 from coop.data import train_tokenizer
 from coop.model import GPT, GPTConfig, canonical_state
@@ -207,6 +208,56 @@ def test_tick_runs_eval_when_configured(tmp_path):
     assert isinstance(meta["eval"]["sample"], str) and meta["eval"]["sample"]
     board = (tmp_path / "LEADERBOARD.md").read_text()
     assert f"Val loss at step 6: **{meta['eval']['val_loss']}**" in board
+
+    # the series is what answers "is it going down", so every eval leaves a point on it
+    hist = trend.load(tmp_path / "ledger" / trend.HISTORY)
+    assert len(hist) == 1
+    assert hist[0] == {
+        "at": hist[0]["at"],
+        "step": 6,
+        "val_loss": meta["eval"]["val_loss"],
+        "tokens": 1000,  # alice's credited tokens, the x axis for the slope
+        "contributors": 1,
+        "spec": trend.spec(cfg),
+    }
+
+
+def test_history_accumulates_across_ticks_and_reports_the_trend(tmp_path):
+    """Each tick appends one point, and the board reads the direction off the series
+    rather than off the single latest number."""
+    torch.manual_seed(0)
+    cfg = {
+        **CFG,
+        "model": {**CFG["model"], "vocab_size": 512},
+        "data": {"tokenizer": str(tmp_path / "tok.json")},
+        "eval": {"val_file": "val.bin", "batches": 2, "batch_size": 2, "sample_tokens": 4},
+    }
+    corpus = tmp_path / "c.txt"
+    corpus.write_text("once upon a time there was a robot. " * 50)
+    train_tokenizer([str(corpus)], 512, str(tmp_path / "tok.json"))
+    val = tmp_path / "val.bin"
+    np.random.default_rng(0).integers(0, 512, size=500).astype(np.uint16).tofile(val)
+
+    state = canonical_state(GPT.from_config(GPTConfig(**cfg["model"])))
+    for i in range(5):
+        delta = {k: 0.005 * torch.randn_like(v) for k, v in state.items()}
+        pr_files = {1: write_submission(tmp_path, f"alice_{i}", delta, sub_meta("alice", 5 + i))}
+        hub = FakeHub(state, {"step": 5 + i}, pr_files)
+        hub.files["val.bin"] = str(val)
+        summary = run_tick(cfg, hub=hub, repo_root=str(tmp_path))
+        state = hub.uploaded[0]  # next tick starts from the checkpoint this one wrote
+
+    hist = trend.load(tmp_path / "ledger" / trend.HISTORY)
+    assert [e["step"] for e in hist] == [6, 7, 8, 9, 10]
+    assert [e["tokens"] for e in hist] == [1000, 2000, 3000, 4000, 5000]  # cumulative
+    assert summary["trend"] in ("down", "up", "flat")
+    assert summary["val_loss"] == hist[-1]["val_loss"]
+
+    board = (tmp_path / "LEADERBOARD.md").read_text()
+    s = trend.summarize(hist, trend.spec(cfg))
+    assert trend.describe(s) in board
+    assert s["spark"] in board  # loss against tokens, five points in
+    assert "loss against tokens" in board
 
 
 def test_probation_downweights_unproven_identities(tmp_path):

@@ -37,6 +37,11 @@ job aggregates them into outer steps on a public HF model repo.
   approved PR (repo ruleset), so workflows must never push to `main`.
 - GitHub blocks files > 100 MB; large binaries go to HF only.
 - `config/run.yaml` is the single source of run configuration.
+- The val-loss series (`ledger/history.jsonl`) is append-only, one point per outer step
+  that actually landed, and every point carries the eval spec that produced it. Trend
+  math compares only points sharing the current spec, so widening the eval starts a new
+  segment instead of faking a drop no training caused. Eval params come from
+  `trend.eval_params` at both the call site and the fingerprint — never inline defaults.
 - `release.json` on `ledger` is the update channel volunteers poll; it is compared
   against `__version__`, so a tag that forgets the version bump tells every volunteer
   to update forever. Workers only ever restart between rounds, never mid-round.

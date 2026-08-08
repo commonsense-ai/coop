@@ -19,6 +19,8 @@ import shutil
 import sys
 import threading
 
+from coop.trend import describe, fmt_tokens, headline
+
 SIMPLE, ADVANCED = "simple", "advanced"
 LEAVE, STOP, START = "leave", "stop", "start"
 
@@ -53,14 +55,6 @@ def fmt_eta(secs: float) -> str:
     if s < 5400:
         return f"{s // 60}m {s % 60:02d}s"
     return f"{s // 3600}h {s % 3600 // 60:02d}m"
-
-
-def fmt_tokens(n: int) -> str:
-    """Bars are read at a glance; 37.2M lands and 37,224,448 does not."""
-    for scale, suffix in ((1e9, "B"), (1e6, "M"), (1e3, "K")):
-        if n >= scale:
-            return f"{n / scale:.1f}{suffix}"
-    return str(int(n))
 
 
 def phase_progress(st: dict) -> tuple[float | None, str, str]:
@@ -147,6 +141,9 @@ def simple_rows(ctx: dict) -> list[str]:
         if mine:
             where = f"rank {ctx['rank']} of {ctx['of']}" if ctx.get("rank") else "credited to you"
             rows.append(row("your share", mine / total, f"{where} · {mine:,} tokens"))
+    if ctx.get("trend"):
+        # No bar: loss has no finish line to fill toward, only a direction to report.
+        rows.append(f"{'':<{LABEL}} {headline(ctx['trend'])}")
 
     done, toks = st.get("rounds_done", 0), st.get("tokens_session", 0)
     if done or toks:
@@ -206,6 +203,8 @@ def advanced_rows(ctx: dict) -> list[str]:
         step = ctx.get("outer_step")
         where = f" @ outer step {step}" if step is not None else " (couldn't reach huggingface.co)"
         rows.append(f"model    {ctx['model_repo']}{where}" + (f" (val loss {val})" if val else ""))
+    if ctx.get("trend"):
+        rows.append(f"loss     {describe(ctx['trend'])}")
     if ctx.get("rank"):
         rows.append(
             f"you      {ctx.get('user')} — {ctx.get('my_tokens', 0):,} tokens credited "

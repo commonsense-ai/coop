@@ -17,7 +17,7 @@ from pathlib import Path
 
 import yaml
 
-from coop import __version__, hubio, progress, settings, submit, update
+from coop import __version__, hubio, progress, settings, submit, trend, update
 from coop.device import cuda_gap, describe, pick_device
 from coop.join import DEFAULT_REPO, fetch_raw
 from coop.progress import bar, fmt_eta, now_line
@@ -239,6 +239,17 @@ def parse_board(md: str) -> list[dict]:
     return rows
 
 
+def fetch_trend(repo: str, cfg: dict) -> dict | None:
+    """The val-loss series from the `ledger` branch, summarized. One number cannot say
+    whether the loss is going down, so every loss line here is read off the series.
+    Missing file = a run that has not evaluated yet; never fatal."""
+    try:
+        path = fetch_raw(repo, f"ledger/{trend.HISTORY}", HOME / trend.HISTORY, ref="ledger")
+        return trend.summarize(trend.load(path), trend.spec(cfg))
+    except (OSError, KeyError, ValueError):
+        return None
+
+
 def last_activity(path: Path) -> str:
     """Newest coop log line — stderr noise (tracebacks, warnings) shares the file."""
     try:
@@ -395,8 +406,11 @@ def farewell(a: argparse.Namespace, st: dict) -> None:
         meta = json.loads(Path(hubio.download_file(cfg["repos"]["model"], "meta.json")).read_text())
         val = meta.get("eval", {}).get("val_loss")
         if val is not None:
-            # ln(8192) = 9.01: the loss of random guessing over this vocab
-            print(f"\nmodel quality: val loss {val} — started at 9.01, lower is better")
+            start = trend.chance_loss(cfg["model"]["vocab_size"])
+            print(f"\nmodel quality: val loss {val} — started at {start:.2f}, lower is better")
+            tr = fetch_trend(a.repo, cfg)
+            if tr:
+                print(f"  {trend.headline(tr)}")
     except Exception:
         pass
     print("\nresume any time: coop start")
@@ -485,6 +499,7 @@ def probe_remote(a: argparse.Namespace) -> dict:
         ctx["val_loss"] = meta.get("eval", {}).get("val_loss")
     except Exception:
         pass
+    ctx["trend"] = fetch_trend(a.repo, cfg)
     try:
         rows = parse_board(
             fetch_raw(a.repo, "LEADERBOARD.md", HOME / "board.md", ref="ledger").read_text()
@@ -623,6 +638,11 @@ def cmd_status(a: argparse.Namespace) -> None:
         print(f"model    {model_repo} @ outer step {meta['step']}{suffix}")
     except Exception:
         print(f"model    {model_repo} (couldn't reach huggingface.co)")
+    tr = fetch_trend(a.repo, cfg)
+    if tr:
+        print(f"loss     {trend.describe(tr)}")
+        if tr.get("spark"):
+            print(f"         {tr['spark']}  {trend.spark_caption(tr)}")
 
     user = st.get("user") or hubio.whoami()
     try:

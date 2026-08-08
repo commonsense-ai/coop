@@ -4,6 +4,8 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from coop.trend import describe, spark_caption
+
 # One rejection drops a perfect reputation to 0.9; sustained acceptance pulls it back
 # toward 1.0. Score scales with reputation so griefers cannot farm tokens.
 REP_ALPHA = 0.1
@@ -101,7 +103,11 @@ def score(entry: dict) -> float:
     return entry["tokens"] * entry["reputation"]
 
 
-def render_leaderboard(ledger: dict, archives: list[str] = ()) -> str:
+def total_tokens(ledger: dict) -> int:
+    return sum(int(e.get("tokens", 0)) for e in ledger["contributors"].values())
+
+
+def render_leaderboard(ledger: dict, archives: list[str] = (), trend: dict | None = None) -> str:
     rows = sorted(ledger["contributors"].items(), key=lambda kv: (-score(kv[1]), kv[0]))
     lines = [
         "# Leaderboard",
@@ -111,12 +117,11 @@ def render_leaderboard(ledger: dict, archives: list[str] = ()) -> str:
     ]
     if ledger.get("eval"):
         ev = ledger["eval"]
-        lines += [
-            f"Val loss at step {ev['step']}: **{ev['val_loss']}** — sample:",
-            "",
-            "> " + " ".join(str(ev.get("sample", "")).split()),
-            "",
-        ]
+        at = f"Val loss at step {ev['step']}: **{ev['val_loss']}**"
+        lines += [f"{at} — {describe(trend)}" if trend else f"{at}.", ""]
+        if trend and trend.get("spark"):
+            lines += [f"`{trend['spark']}`  {spark_caption(trend)}", ""]
+        lines += ["Sample:", "", "> " + " ".join(str(ev.get("sample", "")).split()), ""]
     lines += UPDATE_NOTICE + [""]
     lines += [
         "Score = tokens contributed × reputation. Reputation is an EMA of acceptance",
