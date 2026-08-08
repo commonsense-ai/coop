@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 156467200
+        "gpu": 159334400
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 82,
+      "submissions": 84,
       "tier": "gpu",
-      "tokens": 257228800
+      "tokens": 260096000
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about these issues and the role of others. It seems that he would be able to persuade others and others to come up with a means of a very good, and he should learn from, and he must perform it again; and he must take a step further; he must decide His own and the power of his own.\nWhat does the role of an organization of money?\nMost people are willing to listen to the way; and others who are willing to defend it. The role of a given society is also a matter of it. This means that the government would take into consideration the government and",
-    "step": 60,
-    "val_loss": 5.1052
+    "sample": "The most important thing to understand about them. We are in this new book because he describes his ideas with the ideas and ideas and feelings, and experiences.\nBut what does it mean to do, is it one of course or a other. But it is the only, and it's a part of this. The word is also a part of a word. Thus, you speak in the story of a word.\nLook below!\nYou know that you want to read this book.\nLet's draw the word in the top.\nNow, you get some thinking about what you are saying. Then what you mean,",
+    "step": 61,
+    "val_loss": 5.0997
   },
-  "step": 60,
-  "updated": "2026-08-08T10:58:59+00:00"
+  "step": 61,
+  "updated": "2026-08-08T11:06:03+00:00"
 }

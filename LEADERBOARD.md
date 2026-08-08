@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **60** — updated 2026-08-08T10:58:59+00:00.
+Outer step **61** — updated 2026-08-08T11:06:03+00:00.
 
-Val loss at step 60: **5.1052** — sample:
+Val loss at step 61: **5.0997** — sample:
 
-> The most important thing to understand about these issues and the role of others. It seems that he would be able to persuade others and others to come up with a means of a very good, and he should learn from, and he must perform it again; and he must take a step further; he must decide His own and the power of his own. What does the role of an organization of money? Most people are willing to listen to the way; and others who are willing to defend it. The role of a given society is also a matter of it. This means that the government would take into consideration the government and
+> The most important thing to understand about them. We are in this new book because he describes his ideas with the ideas and ideas and feelings, and experiences. But what does it mean to do, is it one of course or a other. But it is the only, and it's a part of this. The word is also a part of a word. Thus, you speak in the story of a word. Look below! You know that you want to read this book. Let's draw the word in the top. Now, you get some thinking about what you are saying. Then what you mean,
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -21,5 +21,5 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | naloxene | nvidia-gpu | 54 | 825,929,728 | 1.000 | 825,929,728 |
 | 2 | cjtsolutions | gpu | 20 | 355,491,840 | 1.000 | 355,491,840 |
-| 3 | ezshroom | gpu | 82 | 257,228,800 | 1.000 | 257,228,800 |
+| 3 | ezshroom | gpu | 84 | 260,096,000 | 1.000 | 260,096,000 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
