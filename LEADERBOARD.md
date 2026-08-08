@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **115** — updated 2026-08-08T23:15:56+00:00.
+Outer step **116** — updated 2026-08-08T23:22:29+00:00.
 
-Val loss at step 115: **4.5492** — sample:
+Val loss at step 116: **4.5311** — sample:
 
-> The most important thing to understand about it and make sure you understand what you're and what you're looking for. That's how we're going to be getting involved in helping you understand there's no way to treat your problems. Check out our blog here! Children are taught all about how we are talking about what they're talking about and how they use it. What do we do by when you're talking? A lot of parents are taught through a lot of questions about the way you're talking about something new than you like when you understand your child's speaking is the only way you're thinking about it. Your
+> The most important thing to understand about how we can survive our lives and our interactions. Because we don’t tend to leave our lives, we don’t fail to feel the same at all. So, if we don’t understand how we can deal with our lives or how we can survive our lives? You can tell us how we can survive our lives without seeing our identity. We can’t wait until we really understand how we can survive our lives without seeing our identity. Just imagine what we are going to do! Any good thing is wrong! Now we don’t fail to
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -19,7 +19,7 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 
 | # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
 |---|-------------|----------|----------|--------|------------|-------|
-| 1 | cjtsolutions | nvidia-gpu | 78 | 1,607,012,352 | 1.000 | 1,606,572,203 |
+| 1 | cjtsolutions | nvidia-gpu | 80 | 1,637,732,352 | 1.000 | 1,637,369,016 |
 | 2 | naloxene | nvidia-gpu | 61 | 1,027,452,928 | 1.000 | 1,027,452,928 |
 | 3 | ezshroom | apple-gpu | 177 | 585,740,288 | 1.000 | 585,740,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
