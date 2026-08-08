@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **72** — updated 2026-08-08T13:29:05+00:00.
+Outer step **73** — updated 2026-08-08T13:44:27+00:00.
 
-Val loss at step 72: **5.0939** — sample:
+Val loss at step 73: **5.0553** — sample:
 
-> The most important thing to understand about his life that he wants him to have a happy answer: He walked, looking for him and wants to serve him again in his life. She may take her time to make this effort. So, this passage? Dr. Ann's mission: “It might not happen if you hear the real human soul, the truth is that this country is in trouble. If you think your life is happening, there is a lot of things that you may not believe in a bad state of your life. Instead it seems that you may see the fact is very different. Most of us believe
+> The most important thing to understand about this issue by doing this article on the topic you read in your issue. - Write a piece of paper or a book by email if you can’t find something that the book is or your best to write. It’s a good idea not to know what you are playing with your ideas out at all. - Read some note on this blog about someone who is watching something from a book which you can actually appreciate in your story. This can be one of the only things you can tell.A new collection from the family, the medical school, has emerged from different Indian universities
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -20,6 +20,6 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 | # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | naloxene | nvidia-gpu | 54 | 825,929,728 | 1.000 | 825,929,728 |
-| 2 | cjtsolutions | gpu | 20 | 355,491,840 | 1.000 | 355,491,840 |
-| 3 | ezshroom | gpu | 105 | 314,572,800 | 1.000 | 314,572,800 |
+| 2 | cjtsolutions | gpu | 22 | 412,209,152 | 0.900 | 370,988,237 |
+| 3 | ezshroom | gpu | 107 | 319,488,000 | 1.000 | 319,488,000 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
