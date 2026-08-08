@@ -110,7 +110,9 @@ def notice(manifest: dict, auto: bool = False) -> str:
 def install_kind() -> str:
     """How this copy of coop got here — each way updates differently."""
     root = Path(__file__).resolve().parents[2]  # src/coop/update.py -> checkout root
-    if (root / ".git").is_dir() and (root / "pyproject.toml").is_file():
+    # exists(), not is_dir(): in a git worktree `.git` is a file pointing at the real
+    # one, and mistaking a checkout for a pip install would pip-upgrade over it
+    if (root / ".git").exists() and (root / "pyproject.toml").is_file():
         return GIT
     prefix = Path(sys.prefix).resolve()
     for var, kind in (("UV_TOOL_DIR", UV_TOOL), ("UV_CACHE_DIR", UVX)):
