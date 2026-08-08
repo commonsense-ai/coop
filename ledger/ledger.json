@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 169984000
+        "gpu": 176947200
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 90,
+      "submissions": 92,
       "tier": "gpu",
-      "tokens": 270745600
+      "tokens": 277708800
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the nature of the rights of the past. As for those who have been elected by the time it is a political party where the court is supposed to offer. Similarly, with the Constitution and the Constitution itself, the Constitution makes the court a crucial role in determining the role of the law in the Constitution. Thus, the constitution is also referred to as the Constitution. Thus, the constitution of justice, which gives the Constitution the authority to remain with only a peaceful party, but it is also the constitution of a political party. Thus, in contrast, the Constitution, as mentioned by the Constitution, is",
-    "step": 64,
-    "val_loss": 5.1704
+    "sample": "The most important thing to understand about how the animal acts in the way of a human body and its consequences.\nOf course, we would see a very bad thing for the animals and the animals out of the earth today. When in the long run we would see a big picture in the human body. Once they came a long way, they would see a smaller piece of a animal. They thought, however, are the same.\nLet\u2019s note be a great thing to think that human beings are all about is the one who knew. So here at the time when the animal doesn\u2019t think that animals are happy and",
+    "step": 65,
+    "val_loss": 5.1597
   },
-  "step": 64,
-  "updated": "2026-08-08T11:40:51+00:00"
+  "step": 65,
+  "updated": "2026-08-08T11:58:51+00:00"
 }
