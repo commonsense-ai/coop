@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 89702400
+        "gpu": 91750400
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 60,
+      "submissions": 61,
       "tier": "gpu",
-      "tokens": 190464000
+      "tokens": 192512000
     },
     "miacx": {
       "first_seen": 12,
@@ -36,10 +36,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the effects of death may help you to keep the decisions you think.\nThe best way that the science is to read is to make the readers work.\nAnd now, what are you to do when you work? And you can see you, or the best way to get there?\nAnd, they also agree that you are in the world by doing this. But if you think you are learning how things come up with and thinking about. They are so helpful in our lives. They are in all aspects. They can help keep others and feel them safe because of other things they aren't",
-    "step": 48,
-    "val_loss": 5.1547
+    "sample": "The most important thing to understand about the nature of the universe for us at the same time, and our own civilization, to develop with great insight, while others come to our lives, as these will now look forward here.\nAccording to the International Space Center, the creation of the International Space Administration (NNS) gives for the first time we can start on the Earth, and, in order to build the planet, we celebrate, to fill the planet, and to protect the planet from the planet, through the planet, and as the moon will result in our lives. The mission is to maintain a new version of the Earth",
+    "step": 49,
+    "val_loss": 5.1463
   },
-  "step": 48,
-  "updated": "2026-08-08T08:23:18+00:00"
+  "step": 49,
+  "updated": "2026-08-08T08:28:22+00:00"
 }
