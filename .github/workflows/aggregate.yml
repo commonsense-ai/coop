@@ -30,7 +30,7 @@ jobs:
           ref: ledger
           path: ledgerdata
       - uses: astral-sh/setup-uv@v5
-      - run: uv sync --no-dev
+      - run: uv sync --no-dev --extra cpu # CUDA wheels would blow the tick budget
       - run: uv run --no-dev python -m coop.aggregate --repo-root ledgerdata
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}

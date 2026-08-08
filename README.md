@@ -105,7 +105,8 @@ coop-join --hf-token hf_...` runs rounds until ctrl-c (`--once` for a single rou
 From a clone, the equivalent is:
 
 ```sh
-uv sync
+uv sync   # NVIDIA box? add `uv pip install --torch-backend auto torch`:
+          # the lockfile ships CPU wheels so aggregator ticks stay fast
 export HF_TOKEN=hf_...
 uv run python -m coop.data --skip 0 --docs 20000
 uv run python -m coop.trainer --data data/shard_0_20000.bin --loop

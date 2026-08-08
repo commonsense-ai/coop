@@ -34,6 +34,9 @@ job aggregates them into outer steps on a public HF model repo.
   approved PR (repo ruleset), so workflows must never push to `main`.
 - GitHub blocks files > 100 MB; large binaries go to HF only.
 - `config/run.yaml` is the single source of run configuration.
+- Never pin torch to the CPU index in `[tool.uv.sources]` unqualified: uv applies a
+  package's sources to `uvx`/`pip install git+...`, so the pin follows the package onto
+  volunteers' machines and strands GPU donors on CPU. CI opts in with `--extra cpu`.
 
 ## Style
 
