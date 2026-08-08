@@ -34,7 +34,7 @@ DiLoCo-style low-communication data parallelism:
    [HF dataset repo](https://huggingface.co/datasets/commonsense-ai/fineweb-150m-inbox)
    (the "gradient inbox"), opened with `create_commit(create_pr=True)`. Any free HF
    account with a write token can submit; the maintainer grants no permissions.
-3. **The aggregator** is a GitHub Actions cron job (scheduled every 15 min;
+3. **The aggregator** is a GitHub Actions cron job (scheduled every 5 min;
    GitHub's shared scheduler actually fires anywhere from minutes to a few hours
    apart — the protocol tolerates any cadence). Each tick is stateless: it reads the checkpoint and the open inbox PRs, drops over-stale
    submissions, clips and cosine-gates the rest, robust-aggregates them
@@ -119,6 +119,23 @@ coop stop      # stop contributing; `coop start` resumes any time
 ```
 
 `coop start --rounds 3` contributes a fixed number of rounds and stops by itself.
+
+### Staying current
+
+Every release publishes `release.json` to the `ledger` branch, and that is the only
+thing a volunteer's machine polls. `coop status` says when a newer version is out,
+and:
+
+```sh
+coop update            # get it now (works out how you installed coop)
+coop update --check    # what's new, install nothing
+coop update --auto on  # keep it current by itself
+```
+
+With `--auto on`, a running worker adopts the new version **between rounds** — never
+mid-round, so a restart can't cost you trained work — and picks its training back up
+where it left off. Off by default: nothing on your machine changes unless you ask.
+A clone is left alone either way; there, `git pull` is the update.
 
 Prefer a foreground one-off? `uvx --from git+https://github.com/commonsense-ai/coop
 coop-join --hf-token hf_...` runs rounds until ctrl-c (`--once` for a single round,

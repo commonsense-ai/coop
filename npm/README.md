@@ -24,7 +24,12 @@ npx coop-ai status      # live progress + ETA, your rank, which GPU is working
 npx coop-ai logs -f     # watch the worker do its thing
 npx coop-ai stop        # submits work-in-progress, shows your impact, stops
 npx coop-ai run latest  # talk to the model trained so far — no account needed
+npx coop-ai update      # get the newest coop (--auto on to keep it current)
 ```
+
+`update` checks the release channel and installs a newer coop the same way you got
+this one. `update --auto on` lets a running worker take new versions between rounds
+(never mid-round); it's off until you turn it on.
 
 `run latest` downloads the current checkpoint and takes prompts, so you can hear
 what the co-op has built without training anything. `run tinystories` plays the

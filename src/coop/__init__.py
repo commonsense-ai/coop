@@ -6,7 +6,7 @@ from pathlib import Path
 
 import yaml
 
-__version__ = "0.2.2"
+__version__ = "0.3.0"
 
 
 def load_config(path: str = "config/run.yaml") -> dict:

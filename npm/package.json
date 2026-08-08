@@ -1,6 +1,6 @@
 {
   "name": "coop-ai",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Help train a community language model with your computer — npm/bun launcher for the coop CLI",
   "bin": { "coop": "bin/coop.js", "coop-ai": "bin/coop.js" },
   "files": ["bin"],
