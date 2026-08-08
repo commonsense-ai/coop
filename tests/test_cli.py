@@ -254,3 +254,27 @@ def test_farewell_shows_session_bars_and_resume(tmp_path, monkeypatch, capsys):
     assert "your share" in out and "rank 1" in out
     assert "discussions/9" in out
     assert "resume any time: coop start" in out
+
+
+def _throttle(monkeypatch, tmp_path, **kw):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "SETTINGS", tmp_path / "settings.json")
+    a = argparse.Namespace(**{"gentle": None, "power_limit": None, **kw})
+    return cli.throttle_flags(a)
+
+
+def test_throttle_defaults_to_stock_behaviour(monkeypatch, tmp_path):
+    assert _throttle(monkeypatch, tmp_path) == []
+
+
+def test_throttle_choices_survive_a_bare_restart(monkeypatch, tmp_path):
+    """Hardware that needs easing needs it every time — a volunteer should not have to
+    remember the flag on every `coop start`."""
+    _throttle(monkeypatch, tmp_path, gentle=True, power_limit=130)
+    assert _throttle(monkeypatch, tmp_path) == ["--gentle", "--power-limit", "130"]
+
+
+def test_throttle_can_be_turned_back_off(monkeypatch, tmp_path):
+    _throttle(monkeypatch, tmp_path, gentle=True, power_limit=130)
+    assert _throttle(monkeypatch, tmp_path, gentle=False) == ["--power-limit", "130"]
+    assert _throttle(monkeypatch, tmp_path, power_limit=0) == []

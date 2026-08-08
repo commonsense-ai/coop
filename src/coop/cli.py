@@ -74,6 +74,17 @@ def run_config_path() -> str:
     return read_settings().get("run_config", "config/run.yaml")
 
 
+def throttle_flags(a: argparse.Namespace) -> list[str]:
+    """Machine-local load shaping. Sticky, because hardware that needs easing stays
+    that way — an explicit flag overrides and re-persists, `--no-gentle` clears it."""
+    saved = read_settings().get("throttle", {})
+    gentle = saved.get("gentle", False) if a.gentle is None else a.gentle
+    watts = saved.get("power_limit_w") if a.power_limit is None else (a.power_limit or None)
+    write_settings(throttle={"gentle": gentle, "power_limit_w": watts})
+    flags = ["--gentle"] if gentle else []
+    return flags + (["--power-limit", str(watts)] if watts else [])
+
+
 def load_run_config(repo: str, path: str | None = None) -> dict:
     HOME.mkdir(parents=True, exist_ok=True)
     path = path or run_config_path()
@@ -311,6 +322,7 @@ def cmd_start(a: argparse.Namespace) -> None:
     }
     cmd = [sys.executable, "-m", "coop.join", "--workdir", str(HOME), "--repo", a.repo]
     cmd += ["--run-config", sel["config"]]
+    cmd += throttle_flags(a)
     if a.device:
         cmd += ["--device", a.device]
     if a.rounds:
@@ -523,6 +535,19 @@ def main() -> None:
     st.add_argument("--hf-token", default=None, help="Hugging Face write token (first run only)")
     st.add_argument("--choose", action="store_true", help="re-open the model picker")
     st.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
+    st.add_argument(
+        "--gentle",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="ease off the GPU if your machine crashes under full load (remembered)",
+    )
+    st.add_argument(
+        "--power-limit",
+        type=int,
+        default=None,
+        metavar="W",
+        help="cap GPU power via nvidia-smi, e.g. 130 (remembered; 0 clears)",
+    )
     st.add_argument(
         "--rounds", type=int, default=0, help="stop after N rounds (default: run until coop stop)"
     )

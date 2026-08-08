@@ -98,6 +98,31 @@ coop stop      # stop contributing; `coop start` resumes any time
 
 `coop start --rounds 3` contributes a fixed number of rounds and stops by itself.
 
+### If training destabilises your machine
+
+Some machines can't hold a GPU at full tilt — an ageing power supply, a marginal
+PCIe power cable, or a tired card can brown out under sustained load and drop off
+the bus. Symptoms: training dies within a minute or two, and `nvidia-smi` then
+reports `Unable to determine the device handle`.
+
+```sh
+coop start --gentle                  # smallest kernels per step: lower peak draw
+coop start --power-limit 130         # hard cap via nvidia-smi (needs root)
+```
+
+Both are remembered, so plain `coop start` keeps them; `--no-gentle` and
+`--power-limit 0` clear them. Neither changes what you submit — `--gentle` splits
+each step into smaller kernels and accumulates, so your pseudo-gradient and your
+token credit are identical, just slower.
+
+Be aware of the ceiling here: only `--power-limit` clamps the microsecond transient
+spikes that actually knock a card off the bus, because that cap is enforced by the
+GPU's own power governor. `--gentle` merely asks for less work at a time. If neither
+helps, the fault is hardware and no worker setting will paper over it.
+
+The worker also gives up on a wedged GPU instead of hanging on it: if no inner step
+lands for five minutes it logs what happened and exits rather than stalling silently.
+
 Prefer a foreground one-off? `uvx --from git+https://github.com/commonsense-ai/coop
 coop-join --hf-token hf_...` runs rounds until ctrl-c (`--once` for a single round,
 `--device cuda|mps|cpu` to override).
@@ -110,6 +135,8 @@ export HF_TOKEN=hf_...
 uv run python -m coop.data --skip 0 --docs 20000
 uv run python -m coop.trainer --data data/shard_0_20000.bin --loop
 ```
+
+(`--gentle` and `--power-limit` work on `coop-join` and `coop.trainer` too.)
 
 Run it as often as you like. Accepted submissions earn tokens on the leaderboard;
 CPU-only machines can also contribute tokenization, dedup, filtering, and eval runs

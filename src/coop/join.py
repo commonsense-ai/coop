@@ -6,6 +6,7 @@ shard, then train-and-submit rounds until interrupted.
 """
 
 import argparse
+import dataclasses
 import hashlib
 import json
 import logging
@@ -23,6 +24,7 @@ import yaml
 
 from coop.status import FILENAME as STATUS_FILENAME
 from coop.status import StatusFile
+from coop.throttle import Throttle
 
 log = logging.getLogger(__name__)
 
@@ -80,6 +82,10 @@ def pick_device() -> str:
         return "cuda"
     if torch.backends.mps.is_available():
         return "mps"
+    if Path("/proc/driver/nvidia/version").exists():
+        # a card that has fallen off the bus leaves the driver loaded and /dev/nvidia*
+        # in place, so a silent fallback is indistinguishable from a real cpu-only box
+        log.warning("NVIDIA driver present but CUDA is unavailable — run nvidia-smi; using CPU")
     return "cpu"
 
 
@@ -96,6 +102,14 @@ def main():
     ap.add_argument("--workdir", default="~/.coop")
     ap.add_argument("--docs", type=int, default=20000, help="TinyStories docs in your shard")
     ap.add_argument("--device", default=None, help="cuda | mps | cpu (default: auto)")
+    ap.add_argument(
+        "--gentle",
+        action="store_true",
+        help="smaller kernels per step: lowers peak GPU draw on marginal power delivery",
+    )
+    ap.add_argument(
+        "--power-limit", type=int, default=None, metavar="W", help="cap the GPU via nvidia-smi"
+    )
     ap.add_argument("--once", action="store_true", help="run a single round instead of looping")
     ap.add_argument("--rounds", type=int, default=0, help="stop after N rounds (0 = endless)")
     ap.add_argument("--pause", type=int, default=60, help="retry delay after a failed round")
@@ -140,6 +154,9 @@ def main():
     device = a.device or pick_device()
     log.info("joined as %s on %s; ctrl-c to stop", user, device)
     status.update(device=device)
+    thr = Throttle.gentle() if a.gentle else Throttle()
+    thr = dataclasses.replace(thr, power_limit_w=a.power_limit)
+    thr.apply(device)
 
     # coop stop sends SIGTERM: finish packaging + submitting the current round, then exit
     stop = threading.Event()
@@ -165,6 +182,7 @@ def main():
                 stop=stop,
                 username=user,
                 accumulator=acc,
+                throttle=thr,
             )
             if meta_path is None:  # stopped before the round trained anything
                 break
