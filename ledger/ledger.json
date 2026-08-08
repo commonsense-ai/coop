@@ -13,14 +13,14 @@
     },
     "ezshroom": {
       "devices": {
-        "apple-gpu": 111411200,
+        "apple-gpu": 121651200,
         "gpu": 238399488
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 150,
+      "submissions": 152,
       "tier": "gpu",
-      "tokens": 450572288
+      "tokens": 460812288
     },
     "miacx": {
       "first_seen": 12,
@@ -31,20 +31,20 @@
     },
     "naloxene": {
       "devices": {
-        "nvidia-gpu": 398950400
+        "nvidia-gpu": 499302400
       },
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 57,
+      "submissions": 59,
       "tier": "gpu",
-      "tokens": 900476928
+      "tokens": 1000828928
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about what we ask and why they have some knowledge about our lives and so our lives are divided into two ways:\n- Create the resources around your home and leave your home from them and then put it in with your community members to ensure that they stay away from their home, or on some tasks before you can achieve goals that will ensure that they will take responsibility for their survival. You might ask yourself about the situation or just ask yourself what you want to know about what situations you want to do with their family member and to decide what their choices are going on around them and how they will respond to",
-    "step": 99,
-    "val_loss": 4.6533
+    "sample": "The most important thing to understand about the benefits of various tools:\n- What is the difference between good and bad but good? Are everything that seems to fit? Are there any differences between good and bad and bad? Are there anything that seems to happen in the way that your mind does not feel like that? Can you agree on what do you want? Are you looking into the ways that I can understand them? Are there any differences between bad and bad? Are they the elements that seem to represent bad? Are there all these things? Are there any differences between bad and bad? The fact that they should be chosen is that",
+    "step": 100,
+    "val_loss": 4.6453
   },
-  "step": 99,
-  "updated": "2026-08-08T18:30:22+00:00"
+  "step": 100,
+  "updated": "2026-08-08T18:54:33+00:00"
 }

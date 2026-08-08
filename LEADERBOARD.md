@@ -1,10 +1,10 @@
 # Leaderboard
 
-Outer step **99** — updated 2026-08-08T18:30:22+00:00.
+Outer step **100** — updated 2026-08-08T18:54:33+00:00.
 
-Val loss at step 99: **4.6533** — sample:
+Val loss at step 100: **4.6453** — sample:
 
-> The most important thing to understand about what we ask and why they have some knowledge about our lives and so our lives are divided into two ways: - Create the resources around your home and leave your home from them and then put it in with your community members to ensure that they stay away from their home, or on some tasks before you can achieve goals that will ensure that they will take responsibility for their survival. You might ask yourself about the situation or just ask yourself what you want to know about what situations you want to do with their family member and to decide what their choices are going on around them and how they will respond to
+> The most important thing to understand about the benefits of various tools: - What is the difference between good and bad but good? Are everything that seems to fit? Are there any differences between good and bad and bad? Are there anything that seems to happen in the way that your mind does not feel like that? Can you agree on what do you want? Are you looking into the ways that I can understand them? Are there any differences between bad and bad? Are they the elements that seem to represent bad? Are there all these things? Are there any differences between bad and bad? The fact that they should be chosen is that
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -20,6 +20,6 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 | # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
 |---|-------------|----------|----------|--------|------------|-------|
 | 1 | cjtsolutions | nvidia-gpu | 70 | 1,411,633,152 | 0.999 | 1,410,734,974 |
-| 2 | naloxene | nvidia-gpu | 57 | 900,476,928 | 1.000 | 900,476,928 |
-| 3 | ezshroom | apple-gpu | 150 | 450,572,288 | 1.000 | 450,572,288 |
+| 2 | naloxene | nvidia-gpu | 59 | 1,000,828,928 | 1.000 | 1,000,828,928 |
+| 3 | ezshroom | apple-gpu | 152 | 460,812,288 | 1.000 | 460,812,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
