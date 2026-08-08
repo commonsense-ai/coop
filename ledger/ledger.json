@@ -9,13 +9,13 @@
     },
     "ezshroom": {
       "devices": {
-        "gpu": 29491200
+        "gpu": 36454400
       },
       "first_seen": 5,
       "reputation": 1.0,
-      "submissions": 38,
+      "submissions": 40,
       "tier": "gpu",
-      "tokens": 130252800
+      "tokens": 137216000
     },
     "miacx": {
       "first_seen": 12,
@@ -33,10 +33,10 @@
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the rest, in terms of any kind of ways. This approach might include:\n- How to do the fact that this is impossible to show yourself, it is not really true. So do we know that if it was to work, it must happen. All of these examples are quite better than ever thought of thinking and what they did, if someone who might have enough experience might like a chance to do with them. So, the situation will need to have them the ability to do with something and the world, and then how would one way of being involved in that process?\nThat would",
-    "step": 36,
-    "val_loss": 5.4848
+    "sample": "The most important thing to understand about the number of materials and technologies on the lowest levels and higher rates.\nIn the case, there is always more things about the same issue and the resources we wish to be able to find out of the advantages of the science. Thus, for example, the authors want to use technology because we are more likely to learn from the research process, and we can to keep learning more and more attention than everyone\u2019s learning. With this research, we will learn how to make sure more we're thinking about the implications and risks we'll do to know a more.\nFinally, we'll find the",
+    "step": 37,
+    "val_loss": 5.4721
   },
-  "step": 36,
-  "updated": "2026-08-08T05:54:45+00:00"
+  "step": 37,
+  "updated": "2026-08-08T06:13:05+00:00"
 }
