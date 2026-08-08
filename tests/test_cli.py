@@ -137,7 +137,14 @@ def test_start_latest_skips_the_picker_and_the_remembered_run(tmp_path, monkeypa
 
     monkeypatch.setattr(cli.subprocess, "Popen", fake_popen)
     a = argparse.Namespace(
-        repo="x/y", model=None, hf_token=None, device=None, choose=False, latest=True, rounds=0
+        repo="x/y",
+        model=None,
+        hf_token=None,
+        device=None,
+        choose=False,
+        latest=True,
+        rounds=0,
+        no_progress=True,
     )
     cli.cmd_start(a)
 
@@ -371,6 +378,110 @@ def test_update_auto_on_persists_and_changes_the_notice(tmp_path, monkeypatch, c
     cli.cmd_update(argparse.Namespace(repo="o/r", check=True, auto="off"))
     assert cli.read_settings()["auto_update"] is False
     assert "run `coop update`" in cli.update_line("o/r")
+
+
+def test_progress_auto_off_persists_and_start_stops_opening_the_view(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "watch", lambda *a, **k: pytest.fail("--auto must not open the view"))
+    cli.cmd_progress(argparse.Namespace(repo="o/r", auto="off", once=False, advanced=False))
+    assert cli.read_settings()["progress_auto"] is False
+    assert "prints a summary and returns" in capsys.readouterr().out
+
+    a = argparse.Namespace(repo="o/r", no_progress=False)
+    with monkeypatch.context() as tty:
+        tty.setattr(cli.sys, "stdin", FakeTTY())
+        tty.setattr(cli.sys, "stdout", FakeTTY())
+        assert cli.show_progress(a) is False
+
+    cli.cmd_progress(argparse.Namespace(repo="o/r", auto="on", once=False, advanced=False))
+    assert cli.read_settings()["progress_auto"] is True
+    assert "opens the live view" in capsys.readouterr().out
+    monkeypatch.setattr(cli.sys, "stdin", FakeTTY())
+    monkeypatch.setattr(cli.sys, "stdout", FakeTTY())
+    assert cli.show_progress(a) is True
+    assert cli.show_progress(argparse.Namespace(repo="o/r", no_progress=True)) is False
+
+
+def test_show_progress_never_opens_the_view_into_a_pipe(tmp_path, monkeypatch):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli.sys, "stdin", type("NoTTY", (), {"isatty": lambda self: False})())
+    assert cli.show_progress(argparse.Namespace(repo="o/r", no_progress=False)) is False
+
+
+def test_start_opens_the_view_by_default(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "PIDFILE", tmp_path / "worker.pid")
+    monkeypatch.setattr(cli, "LOGFILE", tmp_path / "worker.log")
+    monkeypatch.setattr(cli, "load_runs", lambda repo: RUNS)
+    monkeypatch.setattr(cli, "load_run_config", lambda repo, path=None: CFG)
+    monkeypatch.setattr(cli, "ensure_token", lambda tok: "tester")
+    monkeypatch.setattr(cli, "alive", lambda pid: True)
+    monkeypatch.setattr(cli.time, "sleep", lambda s: None)
+    monkeypatch.setattr(cli.subprocess, "Popen", lambda cmd, **kw: argparse.Namespace(pid=42))
+    monkeypatch.setattr(cli, "show_progress", lambda a: True)
+    watched = []
+    monkeypatch.setattr(cli, "watch", lambda a: watched.append(a))
+    a = argparse.Namespace(
+        repo="x/y",
+        model=None,
+        hf_token=None,
+        device=None,
+        choose=False,
+        latest=True,
+        rounds=0,
+        no_progress=False,
+    )
+    cli.cmd_start(a)
+    assert watched == [a]
+    assert "coop stop      stop contributing" not in capsys.readouterr().out
+
+
+def test_probe_local_reads_the_worker_without_the_network(tmp_path, monkeypatch):
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+    monkeypatch.setattr(cli, "PIDFILE", tmp_path / "worker.pid")
+    monkeypatch.setattr(cli, "LOGFILE", tmp_path / "worker.log")
+    monkeypatch.setattr(cli, "idle_device_label", lambda: "CPU")
+    monkeypatch.setattr(cli, "fetch_raw", lambda *a, **k: pytest.fail("the redraw must not fetch"))
+    cli.PIDFILE.write_text(str(os.getpid()))
+    (tmp_path / cli.STATUS_FILENAME).write_text(
+        '{"phase": "training", "device_label": "Apple GPU"}'
+    )
+
+    ctx = cli.probe_local(argparse.Namespace(repo="o/r"))
+    assert ctx["running"] is True and ctx["pid"] == os.getpid()
+    assert ctx["device_label"] == "Apple GPU"  # what the worker got, not what we'd pick
+    assert ctx["st"]["phase"] == "training"
+
+
+def test_probe_remote_survives_an_unreachable_config(tmp_path, monkeypatch):
+    """load_run_config exits on failure, and SystemExit would take the refresh thread
+    with it — the view has to come back with an empty hand instead."""
+    monkeypatch.setattr(cli, "HOME", tmp_path)
+
+    def offline(repo, path=None, dest="run.yaml"):
+        raise SystemExit("could not fetch the run config")
+
+    monkeypatch.setattr(cli, "load_run_config", offline)
+    assert cli.probe_remote(argparse.Namespace(repo="o/r")) == {}
+
+
+def test_watch_stops_the_worker_when_the_view_says_so(monkeypatch):
+    stopped = []
+    monkeypatch.setattr(cli.progress, "view", lambda **kw: cli.progress.STOP)
+    monkeypatch.setattr(cli, "cmd_stop", lambda a: stopped.append(a))
+    a = argparse.Namespace(repo="o/r")
+    cli.watch(a)
+    assert stopped == [a]
+
+
+def test_watch_restarts_then_returns_to_the_view(monkeypatch):
+    choices = iter([cli.progress.START, cli.progress.LEAVE])
+    started = []
+    monkeypatch.setattr(cli.progress, "view", lambda **kw: next(choices))
+    monkeypatch.setattr(cli, "cmd_start", lambda a: started.append(a))
+    cli.watch(argparse.Namespace(repo="o/r"))
+    assert len(started) == 1
+    assert started[0].no_progress is True  # the loop reopens the view, cmd_start must not
 
 
 def test_status_shows_a_waiting_update(tmp_path, monkeypatch, capsys):

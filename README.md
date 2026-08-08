@@ -112,13 +112,39 @@ it's zero-setup. The worker runs in the background: it builds you a personal dat
 shard (a slice derived from your username so volunteers don't overlap), then trains
 and submits rounds until you say otherwise.
 
+`coop start` then opens the live progress screen, so you can watch the one-time prep
+and the first round go by:
+
+```
+coop · fineweb-150m · naloxene · Apple GPU
+
+this round   ████████████░░░░░░░░░░░░  51.2%  inner step 256/500 · loss 3.21 · ~2m 02s left
+the model    ███░░░░░░░░░░░░░░░░░░░░░  12.4%  37.2M of ~300.0M tokens
+your share   ██░░░░░░░░░░░░░░░░░░░░░░   6.6%  rank 2 of 14 · 2,457,600 tokens
+
+3 rounds · 2,457,600 tokens this session — each one submitted for you
+
+  > keep training (leave this screen)
+    stop contributing
+
+↑↓ move · enter choose · ←→ advanced view · q leave (training keeps going)
+```
+
+Left/right swaps the simple view for the advanced one (every field `coop status`
+prints). Up/down and enter stop the worker without leaving the screen. `q` leaves the
+screen and keeps training — closing the view never stops anything.
+
 ```sh
-coop status    # live progress + ETA, your rank, which GPU is doing the work
+coop progress            # reopen it any time (`--advanced` starts on the detail view)
+coop progress --once     # one snapshot, no screen; good for pipes
+coop progress --auto off # `coop start` goes back to printing a summary
+coop status    # the same facts as one printout
 coop logs -f   # watch it work
 coop stop      # stop contributing; `coop start` resumes any time
 ```
 
-`coop start --rounds 3` contributes a fixed number of rounds and stops by itself.
+`coop start --rounds 3` contributes a fixed number of rounds and stops by itself, and
+`coop start --no-progress` skips the screen just this once.
 
 ### Staying current
 

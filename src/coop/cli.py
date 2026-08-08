@@ -1,10 +1,11 @@
-"""Volunteer-facing CLI: `coop start` / `stop` / `status` / `logs`.
+"""Volunteer-facing CLI: `coop start` / `progress` / `stop` / `status` / `logs`.
 
 Wraps the coop-join worker in a managed background process so contributing is
 start-and-forget. Worker state (pid, log, shard, config) lives under ~/.coop.
 """
 
 import argparse
+import functools
 import json
 import os
 import re
@@ -16,9 +17,10 @@ from pathlib import Path
 
 import yaml
 
-from coop import __version__, hubio, settings, submit, update
+from coop import __version__, hubio, progress, settings, submit, update
 from coop.device import cuda_gap, describe, pick_device
 from coop.join import DEFAULT_REPO, fetch_raw
+from coop.progress import bar, fmt_eta, now_line
 from coop.status import FILENAME as STATUS_FILENAME
 from coop.status import read_status
 
@@ -31,7 +33,8 @@ WELCOME = """\
 coop — help train a small language model with your computer
 
   coop start        begin contributing (runs in the background)
-  coop status       live progress, your rank, who else is training
+  coop progress     live progress bars — arrows switch the view, or stop the worker
+  coop status       one printout: your rank, the model, who else is training
   coop logs -f      watch the worker do its thing
   coop stop         stop contributing — your credit stays
   coop run latest   talk to the model trained so far (no account needed)
@@ -222,15 +225,6 @@ def goal_tokens(cfg: dict) -> int:
     return int(cfg.get("goal_tokens", TOKEN_TARGET))
 
 
-def fmt_eta(secs: float) -> str:
-    s = max(0, int(secs))
-    if s < 90:
-        return f"{s}s"
-    if s < 5400:
-        return f"{s // 60}m {s % 60:02d}s"
-    return f"{s // 3600}h {s % 3600 // 60:02d}m"
-
-
 def parse_board(md: str) -> list[dict]:
     rows = []
     for ln in md.splitlines():
@@ -238,34 +232,6 @@ def parse_board(md: str) -> list[dict]:
         if m:
             rows.append({"rank": int(m[1]), "user": m[2], "tokens": int(m[3].replace(",", ""))})
     return rows
-
-
-def now_line(st: dict) -> str:
-    phase = st.get("phase", "")
-    if st.get("failing"):
-        # the honest version of "running": the worker is up and getting nowhere
-        n = st["failing"]
-        err = st.get("last_error", "")
-        return f"{n} round{'s' if n > 1 else ''} in a row failed — retrying" + (
-            f"\n         last error: {err}" if err else ""
-        )
-    if phase == "training" and st.get("h_steps"):
-        i, h = st.get("inner_step", 0), st["h_steps"]
-        rate = st.get("steps_per_sec") or 0
-        eta = f" · ~{fmt_eta((h - i) / rate)} left" if rate else ""
-        return f"training — inner step {i}/{h} · loss {st.get('loss', '?')}{eta}"
-    if phase.startswith("building your data shard") and st.get("shard_total"):
-        done, total = st.get("shard_done", 0), st["shard_total"]
-        rate = st.get("shard_per_sec") or 0
-        eta = f" · ~{fmt_eta((total - done) / rate)} left" if rate and done < total else ""
-        frac = done / total
-        stage = st.get("shard_stage", "")
-        return f"building your data shard — {stage} {bar(frac, 16)} {100 * frac:.0f}%{eta}"
-    if phase == "waiting":
-        step = st.get("waiting_past_step")
-        which = f"outer step {step + 1}" if isinstance(step, int) else "the next outer step"
-        return f"submitted — waiting for {which} (your work merges at the next aggregator tick)"
-    return phase
 
 
 def last_activity(path: Path) -> str:
@@ -365,22 +331,22 @@ def cmd_start(a: argparse.Namespace) -> None:
         print(tail(LOGFILE, 15))
         raise SystemExit(f"the worker exited immediately — log above, full log: {LOGFILE}")
     print(f"training {model_repo} as {user} on your {describe(device)} (pid {p.pid})")
-    print("(switch models any time: coop stop, then coop start --choose)")
     if a.rounds:
         print(f"will stop by itself after {a.rounds} round{'s' if a.rounds > 1 else ''}")
-    print("the first round downloads the model and builds your data shard — `coop status`")
-    print("shows a progress bar for both, so you can see the one-time prep move")
-    print("  coop status    how it's going")
-    print("  coop logs -f   watch it work")
-    print("  coop stop      stop contributing")
     note = update_line(a.repo)
     if note:
         print(f"\n{note}")
-
-
-def bar(frac: float, width: int = 30) -> str:
-    filled = round(max(0.0, min(1.0, frac)) * width)
-    return "█" * filled + "░" * (width - filled)
+    if show_progress(a):
+        print("\nthe first round downloads the model and builds your data shard — both")
+        print("have a bar below, so you can watch the one-time prep move.\n")
+        watch(a)
+        return
+    print("(switch models any time: coop stop, then coop start --choose)")
+    print("the first round downloads the model and builds your data shard — `coop progress`")
+    print("shows a bar for both, so you can see the one-time prep move")
+    print("  coop progress  live bars, and stopping without leaving them")
+    print("  coop logs -f   watch it work")
+    print("  coop stop      stop contributing")
 
 
 def farewell(a: argparse.Namespace, st: dict) -> None:
@@ -458,6 +424,138 @@ def cmd_stop(a: argparse.Namespace) -> None:
         print("  the worker didn't finish in time — force-stopped, in-progress round lost")
     PIDFILE.unlink(missing_ok=True)
     farewell(a, read_status(HOME / STATUS_FILENAME))
+
+
+@functools.cache
+def idle_device_label() -> str:
+    """What `coop start` would pick. Cached: the view redraws twice a second and
+    detection shells out to nvidia-smi."""
+    return describe(pick_device())
+
+
+def probe_local(a: argparse.Namespace) -> dict:
+    """Everything the view can know without a network call. Runs on every redraw,
+    so it reads small local files and nothing else."""
+    pid = read_pid()
+    running = bool(pid and alive(pid))
+    st = read_status(HOME / STATUS_FILENAME)
+    pending = pending_rounds()
+    return {
+        "st": st,
+        "running": running,
+        "pid": pid,
+        "uptime": time.time() - PIDFILE.stat().st_mtime if running else None,
+        "stale_for": time.time() - st["updated_at"] if running and st.get("updated_at") else 0,
+        "device_label": (running and st.get("device_label")) or idle_device_label(),
+        "pending": pending,
+        "pending_paused": running and pending >= submit.PENDING_MAX,
+        "logfile": str(LOGFILE),
+        "board_url": BOARD.format(repo=a.repo),
+        "run_name": read_settings().get("run_name"),
+    }
+
+
+def probe_remote(a: argparse.Namespace) -> dict:
+    """The board, the model and the inbox. Called on the view's refresh thread, so
+    every piece degrades on its own: offline means missing rows, not a dead screen."""
+    ctx: dict = {}
+    try:
+        # own cache file — ~/.coop/run.yaml belongs to the worker, and fetch_raw overwrites
+        cfg = load_run_config(a.repo, dest="run.view.yaml")
+    except SystemExit:
+        # SystemExit is not an Exception, so it would escape the refresh thread and kill
+        # it outright — offline must cost the remote rows, never the screen
+        return ctx
+    ctx["model_repo"] = cfg["repos"]["model"]
+    ctx["goal"] = goal_tokens(cfg)
+    user = read_status(HOME / STATUS_FILENAME).get("user") or hubio.whoami()
+    ctx["user"] = user
+    try:
+        meta = json.loads(Path(hubio.download_file(ctx["model_repo"], "meta.json")).read_text())
+        ctx["outer_step"] = meta["step"]
+        ctx["val_loss"] = meta.get("eval", {}).get("val_loss")
+    except Exception:
+        pass
+    try:
+        rows = parse_board(
+            fetch_raw(a.repo, "LEADERBOARD.md", HOME / "board.md", ref="ledger").read_text()
+        )
+        ctx["total_tokens"] = sum(r["tokens"] for r in rows)
+        mine = next((r for r in rows if r["user"] == user), None)
+        if mine:
+            ctx |= {"rank": mine["rank"], "of": len(rows), "my_tokens": mine["tokens"]}
+    except OSError:
+        pass
+    try:
+        by: dict[str, int] = {}
+        for p in hubio.list_open_prs(cfg["repos"]["dataset"]):
+            by[p.author] = by.get(p.author, 0) + 1
+        names = " · ".join(
+            f"{u} ×{n}" + (" (you)" if u == user else "")
+            for u, n in sorted(by.items(), key=lambda kv: -kv[1])
+        )
+        ctx["inbox"] = (
+            f"{sum(by.values())} submission(s) awaiting the next tick: {names}"
+            if by
+            else "empty — all submitted work has been aggregated"
+        )
+    except Exception:
+        pass
+    ctx["update_note"] = update_line(a.repo)
+    return ctx
+
+
+def show_progress(a: argparse.Namespace) -> bool:
+    """The live view is the default face of a running worker. `--no-progress` skips it
+    once, `coop progress --auto off` for good; a pipe never gets it at all."""
+    if getattr(a, "no_progress", False):
+        return False
+    if not (sys.stdin.isatty() and sys.stdout.isatty()):
+        return False
+    return bool(read_settings().get("progress_auto", True))
+
+
+def watch(a: argparse.Namespace, mode: str = progress.SIMPLE, once: bool = False) -> None:
+    """The view decides, this acts. Looping rather than recursing so a volunteer can
+    stop and start all evening without stacking frames."""
+    while True:
+        action = progress.view(
+            probe=lambda: probe_local(a),
+            remote=lambda: probe_remote(a),
+            mode=mode,
+            once=once,
+        )
+        if action == progress.STOP:
+            cmd_stop(a)
+            return
+        if action != progress.START:
+            return
+        # the same start a volunteer would type: remembered run, picker if there is none
+        cmd_start(
+            argparse.Namespace(
+                repo=a.repo,
+                model=None,
+                hf_token=None,
+                choose=False,
+                latest=False,
+                device=None,
+                rounds=0,
+                no_progress=True,
+            )
+        )
+
+
+def cmd_progress(a: argparse.Namespace) -> None:
+    if a.auto:
+        on = a.auto == "on"
+        write_settings(progress_auto=on)
+        print(
+            "`coop start` opens the live view — `coop progress` reopens it any time"
+            if on
+            else "`coop start` prints a summary and returns — `coop progress` opens the view"
+        )
+        return
+    watch(a, mode=progress.ADVANCED if a.advanced else progress.SIMPLE, once=a.once)
 
 
 def cmd_status(a: argparse.Namespace) -> None:
@@ -696,6 +794,7 @@ def main() -> None:
     st.add_argument(
         "--rounds", type=int, default=0, help="stop after N rounds (default: run until coop stop)"
     )
+    st.add_argument("--no-progress", action="store_true", help="don't open the live view this once")
 
     rn = sub.add_parser("run", help="talk to the model trained so far (no account needed)")
     rn.add_argument("words", nargs="*", metavar="[latest|model]")
@@ -708,6 +807,14 @@ def main() -> None:
 
     sub.add_parser("stop", help="stop contributing")
     sub.add_parser("status", help="worker and model state")
+
+    pg = sub.add_parser("progress", help="live progress bars you can watch (and stop from)")
+    pg.add_argument(
+        "--auto", choices=["on", "off"], help="open this view automatically from `coop start`"
+    )
+    pg.add_argument("--advanced", action="store_true", help="open on the detailed view")
+    pg.add_argument("--once", action="store_true", help="print one snapshot and exit; for pipes")
+
     lg = sub.add_parser("logs", help="show what the worker is doing")
     lg.add_argument("-f", "--follow", action="store_true")
     lg.add_argument("-n", "--lines", type=int, default=40)
@@ -729,6 +836,8 @@ def main() -> None:
         cmd_stop(a)
     elif a.cmd == "status":
         cmd_status(a)
+    elif a.cmd == "progress":
+        cmd_progress(a)
     elif a.cmd == "logs":
         cmd_logs(a)
     elif a.cmd == "update":
