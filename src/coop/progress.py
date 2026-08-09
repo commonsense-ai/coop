@@ -48,6 +48,13 @@ def bar(frac: float, width: int = 30) -> str:
     return "█" * filled + "░" * (width - filled)
 
 
+TRANSFERS = ("downloading checkpoint", "submitting")  # phases that are one blocking call
+
+
+def fmt_mb(n: int | None) -> str:
+    return f"{(n or 0) / 1e6:.0f} MB"
+
+
 def fmt_eta(secs: float) -> str:
     s = max(0, int(secs))
     if s < 90:
@@ -70,6 +77,14 @@ def phase_progress(st: dict) -> tuple[float | None, str, str]:
         rate = st.get("steps_per_sec") or 0
         eta = f" · ~{fmt_eta((h - i) / rate)} left" if rate else ""
         return i / h, f"inner step {i}/{h} · loss {st.get('loss', '?')}", eta
+    if phase in TRANSFERS and (st.get("phase_secs") or st.get("bytes_total")):
+        # deliberately no fraction: xet hands over a 584MB file in two or three lumps,
+        # so a bar here would sit at 0% for most of a slow download and then jump
+        done, total = st.get("bytes_done"), st.get("bytes_total")
+        # before the first lump lands, the size alone is the reassurance: this is big
+        moved = f" — {fmt_mb(done)} of {fmt_mb(total)}" if done else f" — {fmt_mb(total)}"
+        moved = moved if total else ""
+        return None, f"{phase}{moved} · {fmt_eta(st.get('phase_secs') or 0)} so far", ""
     if phase.startswith("building your data shard") and st.get("shard_total"):
         done, total = st.get("shard_done", 0), st["shard_total"]
         rate = st.get("shard_per_sec") or 0
@@ -91,7 +106,7 @@ def now_line(st: dict) -> str:
         return f"submitted — waiting for {which} (your work merges at the next aggregator tick)"
     frac, what, eta = phase_progress(st)
     if frac is None:
-        return phase
+        return what  # a barless phase still carries its own detail: bytes moved, seconds in
     if phase == "training":
         return f"training — {what}{eta}"
     return f"building your data shard — {what} {bar(frac, 16)} {100 * frac:.0f}%{eta}"

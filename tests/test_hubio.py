@@ -240,3 +240,37 @@ def test_prune_cache_keep_zero_evicts_everything(monkeypatch):
     deleted = fake_cache(monkeypatch, [("pr1", 1), ("pr2", 2), ("pr3", 3)], repo_type="dataset")
     assert hubio.prune_cache("x/model", keep=0, repo_type="dataset") == 3
     assert sorted(deleted) == ["pr1", "pr2", "pr3"]
+
+
+def test_byte_reporter_counts_without_drawing(capsys):
+    """Borrowed from hf_hub_download's tqdm: it must report bytes and print nothing —
+    the daemon's stdout is worker.log, and a progress bar there is unreadable noise."""
+    seen = []
+    reporter = hubio.byte_reporter(lambda done, total: seen.append((done, total)))
+    with reporter(total=584_113_800, unit="B", desc="checkpoint.safetensors") as bar:
+        bar.update(8_329)
+        bar.update(469_515_579)
+    assert seen[0] == (0, 584_113_800)  # the total is known before a byte arrives
+    assert seen[-1] == (469_523_908, 584_113_800)
+    assert capsys.readouterr().err == ""
+
+
+def test_download_checkpoint_reports_bytes_only_for_the_checkpoint(monkeypatch, tmp_path):
+    """meta.json is a few hundred bytes; its total would overwrite the one being waited on."""
+    mock = fake_api(monkeypatch)
+    mock.repo_info.return_value = SimpleNamespace(sha="new")
+    ckpt = tmp_path / hubio.CKPT_FILE
+    save_file({"w": torch.ones(2)}, str(ckpt))
+    meta = tmp_path / hubio.META_FILE
+    meta.write_text(json.dumps({"step": 5}))
+    got = {}
+
+    def fake_download(repo, fn, **kw):
+        got[fn] = kw.get("tqdm_class")
+        return str(ckpt) if fn == hubio.CKPT_FILE else str(meta)
+
+    monkeypatch.setattr(hubio, "hf_hub_download", fake_download)
+    fake_cache(monkeypatch, [])
+    hubio.download_checkpoint("x/model", on_bytes=lambda done, total: None)
+    assert got[hubio.CKPT_FILE] is not None
+    assert got[hubio.META_FILE] is None
