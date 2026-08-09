@@ -1,6 +1,6 @@
 # Leaderboard
 
-Outer step **122** — updated 2026-08-09T00:37:37+00:00.
+Outer step **122** — updated 2026-08-09T00:38:49+00:00.
 
 Val loss at step 122: **4.69** — only 3 measurements so far · 1 of 2 steps improved it · best 4.4831 at step 121 (1 step ago)
 
