@@ -3,13 +3,13 @@
     "cjtsolutions": {
       "devices": {
         "gpu": 56717312,
-        "nvidia-gpu": 1301708800
+        "nvidia-gpu": 1382400000
       },
       "first_seen": 9,
-      "reputation": 0.9998820981542226,
-      "submissions": 86,
+      "reputation": 0.9999044995049203,
+      "submissions": 88,
       "tier": "gpu",
-      "tokens": 1713917952
+      "tokens": 1794609152
     },
     "ezshroom": {
       "devices": {
@@ -31,20 +31,21 @@
     },
     "naloxene": {
       "devices": {
-        "nvidia-gpu": 615997440
+        "nvidia-gpu": 660115456
       },
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 67,
+      "submissions": 69,
       "tier": "gpu",
-      "tokens": 1117523968
+      "tokens": 1161641984
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the two subjects that you learn during the first two weeks of your life:\n(1) Have you ever heard of your life? You know you know you're studying your life? You know, you ask yourself how you're doing your life; and your family might know you just know you're listening to your friends?\n(2) Be sure you're getting the rest of your life!\n(3) Be aware of your life!\n(4) Make a list of your life before you've got the rest of your life. Don't buy those items with your favorite food and",
-    "step": 119,
-    "val_loss": 4.516
+    "sample": "The most important thing to understand about women's lives within the world.\nA lot of women say they are not limited to a lot of women's lives. In their own life, women are often able to achieve their jobs within the workplace. They often feel that they are in an age when they know they can stay on their own.\nThe women in general experience their male roles with women's roles as a source of pride between women and girls are often referred to as a \"message factor.\" They are particularly likely to be a member of a female role being a member of a household leader whose job is to spend a",
+    "spec": "val.bin:8x2@0",
+    "step": 120,
+    "val_loss": 4.4884
   },
-  "step": 119,
-  "updated": "2026-08-08T23:52:33+00:00"
+  "step": 120,
+  "updated": "2026-08-09T00:07:46+00:00"
 }
