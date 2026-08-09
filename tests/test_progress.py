@@ -296,3 +296,18 @@ def test_view_snapshot_survives_an_unreachable_hub():
     out = io.StringIO()
     pg.view(probe=lambda: CTX, remote=boom, out=out, once=True)
     assert "this round" in out.getvalue()
+
+
+def test_the_round_loss_says_which_way_it_is_moving():
+    """The number alone reads the same whether it is climbing or falling."""
+    falling = pg.render(CTX | {"st": TRAINING | {"loss_dir": -1}}, pg.SIMPLE)
+    assert "loss 3.21 ↓" in "\n".join(falling)
+    rising = pg.render(CTX | {"st": TRAINING | {"loss_dir": 1}}, pg.SIMPLE)
+    assert "loss 3.21 ↑" in "\n".join(rising)
+
+
+def test_the_round_loss_claims_no_direction_it_cannot_see():
+    """Nothing yet, and the deadband, both render as a bare number."""
+    for st in (TRAINING, TRAINING | {"loss_dir": 0}):
+        _, what, _ = pg.phase_progress(st)
+        assert what == "inner step 240/500 · loss 3.21"
