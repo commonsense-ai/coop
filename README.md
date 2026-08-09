@@ -131,7 +131,7 @@ and the first round go by:
 ```
 coop · fineweb-150m · naloxene · Apple GPU
 
-this round   ████████████░░░░░░░░░░░░  51.2%  inner step 256/500 · loss 3.21 · ~2m 02s left
+this round   ████████████░░░░░░░░░░░░  51.2%  inner step 256/500 · loss 3.21 ↓ · ~2m 02s left
 the model    ███░░░░░░░░░░░░░░░░░░░░░  12.4%  37.2M of ~300.0M tokens
 your share   ██░░░░░░░░░░░░░░░░░░░░░░   6.6%  rank 2 of 14 · 2,457,600 tokens
 
@@ -146,6 +146,12 @@ your share   ██░░░░░░░░░░░░░░░░░░░░�
 Left/right swaps the simple view for the advanced one (every field `coop status`
 prints). Up/down and enter stop the worker without leaving the screen. `q` leaves the
 screen and keeps training — closing the view never stops anything.
+
+The round's loss is the newest step's, refreshed as fast as the screen redraws, and the
+arrow is where it is heading — a short average against a longer one, blank while the two
+are too close to separate. It is a claim about your machine's current round only. Whether
+the *model* is learning is the separate line under the community bar, and that one is
+fitted over the val-loss history rather than read off a single number.
 
 ```sh
 coop progress            # reopen it any time (`--advanced` starts on the detail view)
