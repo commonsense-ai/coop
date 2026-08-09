@@ -54,7 +54,7 @@ def _shard(tmp_path):
 def test_worker_flushes_partial_round_on_stop(tmp_path, monkeypatch):
     torch.manual_seed(0)
     state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
-    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo: (state, {"step": 3}))
+    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo, **kw: (state, {"step": 3}))
     monkeypatch.setattr(hubio, "whoami", lambda: "tester")
 
     delta_path, meta_path = run_worker(
@@ -73,7 +73,7 @@ def test_worker_flushes_partial_round_on_stop(tmp_path, monkeypatch):
 
 def test_worker_stopped_before_training_submits_nothing(tmp_path, monkeypatch):
     state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
-    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo: (state, {"step": 3}))
+    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo, **kw: (state, {"step": 3}))
 
     out = run_worker(
         CFG, _shard(tmp_path), out_dir=str(tmp_path / "out"), do_submit=False, stop=StopAfter(0)
@@ -84,7 +84,7 @@ def test_worker_stopped_before_training_submits_nothing(tmp_path, monkeypatch):
 def test_worker_round_produces_delta_and_meta(tmp_path, monkeypatch):
     torch.manual_seed(0)
     state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
-    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo: (state, {"step": 3}))
+    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo, **kw: (state, {"step": 3}))
     monkeypatch.setattr(hubio, "whoami", lambda: "tester")
 
     bin_path = tmp_path / "shard.bin"
@@ -131,7 +131,7 @@ def test_delta_keys_survive_compile_wrapping(tmp_path, monkeypatch):
 
     torch.manual_seed(0)
     state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
-    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo: (state, {"step": 3}))
+    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo, **kw: (state, {"step": 3}))
     monkeypatch.setattr(hubio, "whoami", lambda: "tester")
     monkeypatch.setattr(torch, "compile", lambda m, **kw: Wrapped(m))
 

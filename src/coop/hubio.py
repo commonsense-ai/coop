@@ -124,11 +124,51 @@ def prune_cache(
         return 0
 
 
+def byte_reporter(on_bytes):
+    """hf_hub_download drives a tqdm; borrow it as a byte counter and render nothing —
+    the daemon's stdout is a log file, and HF_HUB_DISABLE_PROGRESS_BARS is set anyway.
+
+    Coarse by nature: xet reports a 584MB checkpoint in two or three block-sized lumps,
+    so these counts jump. Callers must not draw a bar from them."""
+    from tqdm import tqdm
+
+    class Sink:
+        """Not `disable=True`: that makes tqdm.update() return before it counts, which
+        is the one thing we want from it. Take the bar's output instead."""
+
+        def write(self, *_):
+            pass
+
+        def flush(self):
+            pass
+
+        def isatty(self):
+            return False
+
+    class Reporter(tqdm):
+        def __init__(self, *a, **kw):
+            kw["file"] = Sink()
+            super().__init__(*a, **kw)
+            on_bytes(0, int(self.total or 0))
+
+        def update(self, n=1):
+            done = super().update(n)
+            on_bytes(int(self.n), int(self.total or 0))
+            return done
+
+    return Reporter
+
+
 @_transfer
-def download_checkpoint(model_repo: str, revision: str = "main") -> tuple[dict, dict]:
+def download_checkpoint(
+    model_repo: str, revision: str = "main", on_bytes=None
+) -> tuple[dict, dict]:
     if revision == "main":
         revision = resolve_revision(model_repo)
-    ckpt = hf_hub_download(model_repo, CKPT_FILE, revision=revision, token=token())
+    # only the checkpoint is worth counting: meta.json is a few hundred bytes, and its
+    # total would overwrite the one the volunteer is waiting on
+    extra = {"tqdm_class": byte_reporter(on_bytes)} if on_bytes else {}
+    ckpt = hf_hub_download(model_repo, CKPT_FILE, revision=revision, token=token(), **extra)
     meta = hf_hub_download(model_repo, META_FILE, revision=revision, token=token())
     state = load_file(ckpt), json.loads(Path(meta).read_text())
     prune_cache(model_repo, current=revision)  # after the read: the bytes are in hand

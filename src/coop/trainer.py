@@ -23,6 +23,7 @@ from coop.device import (
     unusable,
 )
 from coop.model import GPT, GPTConfig, load_canonical_state
+from coop.status import Heartbeat
 
 log = logging.getLogger(__name__)
 
@@ -117,9 +118,8 @@ def run_worker(
     inner = cfg["inner"]
     # TF32 for any matmul that stays fp32; a no-op off cuda
     torch.set_float32_matmul_precision("high")
-    if status:
-        status.update(phase="downloading checkpoint")
-    state, ckpt_meta = hubio.download_checkpoint(cfg["repos"]["model"])
+    with Heartbeat(status, "downloading checkpoint") as beat:
+        state, ckpt_meta = hubio.download_checkpoint(cfg["repos"]["model"], on_bytes=beat.bytes)
     start_step = ckpt_meta["step"]
     log.info("starting from outer step %d", start_step)
 
@@ -217,12 +217,13 @@ def run_worker(
     )
 
     if do_submit:
-        if status:
-            status.update(phase="submitting")
-        if accumulator is not None and not dry_run:
-            info = submit.submit_accumulated(cfg, accumulator, raw_delta, meta, out_dir=out)
-        else:
-            info = submit.submit(cfg, str(delta_path), meta, dry_run=dry_run, out_dir=out)
+        # the upload has no byte hook, but ~75MB of int4 delta is minutes on a slow link:
+        # the tick alone is what keeps it from reading as a hang
+        with Heartbeat(status, "submitting"):
+            if accumulator is not None and not dry_run:
+                info = submit.submit_accumulated(cfg, accumulator, raw_delta, meta, out_dir=out)
+            else:
+                info = submit.submit(cfg, str(delta_path), meta, dry_run=dry_run, out_dir=out)
         url = getattr(info, "pr_url", None)
         if status and url:
             status.update(last_pr=str(url))

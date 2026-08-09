@@ -101,6 +101,40 @@ def test_phase_progress_reports_the_shard_build():
     assert frac == 0.25 and what == "tokenizing"
 
 
+def test_a_transfer_says_how_long_it_has_been_going():
+    """584MB on a home link is a 20-minute silence that volunteers reported as stuck."""
+    frac, what, _ = pg.phase_progress(
+        {
+            "phase": "downloading checkpoint",
+            "phase_secs": 192,
+            "bytes_done": 470_000_000,
+            "bytes_total": 584_113_800,
+        }
+    )
+    assert frac is None  # xet reports in lumps; a bar would sit at 0% and then jump
+    assert what == "downloading checkpoint — 470 MB of 584 MB · 3m 12s so far"
+    assert pg.now_line({"phase": "submitting", "phase_secs": 96}) == "submitting · 1m 36s so far"
+
+
+def test_a_transfer_with_no_byte_count_still_shows_the_clock():
+    """Only the checkpoint download reports bytes; the upload has no hook at all."""
+    _, what, _ = pg.phase_progress({"phase": "submitting", "phase_secs": 30})
+    assert what == "submitting · 30s so far"
+
+
+def test_a_transfer_shows_the_size_before_the_first_lump_arrives():
+    """xet counts nothing for the first seconds; '0 MB of 584 MB' reads like a stall."""
+    _, what, _ = pg.phase_progress(
+        {
+            "phase": "downloading checkpoint",
+            "phase_secs": 4,
+            "bytes_done": 0,
+            "bytes_total": 584_113_800,
+        }
+    )
+    assert what == "downloading checkpoint — 584 MB · 4s so far"
+
+
 def test_phase_progress_promises_no_bar_without_numbers():
     """A phase with nothing to measure must not render an empty bar at 0%."""
     assert pg.phase_progress({"phase": "downloading checkpoint"}) == (
