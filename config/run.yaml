@@ -44,7 +44,9 @@ outer:
   method: trimmed_mean
   trim_frac: 0.2
   min_cos: 0.0
-  max_norm: 10.0
+  max_norm: 150.0        # outlier guard, ~2x an honest full round — NOT the step-size knob
+                         # (that is lr). Must scale with the model: an absolute L2 over the
+                         # flattened delta gets tighter as parameters grow. See test_config.
   max_val_regression: 0.3  # tighter breaker: stage-2 steps move val loss less than stage 1's
   probation_weight: 0.25   # unproven identities vote at quarter influence until first accept
   credit: sum_distinct     # pay every genuinely-different round, capped at plausible size
