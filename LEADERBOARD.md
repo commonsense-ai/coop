@@ -1,14 +1,14 @@
 # Leaderboard
 
-Outer step **125** — updated 2026-08-09T01:22:48+00:00.
+Outer step **126** — updated 2026-08-09T02:00:28+00:00.
 
-Val loss at step 125: **4.8607** — RISING, +0.00079 per 1M tokens (±0.000178) — training is not converging · 2 of 5 steps improved it · best 4.4831 at step 121 (4 steps ago)
+Val loss at step 126: **5.1128** — RISING, +0.000927 per 1M tokens (±0.000137) — training is not converging · 2 of 6 steps improved it · best 4.4831 at step 121 (5 steps ago)
 
-`▁▁▁▁▁▁▁▁▁▁▅▅▅▅▅▅▅▃▃▃▃▃▃▃▃▃██████`  loss against tokens, 3.5B → 4.0B
+`▁▁▁▁▁▁▁▃▃▃▃▃▃▂▂▂▂▂▂▂▅▅▅▅▅▅▅▅▅▅▅█`  loss against tokens, 3.5B → 4.2B
 
 Sample:
 
-> The most important thing to understand about them anyway isn’t always clear. Certainly your favorite car works great? Nothing else is affected except on our lives! Thousands of them are happy to win them anyway at school! Join Mr. Gregory Blake to submit a letter to your friend. Give us a call today. Click here.As we learn everything about food and nutrition, we want to inspire our children to participate in healthy lifestyle. Walking and eating habits are essential for our body and our bodies throughout life. Thousands of people suffer from insomnia, rheumatoid arthritis, autoimmune disease, obesity, autoimmune diseases, obesity and obesity. Eating healthy meals
+> The most important thing to understand about the topic! What’s your job? What’s the best way? What’s the best thing? What’s your job? What’s the best way to incorporate your knowledge? What’s the best way? Are we ready? Are you expecting? What’s your favorite? What’s your favorite? Show your mind is just waiting for you. Either one of you! Share your thoughts and feelings. Describe your thoughts around you! Share your thoughts and feelings. Identify your thoughts about yourself. Write a conversation, and inspire your thoughts to solve your thoughts. Identify your
 
 **Running coop from before 0.3.0?** If `coop update` answers `invalid choice`,
 your copy predates it. Reinstall once —
@@ -23,7 +23,7 @@ Hardware lists every machine a contributor has trained on, biggest share first.
 
 | # | Contributor | Hardware | Accepted | Tokens | Reputation | Score |
 |---|-------------|----------|----------|--------|------------|-------|
-| 1 | cjtsolutions | nvidia-gpu | 95 | 2,084,196,352 | 1.000 | 2,084,101,151 |
+| 1 | cjtsolutions | nvidia-gpu | 97 | 2,242,301,952 | 1.000 | 2,242,218,989 |
 | 2 | naloxene | nvidia-gpu | 77 | 1,360,060,416 | 1.000 | 1,360,060,416 |
 | 3 | ezshroom | apple-gpu | 177 | 585,740,288 | 1.000 | 585,740,288 |
 | 4 | miacx | cpu | 4 | 3,186,688 | 1.000 | 3,186,688 |
