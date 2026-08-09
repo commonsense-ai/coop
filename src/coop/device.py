@@ -5,7 +5,9 @@ disagree about what a donor is running on.
 """
 
 import functools
+import importlib.util
 import logging
+import os
 import re
 import shutil
 import subprocess
@@ -15,14 +17,15 @@ import torch
 
 log = logging.getLogger(__name__)
 
-PLAIN = {"cuda": "NVIDIA GPU", "mps": "Apple GPU", "cpu": "CPU"}
-# leaderboard spelling; xla is here so a TPU round labels itself the day TPUs land
+PLAIN = {"cuda": "NVIDIA GPU", "mps": "Apple GPU", "xla": "Google TPU", "cpu": "CPU"}
+# leaderboard spelling; a TPU round labels itself google-tpu now that xla trains
 KIND = {"cuda": "nvidia-gpu", "mps": "apple-gpu", "xla": "google-tpu", "cpu": "cpu"}
 CUDA_FIX = "install a CUDA torch: `uv pip install --torch-backend auto torch`"
 NEWER_FIX = "update your NVIDIA driver, then: `uv pip install -U --torch-backend auto torch`"
 OLD_CARD = "only an older torch still ships kernels for this card"
 # cudaErrorNoKernelImageForDevice, as torch words it when a launch finds no cubin
 NO_KERNEL = "no kernel image is available"
+XLA_FIX = "torch_xla has to be installed for your torch: https://github.com/pytorch/xla"
 
 
 class Gap(NamedTuple):
@@ -35,6 +38,8 @@ class Gap(NamedTuple):
 def pick_device() -> str:
     if torch.cuda.is_available() and not arch_gap():
         return "cuda"
+    if tpu_present():
+        return "xla"
     if torch.backends.mps.is_available():
         return "mps"
     return "cpu"
@@ -48,9 +53,17 @@ def kind(device: str) -> str:
     return KIND.get(device.partition(":")[0], "cpu")
 
 
+def resolve(name: str) -> str:
+    """`tpu` is what a volunteer types; `xla` is the only spelling torch answers to."""
+    return "xla" if name == "tpu" else name
+
+
 def describe(device: str) -> str:
     """The name a donor recognises — their actual card when torch will tell us."""
     base, _, index = device.partition(":")
+    if base == "xla":
+        accel = os.environ.get("TPU_ACCELERATOR_TYPE")  # set on every TPU VM
+        return f"{PLAIN['xla']} ({accel})" if accel else PLAIN["xla"]
     if base != "cuda":
         return PLAIN.get(base, device)
     try:
@@ -74,6 +87,59 @@ def nvidia_present() -> bool:
         return p.returncode == 0 and "GPU" in p.stdout
     except Exception:
         return False
+
+
+@functools.cache
+def _xla():
+    """torch_xla, but only where a TPU is actually attached.
+
+    Importing it is what registers the `xla` backend with torch, and it starts the
+    XLA runtime as a side effect — far too much to pay on every `coop status`, so
+    the spec lookup gates it. XLA also targets CPU and CUDA; both are slower than
+    the native paths coop already has, so only a TPU counts as a reason to use it."""
+    if importlib.util.find_spec("torch_xla") is None:
+        return None  # the overwhelmingly common case, and it costs one path lookup
+    try:
+        import torch_xla
+        from torch_xla.runtime import device_type
+
+        return torch_xla if device_type() == "TPU" else None
+    except Exception:
+        return None  # a half-installed plugin must not break an ordinary machine
+
+
+def tpu_present() -> bool:
+    return _xla() is not None
+
+
+def step_sync(device: str):
+    """XLA is lazy: without a boundary, inner steps pile into one graph that is only
+    compiled when something finally reads a tensor. One sync per step is the shape
+    torch_xla expects. A no-op everywhere else, so the training loop stays one loop."""
+    xla = _xla() if device.startswith("xla") else None
+    if xla is None:
+        return lambda: None
+    if hasattr(xla, "sync"):  # torch_xla 2.5+; mark_step is the older spelling
+        return xla.sync
+    from torch_xla.core.xla_model import mark_step
+
+    return mark_step
+
+
+def inference_device(name: str | None = None) -> str:
+    """What to generate on. Generation grows the sequence by a token each step and
+    XLA recompiles for every new shape, so a TPU is the slowest thing on the machine
+    to play with — its host CPU answers sooner."""
+    device = resolve(name) if name else pick_device()
+    return "cpu" if device.startswith("xla") else device
+
+
+def unusable(device: str) -> str | None:
+    """Why an explicitly requested device can't be trained on. Checked once at
+    startup, because the alternative is finding out inside the round loop."""
+    if device.startswith("xla") and not tpu_present():
+        return f"no TPU here, or torch_xla isn't installed — {XLA_FIX}"
+    return None
 
 
 def compiled_archs() -> tuple[list[int], list[int]]:

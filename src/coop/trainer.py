@@ -13,26 +13,43 @@ from safetensors.torch import save_file
 
 from coop import hubio, load_config, setup_logging, submit
 from coop.data import iter_batches
-from coop.device import cpu_fallback, kernel_missing, kind, pick_device
+from coop.device import (
+    cpu_fallback,
+    kernel_missing,
+    kind,
+    pick_device,
+    resolve,
+    step_sync,
+    unusable,
+)
 from coop.model import GPT, GPTConfig, load_canonical_state
 
 log = logging.getLogger(__name__)
+
+
+def _autocast_probe(device: str) -> bool:
+    """One probe matmul beats sniffing versions, and it can never poison a real round.
+
+    Broad except on purpose: this only chooses between bf16 and fp32, so anything a
+    plugin throws has to read as "no bf16". Raising here would surface inside the
+    round loop, which retries — and a permanent failure retried is an endless one."""
+    try:
+        with torch.autocast(device.split(":")[0], dtype=torch.bfloat16):
+            a = torch.ones(2, 2, device=device)
+            (a @ a).sum().item()
+        return True
+    except Exception:
+        return False
 
 
 @functools.cache
 def _bf16_ok(device: str) -> bool:
     if device.startswith("cuda"):
         return torch.cuda.is_bf16_supported()
-    if device == "mps":
-        # bf16-on-MPS depends on torch build + macOS version; one probe matmul
-        # beats version sniffing and never poisons a real round
-        try:
-            with torch.autocast("mps", dtype=torch.bfloat16):
-                a = torch.ones(2, 2, device="mps")
-                (a @ a).sum().item()
-            return True
-        except (RuntimeError, TypeError):
-            return False
+    # bf16-on-MPS depends on the torch build and the macOS version; bf16-on-XLA on
+    # the torch_xla version, though a TPU itself is bf16-native. Both answer a probe
+    if device == "mps" or device.startswith("xla"):
+        return _autocast_probe(device)
     return False
 
 
@@ -125,6 +142,7 @@ def run_worker(
     batches = iter_batches(data_bin, inner["batch_size"], cfg["model"]["block_size"], seed=seed)
     params = list(model.parameters())  # 148 tensors; rebuilding the list every step is waste
     pin = device.startswith("cuda")  # non_blocking only overlaps from pinned memory
+    sync = step_sync(device)  # closes the XLA graph each step; a no-op off TPU
     h = h_override or inner["h_steps"]
     t0 = time.time()
     model.train()
@@ -144,6 +162,7 @@ def run_worker(
         loss.backward()
         clip_grads(params, inner["grad_clip"], device)
         opt.step()
+        sync()
         steps_done = i + 1
         if i % 10 == 0 or i == h - 1:
             log.info("inner step %d/%d loss %.4f", i + 1, h, loss.item())
@@ -216,7 +235,7 @@ def main():
     ap.add_argument("--config", default="config/run.yaml")
     ap.add_argument("--data", required=True, help="token .bin (see python -m coop.data)")
     ap.add_argument("--out", default="out")
-    ap.add_argument("--device", default=pick_device())
+    ap.add_argument("--device", default=pick_device(), help="cuda | mps | tpu | cpu")
     ap.add_argument("--precision", default="auto", choices=["auto", "bf16", "fp32"])
     ap.add_argument(
         "--compile",
@@ -230,6 +249,9 @@ def main():
     ap.add_argument("--loop", action="store_true", help="run rounds until interrupted")
     ap.add_argument("--pause", type=int, default=60, help="retry delay after a failed round")
     a = ap.parse_args()
+    a.device = resolve(a.device)
+    if why := unusable(a.device):
+        raise SystemExit(why)
     cfg = load_config(a.config)
     acc = submit.StepAccumulator() if cfg["inner"].get("accumulate_rounds") else None
     rnd, h_next = 0, None

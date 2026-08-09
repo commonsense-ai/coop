@@ -2,8 +2,11 @@
 state. That covers the logic; it does not prove a real driver behaves this way."""
 
 import argparse
+import importlib.util
 import json
 import os
+import sys
+import types
 from types import SimpleNamespace
 
 import pytest
@@ -12,14 +15,51 @@ import torch
 import coop.cli as cli
 from coop import device as dev
 
+PROBES = (dev.nvidia_present, dev.arch_gap, dev._xla)
+
 
 @pytest.fixture(autouse=True)
 def _no_cached_probe():
-    for probe in (dev.nvidia_present, dev.arch_gap):
+    for probe in PROBES:
         probe.cache_clear()
     yield
-    for probe in (dev.nvidia_present, dev.arch_gap):
+    for probe in PROBES:
         probe.cache_clear()
+
+
+def fake_torch_xla(monkeypatch, *, kind="TPU", sync=True, broken=False):
+    """Stand in for the plugin. No TPU on any machine that runs these tests, so what
+    is under test is the import gate and the wiring — never the runtime itself."""
+    calls: list[str] = []
+    xla = types.ModuleType("torch_xla")
+    runtime = types.ModuleType("torch_xla.runtime")
+    core = types.ModuleType("torch_xla.core")
+    xla_model = types.ModuleType("torch_xla.core.xla_model")
+
+    def device_type():
+        if broken:
+            raise RuntimeError("libtpu is not where it should be")
+        return kind
+
+    runtime.device_type = device_type
+    xla_model.mark_step = lambda: calls.append("mark_step")
+    if sync:
+        xla.sync = lambda: calls.append("sync")
+    xla.runtime, xla.core, core.xla_model = runtime, core, xla_model
+    for name, mod in [
+        ("torch_xla", xla),
+        ("torch_xla.runtime", runtime),
+        ("torch_xla.core", core),
+        ("torch_xla.core.xla_model", xla_model),
+    ]:
+        monkeypatch.setitem(sys.modules, name, mod)
+    real = importlib.util.find_spec
+    monkeypatch.setattr(
+        importlib.util,
+        "find_spec",
+        lambda n, *a, **k: object() if n == "torch_xla" else real(n, *a, **k),
+    )
+    return calls
 
 
 ADA = ["sm_50", "sm_60", "sm_70", "sm_75", "sm_80", "sm_86", "sm_90"]  # a pre-Blackwell wheel
@@ -201,6 +241,106 @@ def test_fallback_says_why_and_keeps_the_machine_working(monkeypatch, caplog):
     with caplog.at_level("WARNING"):
         assert dev.cpu_fallback() == "cpu"
     assert "sm_120" in caplog.text and dev.NEWER_FIX in caplog.text
+
+
+def no_other_accelerator(monkeypatch):
+    monkeypatch.setattr(torch.cuda, "is_available", lambda: False)
+    monkeypatch.setattr(torch.backends.mps, "is_available", lambda: False)
+
+
+def test_a_tpu_is_trained_on_when_one_is_attached(monkeypatch):
+    no_other_accelerator(monkeypatch)
+    fake_torch_xla(monkeypatch)
+    assert dev.tpu_present()
+    assert dev.pick_device() == "xla"
+
+
+def test_xla_pointed_at_a_cpu_or_a_gpu_is_not_a_tpu(monkeypatch):
+    """torch_xla also targets CPU and CUDA, and both are slower through XLA than the
+    native paths coop already has. Only a TPU is a reason to route through it."""
+    no_other_accelerator(monkeypatch)
+    fake_torch_xla(monkeypatch, kind="CPU")
+    assert not dev.tpu_present()
+    assert dev.pick_device() == "cpu"
+
+
+def test_a_machine_without_the_plugin_never_imports_it(monkeypatch):
+    """The gate is a path lookup: importing torch_xla starts the XLA runtime, which
+    no `coop status` on an ordinary laptop should ever pay for."""
+    no_other_accelerator(monkeypatch)
+    monkeypatch.delitem(sys.modules, "torch_xla", raising=False)
+    assert not dev.tpu_present()
+    assert "torch_xla" not in sys.modules
+
+
+def test_a_half_installed_plugin_is_not_an_error(monkeypatch):
+    no_other_accelerator(monkeypatch)
+    fake_torch_xla(monkeypatch, broken=True)
+    assert not dev.tpu_present()
+    assert dev.pick_device() == "cpu"
+
+
+def test_each_step_closes_the_xla_graph(monkeypatch):
+    """Without this the inner loop piles every step into one graph, compiled only
+    when something finally reads a tensor."""
+    calls = fake_torch_xla(monkeypatch)
+    sync = dev.step_sync("xla")
+    sync()
+    sync()
+    assert calls == ["sync", "sync"]
+
+
+def test_older_torch_xla_spells_it_mark_step(monkeypatch):
+    calls = fake_torch_xla(monkeypatch, sync=False)
+    dev.step_sync("xla")()
+    assert calls == ["mark_step"]
+
+
+def test_the_sync_is_free_on_every_other_device(monkeypatch):
+    calls = fake_torch_xla(monkeypatch)
+    dev.step_sync("cuda")()
+    dev.step_sync("cpu")()
+    assert calls == []
+
+
+def test_a_tpu_round_labels_itself_on_the_board():
+    """The board already had a word for this before TPUs could train; a round now
+    reaching it must use that word rather than inventing a second spelling."""
+    assert dev.kind("xla") == dev.kind("xla:0") == "google-tpu"
+
+
+def test_volunteers_type_tpu_and_torch_hears_xla():
+    assert dev.resolve("tpu") == "xla"
+    assert dev.resolve("cuda") == "cuda" and dev.resolve("cpu") == "cpu"
+
+
+def test_asking_for_a_tpu_without_one_says_so_before_training(monkeypatch):
+    no_other_accelerator(monkeypatch)
+    why = dev.unusable("xla")
+    assert "torch_xla" in why
+    assert dev.unusable("cpu") is None
+
+
+def test_no_complaint_when_the_tpu_is_really_there(monkeypatch):
+    fake_torch_xla(monkeypatch)
+    assert dev.unusable("xla") is None
+
+
+def test_generation_stays_off_the_tpu(monkeypatch):
+    """XLA recompiles per sequence length, so playing on a TPU is the slow answer."""
+    no_other_accelerator(monkeypatch)
+    fake_torch_xla(monkeypatch)
+    assert dev.pick_device() == "xla"  # training does want it
+    assert dev.inference_device() == "cpu"
+    assert dev.inference_device("tpu") == "cpu"  # even when asked for by name
+    assert dev.inference_device("cuda") == "cuda"
+
+
+def test_a_tpu_is_named_by_its_generation(monkeypatch):
+    monkeypatch.setenv("TPU_ACCELERATOR_TYPE", "v5litepod-1")
+    assert dev.describe("xla") == "Google TPU (v5litepod-1)"
+    monkeypatch.delenv("TPU_ACCELERATOR_TYPE")
+    assert dev.describe("xla:0") == "Google TPU"
 
 
 def test_no_nvidia_smi_means_no_subprocess_at_all(monkeypatch):

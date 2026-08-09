@@ -54,6 +54,9 @@ job aggregates them into outer steps on a public HF model repo.
   asked for. Do not widen this to workers that are merely slow or unlucky.
 - A pseudo-gradient is only worth sending for `staleness.tau_max` outer steps. Anything
   parked on disk past that is discarded, not uploaded — the aggregator would reject it.
+- Never import `torch_xla` at module scope. The import is what registers the `xla`
+  backend, and it starts the XLA runtime as a side effect — it stays gated behind a
+  `find_spec` check so only a machine with a TPU ever pays for it.
 - Never pin torch to the CPU index in `[tool.uv.sources]` unqualified: uv applies a
   package's sources to `uvx`/`pip install git+...`, so the pin follows the package onto
   volunteers' machines and strands GPU donors on CPU. CI opts in with `--extra cpu`.

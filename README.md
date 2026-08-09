@@ -197,7 +197,26 @@ same `coop` executable.
 
 Prefer a foreground one-off? `uvx --from git+https://github.com/commonsense-ai/coop
 coop-join --hf-token hf_...` runs rounds until ctrl-c (`--once` for a single round,
-`--device cuda|mps|cpu` to override).
+`--device cuda|mps|tpu|cpu` to override).
+
+## Got a TPU?
+
+coop trains on one when `torch_xla` is importable and it reports a real TPU —
+detection is automatic, and rounds land on the leaderboard at `tpu` tier. The
+catch is the environment: `torch_xla` is version-locked to torch, so it has to be
+installed into the *same* env as coop. From a clone (`uv pip install torch_xla`
+matched to your torch, then `uv run python -m coop.trainer --data ... --loop`) you
+control both, which is why that's the route we'd suggest on a TPU VM. `uvx --with
+torch_xla --from git+https://github.com/commonsense-ai/coop coop-join` is the
+one-liner shape if you'd rather; whether it resolves depends on your torch.
+
+Two things to know before you spend a TPU on this. A single worker process uses one
+chip — on a v5e-8 that's an eighth of the board, since coop doesn't spawn per-core
+replicas. And at 15M parameters the steps are small enough that XLA compilation and
+host overhead eat much of the advantage, so a mid-range GPU is likely to out-earn a
+TPU here. Playing with the model (`coop run`) deliberately stays on the CPU: XLA
+recompiles for every new sequence length, which makes generation slower on a TPU
+than off it.
 
 From a clone, the equivalent is:
 
