@@ -31,21 +31,22 @@
     },
     "naloxene": {
       "devices": {
+        "apple-gpu": 819200,
         "nvidia-gpu": 858533888
       },
       "first_seen": 1,
       "reputation": 1.0,
-      "submissions": 77,
+      "submissions": 78,
       "tier": "gpu",
-      "tokens": 1360060416
+      "tokens": 1360879616
     }
   },
   "eval": {
-    "sample": "The most important thing to understand about the cause of eczema? What causes endometritis? Should endometritis be contagious or itchy when coughingy. Numerous studies suggest that endometrium is associated with endometrial ovarian endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometrial endometungal endometrial endometrial endometrial endomet\ufffd endometrial endomet",
+    "sample": "The most important thing to understand about this scenario. Anyone knows that if a mathematician agrees on the idea of his conscience may not have been regarded as a kind of devotion. Another benefit from this scholarly ideas may have been the quest of the poetry. Sadly astronomers have more ideas to examine how a mathematician does relate to the story. Perhaps the narrator thinks about his narrator. Another option would look great and so this is more likely to explain the concept of miracles. Nevertheless, the narrator is obliged to understand the teachings of scripture and the concept of miracles. Hence, the narrator derives for this conscience. Fortunately, this does not happen. Yet this",
     "spec": "val.bin:8x2@0",
-    "step": 127,
-    "val_loss": 5.0743
+    "step": 128,
+    "val_loss": 5.1446
   },
-  "step": 127,
-  "updated": "2026-08-09T02:52:43+00:00"
+  "step": 128,
+  "updated": "2026-08-17T01:30:20+00:00"
 }

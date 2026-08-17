@@ -6,3 +6,4 @@
 {"at": "2026-08-09T01:22:48+00:00", "contributors": 2, "spec": "val.bin:8x2@0", "step": 125, "tokens": 4033183744, "val_loss": 4.8607}
 {"at": "2026-08-09T02:00:28+00:00", "contributors": 1, "spec": "val.bin:8x2@0", "step": 126, "tokens": 4191289344, "val_loss": 5.1128}
 {"at": "2026-08-09T02:52:43+00:00", "contributors": 1, "spec": "val.bin:8x2@0", "step": 127, "tokens": 4295737344, "val_loss": 5.0743}
+{"at": "2026-08-17T01:30:20+00:00", "contributors": 1, "spec": "val.bin:8x2@0", "step": 128, "tokens": 4296556544, "val_loss": 5.1446}
