@@ -57,6 +57,18 @@ def fmt_eta(secs: float) -> str:
     return f"{s // 3600}h {s % 3600 // 60:02d}m"
 
 
+ARROWS = {-1: " ↓", 1: " ↑"}
+
+
+def loss_arrow(st: dict) -> str:
+    """Which way this round's loss is moving, on the worker's own numbers.
+
+    A narrower claim than the trend line below it: a round descends on its own while
+    the model as a whole may be going nowhere, so this says nothing about the run —
+    only that the machine in front of you is making progress on the batch it holds."""
+    return ARROWS.get(st.get("loss_dir") or 0, "")
+
+
 def phase_progress(st: dict) -> tuple[float | None, str, str]:
     """(fraction, what it's doing, time left) for the work in flight. The fraction
     is None whenever the worker is between measurable things — say so, promise no bar."""
@@ -69,7 +81,7 @@ def phase_progress(st: dict) -> tuple[float | None, str, str]:
         i, h = st.get("inner_step", 0), st["h_steps"]
         rate = st.get("steps_per_sec") or 0
         eta = f" · ~{fmt_eta((h - i) / rate)} left" if rate else ""
-        return i / h, f"inner step {i}/{h} · loss {st.get('loss', '?')}", eta
+        return i / h, f"inner step {i}/{h} · loss {st.get('loss', '?')}{loss_arrow(st)}", eta
     if phase.startswith("building your data shard") and st.get("shard_total"):
         done, total = st.get("shard_done", 0), st["shard_total"]
         rate = st.get("shard_per_sec") or 0

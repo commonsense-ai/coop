@@ -9,7 +9,14 @@ from safetensors.torch import load_file
 from coop import hubio
 from coop.model import GPT, GPTConfig, canonical_state
 from coop.submit import dequantize_delta
-from coop.trainer import autocast_ctx, clip_grads, make_adamw, pick_device, run_worker
+from coop.trainer import (
+    autocast_ctx,
+    clip_grads,
+    loss_direction,
+    make_adamw,
+    pick_device,
+    run_worker,
+)
 
 CFG = {
     "repos": {"model": "x/model", "dataset": "x/inbox"},
@@ -191,3 +198,60 @@ def test_clip_survives_a_parameter_that_never_got_a_gradient():
 
 def test_clip_with_nothing_to_clip_is_not_an_error():
     clip_grads([torch.zeros(2)], 1.0, "cpu")
+
+
+def test_loss_direction_needs_the_averages_to_separate():
+    """A per-step loss bounces; one difference is not a direction."""
+    assert loss_direction(3.0, 3.5) == -1
+    assert loss_direction(3.5, 3.0) == 1
+    assert loss_direction(3.0, 3.0) == 0
+    assert loss_direction(3.000, 3.001) == 0  # inside the deadband
+    assert loss_direction(float("nan"), 3.0) == 0
+    assert loss_direction(0.0, 0.0) == 0  # no division by a zero loss
+
+
+class Recorder:
+    """Stands in for StatusFile and keeps every training update it is handed."""
+
+    def __init__(self):
+        self.rows = []
+
+    def update(self, **f):
+        if f.get("phase") == "training":
+            self.rows.append((f["inner_step"], f["loss"], f["loss_dir"]))
+
+
+def _round_with_status(tmp_path, monkeypatch, h, every):
+    torch.manual_seed(0)
+    state = canonical_state(GPT.from_config(GPTConfig(**CFG["model"])))
+    monkeypatch.setattr(hubio, "download_checkpoint", lambda repo: (state, {"step": 3}))
+    monkeypatch.setattr(hubio, "whoami", lambda: "tester")
+    monkeypatch.setattr("coop.trainer.PUBLISH_EVERY", every)
+    rec = Recorder()
+    run_worker(
+        CFG,
+        _shard(tmp_path),
+        out_dir=str(tmp_path / "out"),
+        do_submit=False,
+        h_override=h,
+        status=rec,
+    )
+    return rec.rows
+
+
+def test_every_step_is_published_when_the_steps_are_slower_than_the_screen(tmp_path, monkeypatch):
+    """The point of the exercise: a volunteer watching sees the newest step, not a
+    number that only moves once every ten."""
+    rows = _round_with_status(tmp_path, monkeypatch, h=12, every=0.0)
+    assert [r[0] for r in rows] == list(range(1, 13))
+    assert all(isinstance(r[1], float) for r in rows)
+
+
+def test_a_fast_machine_publishes_at_the_screen_rate_and_always_lands_on_the_last_step(
+    tmp_path, monkeypatch
+):
+    """A tiny model runs far faster than the refresh; writing status.json per step there
+    would be churn nobody could read."""
+    rows = _round_with_status(tmp_path, monkeypatch, h=40, every=30.0)
+    assert len(rows) < 40
+    assert rows[-1][0] == 40  # the round always closes on its real final numbers

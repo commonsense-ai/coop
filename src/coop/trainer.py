@@ -5,6 +5,7 @@ import contextlib
 import functools
 import json
 import logging
+import math
 import time
 from pathlib import Path
 
@@ -25,6 +26,23 @@ from coop.device import (
 from coop.model import GPT, GPTConfig, load_canonical_state
 
 log = logging.getLogger(__name__)
+
+PUBLISH_EVERY = 0.25  # status.json refresh; the progress screen redraws twice a second
+FAST, SLOW = 0.1, 0.01  # loss EMA weights — roughly a 10-step average against a 100-step
+DEADBAND = 0.002  # a fast/slow gap under 0.2% of the loss is noise, not a direction
+
+
+def loss_direction(fast: float, slow: float) -> int:
+    """-1 falling, +1 rising, 0 too close to call.
+
+    A single step's loss bounces with the batch it drew, so the sign of one difference
+    says nothing. Only once the short average has pulled clear of the long one is there
+    a direction to report — and under the deadband we say nothing rather than flicker."""
+    if not (math.isfinite(fast) and math.isfinite(slow)):
+        return 0
+    if abs(fast - slow) < DEADBAND * max(abs(slow), 1e-9):
+        return 0
+    return -1 if fast < slow else 1
 
 
 def _autocast_probe(device: str) -> bool:
@@ -146,7 +164,9 @@ def run_worker(
     h = h_override or inner["h_steps"]
     t0 = time.time()
     model.train()
-    steps_done = 0
+    steps_done, logged = 0, 0
+    fast = slow = None
+    latest, published = 0.0, 0.0
     for i in range(h):
         if stop is not None and stop.is_set():
             log.info("stop requested — packaging the %d steps finished so far", steps_done)
@@ -164,17 +184,33 @@ def run_worker(
         opt.step()
         sync()
         steps_done = i + 1
-        if i % 10 == 0 or i == h - 1:
-            log.info("inner step %d/%d loss %.4f", i + 1, h, loss.item())
-            if status:
-                status.update(
-                    phase="training",
-                    start_step=start_step,
-                    inner_step=steps_done,
-                    h_steps=h,
-                    loss=round(loss.item(), 4),
-                    steps_per_sec=round(steps_done / max(time.time() - t0, 1e-6), 2),
-                )
+        # averaged on the device: reading a tensor back is a host sync, and paying one
+        # every step would stall the pipeline this loop exists to keep full
+        with torch.no_grad():
+            cur = loss.detach().float()
+            fast = cur if fast is None else fast + FAST * (cur - fast)
+            slow = cur if slow is None else slow + SLOW * (cur - slow)
+        now = time.time()
+        # every step on hardware slower than the screen, at the screen's rate on hardware
+        # faster than it — either way what a volunteer reads is the newest step there is
+        if now - published < PUBLISH_EVERY and steps_done != h:
+            continue
+        published = now
+        latest, f, s = torch.stack([cur, fast, slow]).tolist()  # one sync, not three
+        if status:
+            status.update(
+                phase="training",
+                start_step=start_step,
+                inner_step=steps_done,
+                h_steps=h,
+                loss=round(latest, 4),
+                loss_dir=loss_direction(f, s),
+                steps_per_sec=round(steps_done / max(now - t0, 1e-6), 2),
+            )
+        # the log keeps its old cadence: a line per step would bury `coop logs` on a GPU
+        if steps_done - logged >= 10 or steps_done == h:
+            logged = steps_done
+            log.info("inner step %d/%d loss %.4f", steps_done, h, latest)
     wall = time.time() - t0
     if steps_done == 0:
         return None, None  # stopped before any training: nothing worth submitting
